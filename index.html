@@ -22,59 +22,17 @@
         }
 
         body {
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            background: #0a0e27;
-            color: #00ff41;
+            font-family: 'Consolas', 'Monaco', 'Courier New', 'DejaVu Sans Mono', monospace;
+            background: #000000;
+            color: #ffffff;
             position: relative;
             overflow: hidden;
-        }
-
-        /* CRT Scanline Effect */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                transparent 50%,
-                rgba(0, 255, 65, 0.03) 50%
-            );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 1000;
-            animation: scanline 8s linear infinite;
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(4px); }
-        }
-
-        /* Screen flicker effect */
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.03);
-            pointer-events: none;
-            z-index: 999;
-            animation: flicker 0.15s infinite;
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.98; }
         }
 
         .terminal {
             width: 100%;
             height: 100vh;
-            background: #0a0e27;
+            background: #000000;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -84,10 +42,9 @@
         .terminal-header {
             display: flex;
             align-items: center;
-            padding: 15px 25px;
-            border-bottom: 2px solid #00ff41;
-            background: rgba(0, 255, 65, 0.05);
-            box-shadow: 0 2px 10px rgba(0, 255, 65, 0.2);
+            padding: 10px 20px;
+            border-bottom: 1px solid #333333;
+            background: #1a1a1a;
             position: relative;
             z-index: 10;
         }
@@ -119,40 +76,41 @@
         }
 
         .terminal-title {
-            color: #006400;
-            font-size: 13px;
+            color: #cccccc;
+            font-size: 12px;
             margin-left: 15px;
-            text-shadow: 0 0 10px rgba(0, 100, 0, 0.5);
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: normal;
         }
 
         .terminal-body {
-            font-size: 16px;
-            line-height: 1.8;
-            padding: 25px;
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 20px;
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: thin;
-            scrollbar-color: #00ff41 #0a0e27;
+            scrollbar-color: #555555 #000000;
             scroll-behavior: smooth;
+            background: #000000;
         }
 
         .terminal-body::-webkit-scrollbar {
-            width: 8px;
+            width: 10px;
         }
 
         .terminal-body::-webkit-scrollbar-track {
-            background: #0a0e27;
+            background: #000000;
         }
 
         .terminal-body::-webkit-scrollbar-thumb {
-            background: #00ff41;
-            border-radius: 4px;
+            background: #555555;
+            border-radius: 0;
         }
 
         .terminal-body::-webkit-scrollbar-thumb:hover {
-            background: #00cc33;
+            background: #666666;
         }
 
         .command-line {
@@ -168,21 +126,18 @@
         .prompt {
             color: #006400;
             display: inline-block;
-            margin-right: 10px;
-            text-shadow: 0 0 8px rgba(0, 100, 0, 0.6);
-            font-weight: 700;
+            margin-right: 8px;
+            font-weight: normal;
         }
 
         .command {
-            color: #ffd700;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            color: #ffffff;
         }
 
         .output {
-            color: #00ff41;
-            margin-left: 25px;
+            color: #ffffff;
+            margin-left: 0;
             white-space: pre-wrap;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
             animation: typeOut 0.5s ease-out;
         }
 
@@ -193,12 +148,11 @@
 
         .cursor {
             display: inline-block;
-            width: 10px;
-            height: 20px;
-            background: #00ff41;
-            box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+            width: 8px;
+            height: 16px;
+            background: #ffffff;
             animation: blink 1s infinite;
-            margin-left: 3px;
+            margin-left: 2px;
             vertical-align: middle;
         }
 
@@ -208,60 +162,28 @@
         }
 
         .timer-container {
-            margin: 40px 0;
-            padding: 40px;
-            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
-            border: 2px solid #00ff41;
-            border-radius: 8px;
-            box-shadow: 
-                0 0 30px rgba(0, 255, 65, 0.3),
-                inset 0 0 30px rgba(0, 255, 65, 0.1);
+            margin: 20px 0;
+            padding: 30px;
+            background: #0a0a0a;
+            border: 1px solid #333333;
+            border-radius: 4px;
             position: relative;
             overflow: hidden;
         }
 
-        .timer-container::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                45deg,
-                transparent 30%,
-                rgba(0, 255, 65, 0.1) 50%,
-                transparent 70%
-            );
-            animation: shimmer 3s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
 
         .timer-display {
-            font-size: 72px;
+            font-size: 48px;
             font-weight: bold;
             text-align: center;
-            color: #00ff41;
-            margin: 30px 0;
-            text-shadow: 
-                0 0 20px rgba(0, 255, 65, 0.8),
-                0 0 40px rgba(0, 255, 65, 0.4),
-                0 0 60px rgba(0, 255, 65, 0.2);
-            letter-spacing: 8px;
-            font-family: 'JetBrains Mono', monospace;
+            color: #006400;
+            margin: 20px 0;
+            letter-spacing: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             position: relative;
             z-index: 1;
-            animation: pulse 2s ease-in-out infinite;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.9; }
-        }
 
         .timer-units {
             display: flex;
@@ -275,46 +197,41 @@
 
         .timer-unit {
             text-align: center;
-            padding: 20px;
-            background: rgba(0, 255, 65, 0.05);
-            border: 1px solid rgba(0, 255, 65, 0.3);
-            border-radius: 8px;
-            min-width: 120px;
+            padding: 15px;
+            background: #0a0a0a;
+            border: 1px solid #333333;
+            border-radius: 2px;
+            min-width: 100px;
             transition: all 0.3s ease;
         }
 
         .timer-unit:hover {
-            background: rgba(0, 255, 65, 0.15);
-            border-color: #00ff41;
-            transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.4);
+            background: #1a1a1a;
+            border-color: #555555;
         }
 
         .timer-value {
-            font-size: 48px;
-            color: #00ff41;
+            font-size: 36px;
+            color: #006400;
             display: block;
-            text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
-            font-weight: 700;
+            font-weight: bold;
             transition: transform 0.2s ease;
         }
 
         .timer-label {
-            font-size: 12px;
-            color: #00ff41;
-            margin-top: 10px;
+            font-size: 11px;
+            color: #888888;
+            margin-top: 8px;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            opacity: 0.8;
+            letter-spacing: 1px;
         }
 
         .images-container {
-            margin: 40px 0;
-            padding: 30px;
-            background: rgba(0, 255, 65, 0.05);
-            border: 2px solid rgba(0, 255, 65, 0.3);
-            border-radius: 8px;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            margin: 20px 0;
+            padding: 20px;
+            background: #0a0a0a;
+            border: 1px solid #333333;
+            border-radius: 4px;
         }
 
         .images-grid {
@@ -325,39 +242,18 @@
         }
 
         .image-item {
-            border: 2px solid rgba(0, 255, 65, 0.3);
-            border-radius: 8px;
+            border: 1px solid #333333;
+            border-radius: 2px;
             overflow: hidden;
-            background: rgba(0, 0, 0, 0.5);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: #0a0a0a;
+            transition: all 0.3s ease;
             position: relative;
             cursor: pointer;
         }
 
-        .image-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, transparent 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 1;
-            pointer-events: none;
-        }
-
         .image-item:hover {
-            transform: scale(1.05) translateY(-5px);
-            border-color: #00ff41;
-            box-shadow: 
-                0 10px 40px rgba(0, 255, 65, 0.5),
-                0 0 30px rgba(0, 255, 65, 0.3);
-        }
-
-        .image-item:hover::before {
-            opacity: 1;
+            border-color: #555555;
+            background: #1a1a1a;
         }
 
         .image-item img {
@@ -389,12 +285,10 @@
 
         .error {
             color: #ff4444;
-            text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
         }
 
         .success {
-            color: #00ff41;
-            text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
+            color: #ffffff;
         }
 
         .ascii-art {
@@ -423,11 +317,10 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #ffd700;
-            font-family: 'JetBrains Mono', 'Courier New', monospace;
-            font-size: 16px;
-            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
-            caret-color: #00ff41;
+            color: #ffffff;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 14px;
+            caret-color: #ffffff;
             min-width: 0;
             opacity: 0;
             pointer-events: none;
@@ -635,7 +528,7 @@
         </div>
         <div class="terminal-body" id="timerTerminalBody">
             <div id="animatedCommands"></div>
-            <div class="terminal-line" id="interactiveLine">
+            <div class="terminal-line" id="interactiveLine" style="display: none;">
                 <div class="input-line">
                     <span class="prompt">jolene@countdown:~/timer$</span>
                     <input type="text" id="commandInput" autocomplete="off" spellcheck="false" placeholder="Type a command...">
@@ -652,6 +545,7 @@
         // Images array
         const images = [
             'images/IMG_6339.jpg',
+            'images/IMG_6345.jpeg',
             'images/IMG_6353.jpg',
             'images/IMG_6354.jpg',
             'images/IMG_6543.jpg',
@@ -810,16 +704,21 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
                     output.classList.add('success');
                     typeText(output, 'Directory changed successfully.', 30, () => {
                         setTimeout(() => {
+                            // Hide initial terminal completely first
                             initialTerminal.style.opacity = '0';
                             initialTerminal.style.transition = 'opacity 0.5s';
                             setTimeout(() => {
                                 initialTerminal.style.display = 'none';
+                                // Now show timer terminal and start sequence
                                 timerTerminal.style.display = 'flex';
                                 timerTerminal.style.opacity = '0';
+                                timerTerminal.style.transition = 'opacity 0.5s';
                                 setTimeout(() => {
-                                    timerTerminal.style.transition = 'opacity 0.5s';
                                     timerTerminal.style.opacity = '1';
-                                    startAnimatedSequence();
+                                    // Wait a bit more to ensure initial terminal is gone
+                                    setTimeout(() => {
+                                        startAnimatedSequence();
+                                    }, 300);
                                 }, 50);
                             }, 500);
                         }, 1000);
@@ -880,13 +779,20 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             // Wait for timer to appear, then show ls command
             setTimeout(async () => {
                 await addAnimatedCommand('jolene@countdown:~/timer$', 'ls -la images/', '', 500);
-                await addAnimatedCommand('', '', 'total 6 files found', 300);
+                await addAnimatedCommand('', '', 'total 7 files found', 300);
                 showImages();
-                enableInteractiveMode();
+                // Wait a bit for images to load, then run whoami
+                setTimeout(async () => {
+                    await addAnimatedCommand('jolene@countdown:~/timer$', 'whoami', '', 500);
+                    await addAnimatedCommand('', '', 'best girl in the world', 300);
+                    enableInteractiveMode();
+                }, 1000);
             }, 1500);
         }
 
         function enableInteractiveMode() {
+            const interactiveLine = document.getElementById('interactiveLine');
+            interactiveLine.style.display = 'block';
             commandInput.classList.add('active');
             inputCursor.style.display = 'inline-block';
             
