@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Countdown Timer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            background: #0a0e27;
+            color: #00ff41;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* CRT Scanline Effect */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 255, 65, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1000;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Screen flicker effect */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.03);
+            pointer-events: none;
+            z-index: 999;
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.98; }
+        }
+
+        .terminal {
+            width: 100%;
+            height: 100vh;
+            background: #0a0e27;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            padding: 15px 25px;
+            border-bottom: 2px solid #00ff41;
+            background: rgba(0, 255, 65, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 255, 65, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+
+        .terminal-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            margin-right: 10px;
+            box-shadow: 0 0 8px currentColor;
+            transition: transform 0.2s;
+        }
+
+        .terminal-dot:hover {
+            transform: scale(1.1);
+        }
+
+        .dot-red { 
+            background: #ff5f56; 
+            color: #ff5f56;
+        }
+        .dot-yellow { 
+            background: #ffbd2e; 
+            color: #ffbd2e;
+        }
+        .dot-green { 
+            background: #27c93f; 
+            color: #27c93f;
+        }
+
+        .terminal-title {
+            color: #006400;
+            font-size: 13px;
+            margin-left: 15px;
+            text-shadow: 0 0 10px rgba(0, 100, 0, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .terminal-body {
+            font-size: 16px;
+            line-height: 1.8;
+            padding: 25px;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            scrollbar-width: thin;
+            scrollbar-color: #00ff41 #0a0e27;
+            scroll-behavior: smooth;
+        }
+
+        .terminal-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .terminal-body::-webkit-scrollbar-track {
+            background: #0a0e27;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb {
+            background: #00ff41;
+            border-radius: 4px;
+        }
+
+        .terminal-body::-webkit-scrollbar-thumb:hover {
+            background: #00cc33;
+        }
+
+        .command-line {
+            margin-bottom: 15px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .prompt {
+            color: #006400;
+            display: inline-block;
+            margin-right: 10px;
+            text-shadow: 0 0 8px rgba(0, 100, 0, 0.6);
+            font-weight: 700;
+        }
+
+        .command {
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+        }
+
+        .output {
+            color: #00ff41;
+            margin-left: 25px;
+            white-space: pre-wrap;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.4);
+            animation: typeOut 0.5s ease-out;
+        }
+
+        @keyframes typeOut {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background: #00ff41;
+            box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+            animation: blink 1s infinite;
+            margin-left: 3px;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .timer-container {
+            margin: 40px 0;
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+            border: 2px solid #00ff41;
+            border-radius: 8px;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 65, 0.3),
+                inset 0 0 30px rgba(0, 255, 65, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                transparent 30%,
+                rgba(0, 255, 65, 0.1) 50%,
+                transparent 70%
+            );
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .timer-display {
+            font-size: 72px;
+            font-weight: bold;
+            text-align: center;
+            color: #00ff41;
+            margin: 30px 0;
+            text-shadow: 
+                0 0 20px rgba(0, 255, 65, 0.8),
+                0 0 40px rgba(0, 255, 65, 0.4),
+                0 0 60px rgba(0, 255, 65, 0.2);
+            letter-spacing: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+            z-index: 1;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.9; }
+        }
+
+        .timer-units {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timer-unit {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0, 255, 65, 0.05);
+            border: 1px solid rgba(0, 255, 65, 0.3);
+            border-radius: 8px;
+            min-width: 120px;
+            transition: all 0.3s ease;
+        }
+
+        .timer-unit:hover {
+            background: rgba(0, 255, 65, 0.15);
+            border-color: #00ff41;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.4);
+        }
+
+        .timer-value {
+            font-size: 48px;
+            color: #00ff41;
+            display: block;
+            text-shadow: 0 0 15px rgba(0, 255, 65, 0.6);
+            font-weight: 700;
+            transition: transform 0.2s ease;
+        }
+
+        .timer-label {
+            font-size: 12px;
+            color: #00ff41;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.8;
+        }
+
+        .images-container {
+            margin: 40px 0;
+            padding: 30px;
+            background: rgba(0, 255, 65, 0.05);
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .image-item {
+            border: 2px solid rgba(0, 255, 65, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+        }
+
+        .image-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 255, 65, 0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .image-item:hover {
+            transform: scale(1.05) translateY(-5px);
+            border-color: #00ff41;
+            box-shadow: 
+                0 10px 40px rgba(0, 255, 65, 0.5),
+                0 0 30px rgba(0, 255, 65, 0.3);
+        }
+
+        .image-item:hover::before {
+            opacity: 1;
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.4s;
+        }
+
+        .image-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .typing {
+            overflow: hidden;
+            border-right: 2px solid #00ff41;
+            white-space: nowrap;
+            animation: typing 0.5s steps(40, end);
+        }
+
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        .error {
+            color: #ff4444;
+            text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
+        }
+
+        .success {
+            color: #00ff41;
+            text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
+        }
+
+        .ascii-art {
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            white-space: pre;
+            font-size: 12px;
+            line-height: 1.2;
+            margin: 20px 0;
+            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        }
+
+        .terminal-line {
+            margin-bottom: 8px;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .input-line input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #ffd700;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 16px;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
+            caret-color: #00ff41;
+            min-width: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .input-line input.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .input-line input:focus {
+            outline: none;
+        }
+
+        .input-line input::placeholder {
+            color: rgba(255, 215, 0, 0.3);
+        }
+
+        #inputCursor {
+            display: none;
+        }
+
+        .command-history {
+            opacity: 0.7;
+        }
+
+        .typing-command {
+            display: inline-block;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            html, body {
+                overflow: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            body {
+                overflow-x: hidden;
+            }
+
+            .terminal {
+                min-height: 100vh;
+                height: auto;
+            }
+
+            .terminal-header {
+                padding: 12px 15px;
+                flex-wrap: wrap;
+            }
+
+            .terminal-title {
+                font-size: 11px;
+                margin-left: 10px;
+            }
+
+            .terminal-dot {
+                width: 10px;
+                height: 10px;
+                margin-right: 6px;
+            }
+            .timer-display {
+                font-size: 32px;
+                letter-spacing: 2px;
+                margin: 20px 0;
+            }
+
+            .timer-value {
+                font-size: 28px;
+            }
+
+            .timer-units {
+                gap: 15px;
+            }
+
+            .timer-unit {
+                min-width: 80px;
+                padding: 12px;
+            }
+
+            .timer-label {
+                font-size: 10px;
+            }
+
+            .timer-container {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .images-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .images-container {
+                padding: 15px;
+                margin: 20px 0;
+            }
+
+            .terminal-body {
+                font-size: 13px;
+                padding: 15px;
+                line-height: 1.6;
+            }
+
+            .prompt {
+                font-size: 13px;
+            }
+
+            .command {
+                font-size: 13px;
+            }
+
+            .output {
+                font-size: 13px;
+                margin-left: 15px;
+            }
+
+            .input-line {
+                flex-wrap: wrap;
+            }
+
+            .input-line input {
+                font-size: 16px;
+                width: 100%;
+                min-width: 200px;
+                flex: 1 1 auto;
+            }
+
+            .input-line input.active {
+                opacity: 1 !important;
+                pointer-events: auto !important;
+            }
+
+            #inputCursor {
+                display: inline-block !important;
+            }
+
+            .cursor {
+                width: 8px;
+                height: 16px;
+            }
+
+            /* Prevent zoom on input focus on iOS */
+            input, textarea, select {
+                font-size: 16px !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timer-display {
+                font-size: 24px;
+                letter-spacing: 1px;
+            }
+
+            .timer-value {
+                font-size: 22px;
+            }
+
+            .timer-units {
+                gap: 10px;
+            }
+
+            .timer-unit {
+                min-width: 70px;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="terminal" id="initialTerminal">
+        <div class="terminal-header">
+            <div class="terminal-dot dot-red"></div>
+            <div class="terminal-dot dot-yellow"></div>
+            <div class="terminal-dot dot-green"></div>
+            <span class="terminal-title">jolene@countdown: ~</span>
+        </div>
+        <div class="terminal-body" id="terminalBody">
+            <div class="terminal-line">
+                <div class="output success">Last login: Mon Jan 14 00:00:00 on tty1</div>
+            </div>
+            <div class="terminal-line">
+                <div class="output">Welcome to Countdown Terminal v2.0</div>
+            </div>
+            <div class="terminal-line">
+                <div class="output">Type 'help' for available commands</div>
+            </div>
+            <div class="command-line" id="commandLine">
+                <span class="prompt">jolene@countdown:~$</span>
+                <span class="command" id="commandText"></span>
+                <span class="cursor" id="cursor"></span>
+            </div>
+            <div class="output" id="output"></div>
+        </div>
+    </div>
+
+    <div class="terminal" id="timerTerminal" style="display: none;">
+        <div class="terminal-header">
+            <div class="terminal-dot dot-red"></div>
+            <div class="terminal-dot dot-yellow"></div>
+            <div class="terminal-dot dot-green"></div>
+            <span class="terminal-title">jolene@countdown: ~/timer</span>
+        </div>
+        <div class="terminal-body" id="timerTerminalBody">
+            <div id="animatedCommands"></div>
+            <div class="timer-container">
+                <div class="timer-display" id="timerDisplay">00:00:00:00</div>
+                <div class="timer-units">
+                    <div class="timer-unit">
+                        <span class="timer-value" id="days">0</span>
+                        <span class="timer-label">Days</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-value" id="hours">0</span>
+                        <span class="timer-label">Hours</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-value" id="minutes">0</span>
+                        <span class="timer-label">Minutes</span>
+                    </div>
+                    <div class="timer-unit">
+                        <span class="timer-value" id="seconds">0</span>
+                        <span class="timer-label">Seconds</span>
+                    </div>
+                </div>
+            </div>
+            <div class="images-container" id="imagesContainer" style="display: none;">
+                <div class="images-grid" id="imagesGrid"></div>
+            </div>
+            <div class="terminal-line" id="interactiveLine">
+                <div class="input-line">
+                    <span class="prompt">jolene@countdown:~/timer$</span>
+                    <input type="text" id="commandInput" autocomplete="off" spellcheck="false" placeholder="Type a command...">
+                    <span class="cursor" id="inputCursor"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Target date: January 23, 2026 at 4:00 PM EST
+        const targetDate = new Date('2026-01-23T16:00:00-05:00');
+        
+        // Images array
+        const images = [
+            'images/IMG_6339.jpg',
+            'images/IMG_6353.jpg',
+            'images/IMG_6354.jpg',
+            'images/IMG_6543.jpg',
+            'images/IMG_9225.jpg',
+            'images/IMG_9411.jpg'
+        ];
+
+        // Terminal elements
+        const commandText = document.getElementById('commandText');
+        const output = document.getElementById('output');
+        const cursor = document.getElementById('cursor');
+        const initialTerminal = document.getElementById('initialTerminal');
+        const timerTerminal = document.getElementById('timerTerminal');
+        const timerTerminalBody = document.getElementById('timerTerminalBody');
+        const commandInput = document.getElementById('commandInput');
+        const inputCursor = document.getElementById('inputCursor');
+        const animatedCommandsDiv = document.getElementById('animatedCommands');
+
+        // Command history
+        let commandHistory = [];
+        let historyIndex = -1;
+        let currentPath = '~/timer';
+        let isTypingAnimation = false;
+
+        // Available commands
+        const commands = {
+            'help': () => `Available commands:
+  help          - Show this help message
+  clear         - Clear the terminal
+  ls            - List files
+  ls -la        - List all files with details
+  cd            - Change directory
+  pwd           - Print working directory
+  date          - Show current date and time
+  countdown     - Show countdown timer info
+  images        - Display images
+  whoami        - Show current user
+  exit          - Exit terminal (reloads page)`,
+            'clear': () => {
+                clearTerminal();
+                return '';
+            },
+            'ls': () => {
+                if (currentPath === '~/timer') {
+                    return 'countdown.sh  images/  README.md';
+                }
+                return 'No files found';
+            },
+            'ls -la': () => {
+                if (currentPath === '~/timer') {
+                    return `total 3
+-rwxr-xr-x  1 jolene jolene  1024 Jan 14 00:00 countdown.sh
+drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
+-rw-r--r--  1 jolene jolene   256 Jan 14 00:00 README.md`;
+                }
+                return 'No files found';
+            },
+            'pwd': () => currentPath,
+            'date': () => new Date().toString(),
+            'countdown': () => `Target: January 23, 2026 at 4:00 PM EST\nCurrent time: ${new Date().toString()}`,
+            'images': () => {
+                showImages();
+                return 'Displaying images...';
+            },
+            'whoami': () => 'best girl ever',
+            'cd': () => 'Usage: cd <directory>',
+            'cd ..': () => {
+                currentPath = '~';
+                return 'Directory changed to ~';
+            },
+            'cd ~': () => {
+                currentPath = '~';
+                return 'Directory changed to ~';
+            },
+            'cd timer': () => {
+                currentPath = '~/timer';
+                return 'Directory changed to ~/timer';
+            },
+            'exit': () => {
+                window.location.reload();
+                return '';
+            }
+        };
+
+        function typeText(element, text, speed = 50, callback) {
+            let index = 0;
+            element.textContent = '';
+            isTypingAnimation = true;
+            
+            const interval = setInterval(() => {
+                if (index < text.length) {
+                    element.textContent += text[index];
+                    index++;
+                } else {
+                    clearInterval(interval);
+                    isTypingAnimation = false;
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+
+        function addAnimatedCommand(prompt, command, outputText, delay = 0) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'terminal-line';
+                    
+                    const commandLine = document.createElement('div');
+                    commandLine.className = 'command-line';
+                    
+                    const promptSpan = document.createElement('span');
+                    promptSpan.className = 'prompt';
+                    promptSpan.textContent = prompt;
+                    
+                    const commandSpan = document.createElement('span');
+                    commandSpan.className = 'command typing-command';
+                    
+                    commandLine.appendChild(promptSpan);
+                    commandLine.appendChild(commandSpan);
+                    line.appendChild(commandLine);
+                    
+                    if (outputText) {
+                        const outputDiv = document.createElement('div');
+                        outputDiv.className = `output ${outputText.includes('error') || outputText.includes('Error') ? 'error' : 'success'}`;
+                        outputDiv.style.display = 'none';
+                        line.appendChild(outputDiv);
+                    }
+                    
+                    animatedCommandsDiv.appendChild(line);
+                    scrollToBottom();
+                    
+                    typeText(commandSpan, command, 60, () => {
+                        if (outputText) {
+                            const outputDiv = line.querySelector('.output');
+                            if (outputDiv) {
+                                outputDiv.style.display = 'block';
+                                typeText(outputDiv, outputText, 30, () => {
+                                    resolve();
+                                });
+                            } else {
+                                resolve();
+                            }
+                        } else {
+                            resolve();
+                        }
+                    });
+                }, delay);
+            });
+        }
+
+        function typeCommand() {
+            typeText(commandText, 'cd timer', 80, () => {
+                setTimeout(() => {
+                    cursor.style.display = 'none';
+                    output.textContent = '';
+                    output.classList.add('success');
+                    typeText(output, 'Directory changed successfully.', 30, () => {
+                        setTimeout(() => {
+                            initialTerminal.style.opacity = '0';
+                            initialTerminal.style.transition = 'opacity 0.5s';
+                            setTimeout(() => {
+                                initialTerminal.style.display = 'none';
+                                timerTerminal.style.display = 'flex';
+                                timerTerminal.style.opacity = '0';
+                                setTimeout(() => {
+                                    timerTerminal.style.transition = 'opacity 0.5s';
+                                    timerTerminal.style.opacity = '1';
+                                    startAnimatedSequence();
+                                }, 50);
+                            }, 500);
+                        }, 1000);
+                    });
+                }, 500);
+            });
+        }
+
+        async function startAnimatedSequence() {
+            await addAnimatedCommand('jolene@countdown:~/timer$', './countdown.sh', '');
+            await addAnimatedCommand('', '', 'Initializing countdown sequence...', 300);
+            await addAnimatedCommand('', '', 'Target: January 23, 2026 at 4:00 PM EST', 300);
+            await addAnimatedCommand('', '', 'Starting countdown timer...', 300);
+            
+            startCountdown();
+            
+            setTimeout(async () => {
+                await addAnimatedCommand('jolene@countdown:~/timer$', 'ls -la images/', '', 500);
+                await addAnimatedCommand('', '', 'total 6 files found', 300);
+                showImages();
+                enableInteractiveMode();
+            }, 1000);
+        }
+
+        function enableInteractiveMode() {
+            commandInput.classList.add('active');
+            inputCursor.style.display = 'inline-block';
+            
+            // Update prompt based on current path
+            updatePrompt();
+            
+            // Focus input after a short delay to ensure it's visible
+            setTimeout(() => {
+                commandInput.focus();
+                // Scroll to input on mobile
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        commandInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 300);
+                }
+            }, 500);
+        }
+
+        function updatePrompt() {
+            const prompt = document.querySelector('#interactiveLine .prompt');
+            if (prompt) {
+                prompt.textContent = `jolene@countdown:${currentPath}$`;
+            }
+        }
+
+        function executeCommand(cmd) {
+            const trimmedCmd = cmd.trim();
+            if (!trimmedCmd) return '';
+            
+            commandHistory.push(trimmedCmd);
+            historyIndex = commandHistory.length;
+            
+            if (commands[trimmedCmd]) {
+                return commands[trimmedCmd]();
+            } else if (trimmedCmd.startsWith('cd ')) {
+                const dir = trimmedCmd.substring(3).trim();
+                if (dir === '..' || dir === '~') {
+                    return commands['cd ..']();
+                } else if (dir === 'timer') {
+                    return commands['cd timer']();
+                } else {
+                    return `cd: no such file or directory: ${dir}`;
+                }
+            } else {
+                return `Command not found: ${trimmedCmd}. Type 'help' for available commands.`;
+            }
+        }
+
+        function addTerminalLine(prompt, command, outputText) {
+            const line = document.createElement('div');
+            line.className = 'terminal-line';
+            line.innerHTML = `
+                <div class="command-line">
+                    <span class="prompt">${prompt}</span>
+                    <span class="command">${command}</span>
+                </div>
+                ${outputText ? `<div class="output ${outputText.includes('error') || outputText.includes('Command not found') ? 'error' : 'success'}">${outputText}</div>` : ''}
+            `;
+            const interactiveLine = document.getElementById('interactiveLine');
+            timerTerminalBody.insertBefore(line, interactiveLine);
+            scrollToBottom();
+        }
+
+        function clearTerminal() {
+            const lines = timerTerminalBody.querySelectorAll('.terminal-line:not(#interactiveLine)');
+            lines.forEach(line => line.remove());
+            animatedCommandsDiv.innerHTML = '';
+        }
+
+        function showImages() {
+            const imagesContainer = document.getElementById('imagesContainer');
+            if (imagesContainer.style.display === 'none') {
+                imagesContainer.style.display = 'block';
+                loadImages();
+            }
+        }
+
+        function scrollToBottom() {
+            setTimeout(() => {
+                timerTerminalBody.scrollTop = timerTerminalBody.scrollHeight;
+            }, 100);
+        }
+
+        function startCountdown() {
+            function updateTimer() {
+                const now = new Date();
+                const difference = targetDate - now;
+
+                if (difference <= 0) {
+                    const timerDisplay = document.getElementById('timerDisplay');
+                    timerDisplay.textContent = 'TIME\'S UP!';
+                    timerDisplay.style.color = '#ff4444';
+                    timerDisplay.style.textShadow = '0 0 20px rgba(255, 68, 68, 0.8)';
+                    document.getElementById('days').textContent = '0';
+                    document.getElementById('hours').textContent = '0';
+                    document.getElementById('minutes').textContent = '0';
+                    document.getElementById('seconds').textContent = '0';
+                    return;
+                }
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                const daysEl = document.getElementById('days');
+                const hoursEl = document.getElementById('hours');
+                const minutesEl = document.getElementById('minutes');
+                const secondsEl = document.getElementById('seconds');
+                
+                if (daysEl && daysEl.textContent !== days.toString()) {
+                    daysEl.style.transform = 'scale(1.2)';
+                    setTimeout(() => daysEl.style.transform = 'scale(1)', 200);
+                }
+                if (hoursEl && hoursEl.textContent !== hours.toString().padStart(2, '0')) {
+                    hoursEl.style.transform = 'scale(1.2)';
+                    setTimeout(() => hoursEl.style.transform = 'scale(1)', 200);
+                }
+                if (minutesEl && minutesEl.textContent !== minutes.toString().padStart(2, '0')) {
+                    minutesEl.style.transform = 'scale(1.2)';
+                    setTimeout(() => minutesEl.style.transform = 'scale(1)', 200);
+                }
+                if (secondsEl && secondsEl.textContent !== seconds.toString().padStart(2, '0')) {
+                    secondsEl.style.transform = 'scale(1.2)';
+                    setTimeout(() => secondsEl.style.transform = 'scale(1)', 200);
+                }
+
+                if (daysEl) daysEl.textContent = days;
+                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
+                if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
+                if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
+                
+                const timerDisplay = document.getElementById('timerDisplay');
+                if (timerDisplay) {
+                    timerDisplay.textContent = 
+                        `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        function loadImages() {
+            const imagesGrid = document.getElementById('imagesGrid');
+            if (!imagesGrid) return;
+            
+            images.forEach((imagePath, index) => {
+                setTimeout(() => {
+                    const imageItem = document.createElement('div');
+                    imageItem.className = 'image-item';
+                    imageItem.style.opacity = '0';
+                    imageItem.style.transform = 'translateY(20px)';
+                    imageItem.style.transition = 'opacity 0.5s, transform 0.5s';
+                    
+                    const img = document.createElement('img');
+                    img.src = imagePath;
+                    img.alt = 'Image';
+                    img.loading = 'lazy';
+                    img.onerror = function() {
+                        this.style.display = 'none';
+                        imageItem.innerHTML = `<div style="padding: 20px; color: #ff4444; text-align: center; text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);">Failed to load: ${imagePath}</div>`;
+                        imageItem.style.opacity = '1';
+                        imageItem.style.transform = 'translateY(0)';
+                    };
+                    
+                    img.onload = function() {
+                        imageItem.style.opacity = '1';
+                        imageItem.style.transform = 'translateY(0)';
+                    };
+                    
+                    imageItem.appendChild(img);
+                    imagesGrid.appendChild(imageItem);
+                }, index * 100);
+            });
+        }
+
+        // Interactive terminal event handlers
+        commandInput.addEventListener('keydown', (e) => {
+            if (isTypingAnimation) {
+                e.preventDefault();
+                return;
+            }
+
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                const cmd = commandInput.value;
+                commandInput.value = '';
+                
+                if (cmd.trim()) {
+                    addTerminalLine(`jolene@countdown:${currentPath}$`, cmd, '');
+                    updatePrompt();
+                    
+                    setTimeout(() => {
+                        const result = executeCommand(cmd);
+                        if (result) {
+                            const lastLine = timerTerminalBody.querySelector('.terminal-line:last-of-type:not(#interactiveLine)');
+                            if (lastLine) {
+                                const outputDiv = document.createElement('div');
+                                outputDiv.className = `output ${result.includes('error') || result.includes('Command not found') || result.includes('no such file') ? 'error' : 'success'}`;
+                                outputDiv.textContent = result;
+                                lastLine.appendChild(outputDiv);
+                                scrollToBottom();
+                            }
+                        }
+                    }, 100);
+                } else {
+                    addTerminalLine(`jolene@countdown:${currentPath}$`, '', '');
+                }
+                
+                scrollToBottom();
+                commandInput.focus();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    commandInput.value = commandHistory[historyIndex];
+                }
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                if (historyIndex < commandHistory.length - 1) {
+                    historyIndex++;
+                    commandInput.value = commandHistory[historyIndex];
+                } else {
+                    historyIndex = commandHistory.length;
+                    commandInput.value = '';
+                }
+            }
+        });
+
+        // Keep input focused and cursor visible
+        commandInput.addEventListener('focus', () => {
+            inputCursor.style.display = 'inline-block';
+        });
+
+        commandInput.addEventListener('blur', () => {
+            // Don't hide cursor on mobile
+            if (window.innerWidth > 768) {
+                inputCursor.style.display = 'none';
+            }
+        });
+
+        // Mobile touch handling
+        timerTerminalBody.addEventListener('touchstart', (e) => {
+            // Allow scrolling
+        }, { passive: true });
+
+        // Tap to focus input on mobile
+        if (window.innerWidth <= 768) {
+            timerTerminalBody.addEventListener('click', (e) => {
+                if (e.target === timerTerminalBody || e.target.classList.contains('terminal-body')) {
+                    commandInput.focus();
+                }
+            });
+        }
+
+        // Start the terminal animation when page loads
+        window.addEventListener('load', () => {
+            setTimeout(typeCommand, 500);
+        });
+
+        // Handle window resize for mobile
+        window.addEventListener('resize', () => {
+            scrollToBottom();
+        });
+    </script>
+</body>
+</html>
