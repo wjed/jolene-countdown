@@ -656,9 +656,6 @@
                     </div>
                 </div>
             </div>
-            <div class="images-container" id="imagesContainer" style="display: none;">
-                <div class="images-grid" id="imagesGrid"></div>
-            </div>
             <div class="terminal-line" id="interactiveLine">
                 <div class="input-line">
                     <span class="prompt">jolene@countdown:~/timer$</span>
@@ -949,11 +946,32 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
         }
 
         function showImages() {
-            const imagesContainer = document.getElementById('imagesContainer');
-            if (imagesContainer.style.display === 'none') {
-                imagesContainer.style.display = 'block';
-                loadImages();
+            // Create images container dynamically after the ls command
+            const animatedCommandsDiv = document.getElementById('animatedCommands');
+            const existingContainer = document.getElementById('imagesContainer');
+            
+            if (existingContainer) {
+                existingContainer.remove();
             }
+            
+            const imagesContainer = document.createElement('div');
+            imagesContainer.className = 'images-container';
+            imagesContainer.id = 'imagesContainer';
+            imagesContainer.style.opacity = '0';
+            imagesContainer.style.transition = 'opacity 0.5s ease-in';
+            
+            const imagesGrid = document.createElement('div');
+            imagesGrid.className = 'images-grid';
+            imagesGrid.id = 'imagesGrid';
+            
+            imagesContainer.appendChild(imagesGrid);
+            animatedCommandsDiv.appendChild(imagesContainer);
+            
+            setTimeout(() => {
+                imagesContainer.style.opacity = '1';
+            }, 100);
+            
+            loadImages();
         }
 
         function scrollToBottom() {
@@ -1069,22 +1087,9 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
                 commandInput.value = '';
                 
                 if (cmd.trim()) {
-                    addTerminalLine(`jolene@countdown:${currentPath}$`, cmd, '');
+                    const result = executeCommand(cmd);
+                    addTerminalLine(`jolene@countdown:${currentPath}$`, cmd, result || '');
                     updatePrompt();
-                    
-                    setTimeout(() => {
-                        const result = executeCommand(cmd);
-                        if (result) {
-                            const lastLine = timerTerminalBody.querySelector('.terminal-line:last-of-type:not(#interactiveLine)');
-                            if (lastLine) {
-                                const outputDiv = document.createElement('div');
-                                outputDiv.className = `output ${result.includes('error') || result.includes('Command not found') || result.includes('no such file') ? 'error' : 'success'}`;
-                                outputDiv.textContent = result;
-                                lastLine.appendChild(outputDiv);
-                                scrollToBottom();
-                            }
-                        }
-                    }, 100);
                 } else {
                     addTerminalLine(`jolene@countdown:${currentPath}$`, '', '');
                 }
