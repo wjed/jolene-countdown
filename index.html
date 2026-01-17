@@ -544,13 +544,10 @@
         
         // Images array
         const images = [
-            'images/IMG_6339.jpg',
-            'images/IMG_6345.jpeg',
-            'images/IMG_6353.jpg',
+            'images/IMG_0972.jpg',
+            'images/IMG_0993.jpg',
             'images/IMG_6354.jpg',
-            'images/IMG_6543.jpg',
-            'images/IMG_9225.jpg',
-            'images/IMG_9411.jpg'
+            'images/IMG_9225.jpg'
         ];
 
         // Terminal elements
@@ -779,7 +776,7 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             // Wait for timer to appear, then show ls command
             setTimeout(async () => {
                 await addAnimatedCommand('jolene@countdown:~/timer$', 'ls -la images/', '', 500);
-                await addAnimatedCommand('', '', 'total 7 files found', 300);
+                await addAnimatedCommand('', '', 'total 4 files found', 300);
                 showImages();
                 // Wait a bit for images to load, then run whoami
                 setTimeout(async () => {
