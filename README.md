@@ -1,6 +1,6 @@
 # Jolene - Countdown Timer Terminal
 
-A beautiful, interactive terminal-themed countdown timer counting down to January 23, 2026 at 4:00 PM EST.
+A beautiful, interactive terminal-themed countdown timer counting down to January 17, 2026 at 7:00 PM EST.
 
 ## Features
 
@@ -31,4 +31,4 @@ Simply open `index.html` in your web browser. The terminal will automatically st
 
 ## Target Date
 
-January 23, 2026 at 4:00 PM EST
+January 17, 2026 at 7:00 PM EST

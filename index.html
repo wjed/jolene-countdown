@@ -539,8 +539,8 @@
     </div>
 
     <script>
-        // Target date: January 23, 2026 at 4:00 PM EST
-        const targetDate = new Date('2026-01-23T16:00:00-05:00');
+        // Target date: January 17, 2026 at 7:00 PM EST
+        const targetDate = new Date('2026-01-17T19:00:00-05:00');
         
         // Images array
         const images = [
@@ -605,7 +605,7 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             },
             'pwd': () => currentPath,
             'date': () => new Date().toString(),
-            'countdown': () => `Target: January 23, 2026 at 4:00 PM EST\nCurrent time: ${new Date().toString()}`,
+            'countdown': () => `Target: January 17, 2026 at 7:00 PM EST\nCurrent time: ${new Date().toString()}`,
             'images': () => {
                 showImages();
                 return 'Displaying images...';
@@ -770,7 +770,7 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
         async function startAnimatedSequence() {
             await addAnimatedCommand('jolene@countdown:~/timer$', './countdown.sh', '');
             await addAnimatedCommand('', '', 'Initializing countdown sequence...', 300);
-            await addAnimatedCommand('', '', 'Target: January 23, 2026 at 4:00 PM EST', 300);
+                await addAnimatedCommand('', '', 'Target: January 17, 2026 at 7:00 PM EST', 300);
             await addAnimatedCommand('', '', 'Starting countdown timer...', 300);
             
             // Add timer container dynamically after countdown.sh output
