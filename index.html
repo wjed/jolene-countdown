@@ -74,8 +74,22 @@
             font-size: 64px;
             font-weight: 300;
             color: #ffffff;
-            margin-bottom: 60px;
+            margin-bottom: 20px;
             letter-spacing: 2px;
+        }
+
+        .countdown-text {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        .countdown-timer {
+            font-size: 16px;
+            color: #ffffff;
+            font-weight: 300;
+            letter-spacing: 1px;
         }
 
         .options {
@@ -400,6 +414,9 @@
     <canvas id="starsCanvas"></canvas>
     <div class="container">
         <h1>will + jolene</h1>
+        <div class="countdown-text">
+            time till next visit: <span id="countdownTimer" class="countdown-timer"></span>
+        </div>
         <div class="options">
             <button class="option-button" onclick="showWeather()" title="weather"><i class="fas fa-cloud"></i></button>
             <button class="option-button" onclick="showPhotos()" title="photos"><i class="fas fa-camera"></i></button>
@@ -633,6 +650,30 @@
         }
         
         animateStars();
+
+        // Countdown timer to January 30, 2026 at 7:00 PM EST
+        function updateCountdown() {
+            const targetDate = new Date('2026-01-30T19:00:00-05:00'); // January 30, 2026 at 7:00 PM EST
+            const now = new Date();
+            const difference = targetDate - now;
+
+            if (difference <= 0) {
+                document.getElementById('countdownTimer').textContent = '0 days, 0 hours, 0 minutes, 0 seconds';
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById('countdownTimer').textContent = 
+                `${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+        }
+
+        // Update countdown immediately and then every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
 
         const images = [
             'images/IMG_0972.jpg',
