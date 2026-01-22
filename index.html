@@ -198,6 +198,41 @@
             padding: 20px;
         }
 
+        .distance-content {
+            font-size: 18px;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .distance-info {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #e8f5e8;
+            border-radius: 8px;
+            border-left: 4px solid #006400;
+        }
+
+        .distance-info h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #006400;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 20px;
+            border: 2px solid #006400;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 48px;
@@ -227,6 +262,7 @@
             <button class="option-button" onclick="showWeather()">weather</button>
             <button class="option-button" onclick="showPhotos()">photos</button>
             <button class="option-button" onclick="showNotes()">notes</button>
+            <button class="option-button" onclick="showDistance()">distance</button>
         </div>
     </div>
 
@@ -261,6 +297,17 @@
                     <p style="margin-top: 10px; color: #666; font-size: 14px;">1/21/2026</p>
                     <p style="margin-top: 15px;">when i met you in algebra 1, i genuinely thought you were like the sickest girl ever and the one person who could match my energy so unbelievably well to such a caliber i like wouldn't expect from someone. you were and are so smart, so funny, so kind, and i was blown away by how you treated others with so much care and respect.</p>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Distance Modal -->
+    <div id="distanceModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('distanceModal')">&times;</button>
+            <h2 class="modal-title">distance</h2>
+            <div id="distanceContent" class="distance-content">
+                <div class="loading">loading distance...</div>
             </div>
         </div>
     </div>
@@ -390,6 +437,63 @@
 
         function showNotes() {
             showModal('notesModal');
+        }
+
+        // Calculate distance between two coordinates using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 3959; // Earth's radius in miles
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function showDistance() {
+            showModal('distanceModal');
+            const content = document.getElementById('distanceContent');
+            
+            // James Madison University coordinates: 38.4344° N, 78.8699° W
+            // Penn State University coordinates: 40.7982° N, 77.8599° W
+            const jmuLat = 38.4344;
+            const jmuLon = -78.8699;
+            const pennStateLat = 40.7982;
+            const pennStateLon = -77.8599;
+            
+            // Calculate distance
+            const distance = calculateDistance(jmuLat, jmuLon, pennStateLat, pennStateLon);
+            const distanceKm = distance * 1.60934; // Convert to kilometers
+            
+            // Create map using OpenStreetMap with route
+            const centerLat = (jmuLat + pennStateLat) / 2;
+            const centerLon = (jmuLon + pennStateLon) / 2;
+            const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${Math.min(jmuLon, pennStateLon) - 0.5},${Math.min(jmuLat, pennStateLat) - 0.5},${Math.max(jmuLon, pennStateLon) + 0.5},${Math.max(jmuLat, pennStateLat) + 0.5}&layer=mapnik&marker=${jmuLat},${jmuLon}&marker=${pennStateLat},${pennStateLon}`;
+            
+            content.innerHTML = `
+                <div class="distance-info">
+                    <h3>james madison university → penn state university</h3>
+                    <div class="weather-info">
+                        <p><strong>distance:</strong> ${distance.toFixed(1)} miles (${distanceKm.toFixed(1)} km)</p>
+                        <p><strong>driving time:</strong> approximately ${Math.round(distance / 60)} hours</p>
+                    </div>
+                </div>
+                <div class="map-container">
+                    <iframe
+                        src="${mapUrl}"
+                        width="100%"
+                        height="400"
+                        frameborder="0"
+                        style="border: 0;"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <p style="margin-top: 10px; text-align: center; font-size: 14px; color: #666;">
+                    <a href="https://www.openstreetmap.org/?mlat=${centerLat}&mlon=${centerLon}&zoom=7" target="_blank" style="color: #006400;">view larger map</a>
+                </p>
+            `;
         }
     </script>
 </body>
