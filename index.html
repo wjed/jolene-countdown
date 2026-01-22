@@ -23,30 +23,58 @@
 
         body {
             font-family: 'Consolas', 'Monaco', 'Courier New', 'DejaVu Sans Mono', monospace;
-            background: #000000;
-            color: #ffffff;
+            background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 50%, #b8dce8 100%);
+            color: #2c3e50;
             position: relative;
             overflow: hidden;
+        }
+
+        /* Snowflake animation */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
+                radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
+            background-size: 200px 200px, 150px 150px, 180px 180px, 160px 160px;
+            background-position: 0 0, 50px 50px, 100px 100px, 150px 150px;
+            animation: snow 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.6;
+        }
+
+        @keyframes snow {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(200px); }
         }
 
         .terminal {
             width: 100%;
             height: 100vh;
-            background: #000000;
+            background: #f0f8ff;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 0 30px rgba(200, 220, 240, 0.5);
         }
 
         .terminal-header {
             display: flex;
             align-items: center;
             padding: 10px 20px;
-            border-bottom: 1px solid #333333;
-            background: #1a1a1a;
+            border-bottom: 2px solid #b0d4e8;
+            background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
             position: relative;
             z-index: 10;
+            box-shadow: 0 2px 10px rgba(176, 212, 232, 0.3);
         }
 
         .terminal-dot {
@@ -76,11 +104,12 @@
         }
 
         .terminal-title {
-            color: #cccccc;
+            color: #4a6fa5;
             font-size: 12px;
             margin-left: 15px;
             letter-spacing: 0.5px;
             font-weight: normal;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .terminal-body {
@@ -91,9 +120,9 @@
             overflow-y: auto;
             overflow-x: hidden;
             scrollbar-width: thin;
-            scrollbar-color: #555555 #000000;
+            scrollbar-color: #b0d4e8 #f0f8ff;
             scroll-behavior: smooth;
-            background: #000000;
+            background: #f8fcff;
         }
 
         .terminal-body::-webkit-scrollbar {
@@ -101,16 +130,16 @@
         }
 
         .terminal-body::-webkit-scrollbar-track {
-            background: #000000;
+            background: #f0f8ff;
         }
 
         .terminal-body::-webkit-scrollbar-thumb {
-            background: #555555;
-            border-radius: 0;
+            background: #b0d4e8;
+            border-radius: 5px;
         }
 
         .terminal-body::-webkit-scrollbar-thumb:hover {
-            background: #666666;
+            background: #90c4d8;
         }
 
         .command-line {
@@ -128,14 +157,15 @@
             display: inline-block;
             margin-right: 8px;
             font-weight: normal;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
         }
 
         .command {
-            color: #ffffff;
+            color: #2c3e50;
         }
 
         .output {
-            color: #ffffff;
+            color: #2c3e50;
             margin-left: 0;
             white-space: pre-wrap;
             animation: typeOut 0.5s ease-out;
@@ -150,7 +180,7 @@
             display: inline-block;
             width: 8px;
             height: 16px;
-            background: #ffffff;
+            background: #2c3e50;
             animation: blink 1s infinite;
             margin-left: 2px;
             vertical-align: middle;
@@ -164,11 +194,12 @@
         .timer-container {
             margin: 20px 0;
             padding: 30px;
-            background: #0a0a0a;
-            border: 1px solid #333333;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
+            border: 2px solid #b0d4e8;
+            border-radius: 8px;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(176, 212, 232, 0.3);
         }
 
 
@@ -182,6 +213,7 @@
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             position: relative;
             z-index: 1;
+            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
         }
 
 
@@ -198,16 +230,18 @@
         .timer-unit {
             text-align: center;
             padding: 15px;
-            background: #0a0a0a;
-            border: 1px solid #333333;
-            border-radius: 2px;
+            background: #ffffff;
+            border: 2px solid #b0d4e8;
+            border-radius: 6px;
             min-width: 100px;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(176, 212, 232, 0.2);
         }
 
         .timer-unit:hover {
-            background: #1a1a1a;
-            border-color: #555555;
+            background: #f0f8ff;
+            border-color: #90c4d8;
+            box-shadow: 0 4px 12px rgba(176, 212, 232, 0.4);
         }
 
         .timer-value {
@@ -216,11 +250,12 @@
             display: block;
             font-weight: bold;
             transition: transform 0.2s ease;
+            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .timer-label {
             font-size: 11px;
-            color: #888888;
+            color: #4a6fa5;
             margin-top: 8px;
             text-transform: uppercase;
             letter-spacing: 1px;
@@ -229,9 +264,10 @@
         .images-container {
             margin: 20px 0;
             padding: 20px;
-            background: #0a0a0a;
-            border: 1px solid #333333;
-            border-radius: 4px;
+            background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
+            border: 2px solid #b0d4e8;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(176, 212, 232, 0.3);
         }
 
         .images-grid {
@@ -242,10 +278,10 @@
         }
 
         .image-item {
-            border: 1px solid #333333;
-            border-radius: 2px;
+            border: 2px solid #b0d4e8;
+            border-radius: 6px;
             overflow: hidden;
-            background: #0a0a0a;
+            background: #ffffff;
             transition: all 0.3s ease;
             position: relative;
             cursor: pointer;
@@ -253,11 +289,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(176, 212, 232, 0.2);
         }
 
         .image-item:hover {
-            border-color: #555555;
-            background: #1a1a1a;
+            border-color: #90c4d8;
+            background: #f0f8ff;
+            box-shadow: 0 4px 12px rgba(176, 212, 232, 0.4);
         }
 
         .image-item img {
@@ -289,11 +327,11 @@
         }
 
         .error {
-            color: #ff4444;
+            color: #d32f2f;
         }
 
         .success {
-            color: #ffffff;
+            color: #2c3e50;
         }
 
         .ascii-art {
@@ -322,10 +360,10 @@
             background: transparent;
             border: none;
             outline: none;
-            color: #ffffff;
+            color: #2c3e50;
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 14px;
-            caret-color: #ffffff;
+            caret-color: #2c3e50;
             min-width: 0;
             opacity: 0;
             pointer-events: none;
@@ -907,8 +945,8 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
                 if (difference <= 0) {
                     const timerDisplay = document.getElementById('timerDisplay');
                     timerDisplay.textContent = 'TIME\'S UP!';
-                    timerDisplay.style.color = '#ff4444';
-                    timerDisplay.style.textShadow = '0 0 20px rgba(255, 68, 68, 0.8)';
+                    timerDisplay.style.color = '#d32f2f';
+                    timerDisplay.style.textShadow = '0 2px 4px rgba(211, 47, 47, 0.3)';
                     document.getElementById('days').textContent = '0';
                     document.getElementById('hours').textContent = '0';
                     document.getElementById('minutes').textContent = '0';
