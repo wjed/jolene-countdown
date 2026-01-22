@@ -38,17 +38,19 @@
         }
 
         .options {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
             margin-top: 40px;
+            max-width: 500px;
+            width: 100%;
         }
 
         .option-button {
             background: #004d00;
             border: 2px solid #006400;
             border-radius: 12px;
-            padding: 24px 32px;
+            padding: 20px;
             font-size: 32px;
             color: #ffffff;
             cursor: pointer;
@@ -58,7 +60,8 @@
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 15px rgba(0, 100, 0, 0.3);
-            min-height: 80px;
+            min-height: 70px;
+            aspect-ratio: 1;
         }
 
         .option-button:hover {
@@ -314,9 +317,16 @@
                 margin-bottom: 40px;
             }
 
+            .options {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+                max-width: 100%;
+            }
+
             .option-button {
-                padding: 20px 24px;
-                font-size: 18px;
+                padding: 15px;
+                font-size: 24px;
+                min-height: 60px;
             }
 
             .modal-content {
@@ -411,7 +421,7 @@
             <div id="timelineContent" class="timeline-content">
                 <div class="timeline-item">
                     <div class="timeline-date">2021</div>
-                    <div class="timeline-event">met jolene in algebra 2</div>
+                    <div class="timeline-event">will + jolene met</div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">may 2026</div>
@@ -422,8 +432,8 @@
                     <div class="timeline-event">jolene graduation</div>
                 </div>
                 <div class="timeline-item">
-                    <div class="timeline-date">2026-2036</div>
-                    <div class="timeline-event">our 10 year plan together</div>
+                    <div class="timeline-date">2028-onward</div>
+                    <div class="timeline-event">tbd</div>
                 </div>
             </div>
         </div>
