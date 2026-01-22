@@ -2,590 +2,273 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Countdown Timer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>will + jolene</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        html, body {
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-        }
-
         body {
-            font-family: 'Consolas', 'Monaco', 'Courier New', 'DejaVu Sans Mono', monospace;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: linear-gradient(135deg, #e8f4f8 0%, #d0e8f0 50%, #b8dce8 100%);
-            color: #2c3e50;
-            position: relative;
-            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        /* Snowflake animation */
-        body::before {
-            content: '';
+        .container {
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 64px;
+            font-weight: 300;
+            color: #2c3e50;
+            margin-bottom: 60px;
+            letter-spacing: 2px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .option-button {
+            background: #ffffff;
+            border: 2px solid #b0d4e8;
+            border-radius: 12px;
+            padding: 24px 32px;
+            font-size: 20px;
+            color: #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            box-shadow: 0 4px 15px rgba(176, 212, 232, 0.2);
+        }
+
+        .option-button:hover {
+            background: #f0f8ff;
+            border-color: #90c4d8;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(176, 212, 232, 0.3);
+        }
+
+        .modal {
+            display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.8) 1px, transparent 1px),
-                radial-gradient(circle at 60% 40%, rgba(255, 255, 255, 0.6) 1px, transparent 1px),
-                radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.7) 1px, transparent 1px),
-                radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.5) 1px, transparent 1px);
-            background-size: 200px 200px, 150px 150px, 180px 180px, 160px 160px;
-            background-position: 0 0, 50px 50px, 100px 100px, 150px 150px;
-            animation: snow 20s linear infinite;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.6;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        @keyframes snow {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(200px); }
+        .modal.active {
+            display: flex;
         }
 
-        .terminal {
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 40px;
+            max-width: 800px;
             width: 100%;
-            height: 100vh;
-            background: #f0f8ff;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(200, 220, 240, 0.5);
-        }
-
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 2px solid #b0d4e8;
-            background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
-            position: relative;
-            z-index: 10;
-            box-shadow: 0 2px 10px rgba(176, 212, 232, 0.3);
-        }
-
-        .terminal-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            margin-right: 10px;
-            box-shadow: 0 0 8px currentColor;
-            transition: transform 0.2s;
-        }
-
-        .terminal-dot:hover {
-            transform: scale(1.1);
-        }
-
-        .dot-red { 
-            background: #ff5f56; 
-            color: #ff5f56;
-        }
-        .dot-yellow { 
-            background: #ffbd2e; 
-            color: #ffbd2e;
-        }
-        .dot-green { 
-            background: #27c93f; 
-            color: #27c93f;
-        }
-
-        .terminal-title {
-            color: #4a6fa5;
-            font-size: 12px;
-            margin-left: 15px;
-            letter-spacing: 0.5px;
-            font-weight: normal;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-        }
-
-        .terminal-body {
-            font-size: 14px;
-            line-height: 1.6;
-            padding: 20px;
-            flex: 1;
+            max-height: 90vh;
             overflow-y: auto;
-            overflow-x: hidden;
-            scrollbar-width: thin;
-            scrollbar-color: #b0d4e8 #f0f8ff;
-            scroll-behavior: smooth;
-            background: #f8fcff;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            position: relative;
         }
 
-        .terminal-body::-webkit-scrollbar {
-            width: 10px;
-        }
-
-        .terminal-body::-webkit-scrollbar-track {
-            background: #f0f8ff;
-        }
-
-        .terminal-body::-webkit-scrollbar-thumb {
-            background: #b0d4e8;
-            border-radius: 5px;
-        }
-
-        .terminal-body::-webkit-scrollbar-thumb:hover {
-            background: #90c4d8;
-        }
-
-        .command-line {
-            margin-bottom: 15px;
-            animation: fadeIn 0.3s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .prompt {
-            color: #4a6fa5;
-            display: inline-block;
-            margin-right: 8px;
-            font-weight: normal;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
-        }
-
-        .command {
+        .close-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 32px;
             color: #2c3e50;
-        }
-
-        .output {
-            color: #2c3e50;
-            margin-left: 0;
-            white-space: pre-wrap;
-            animation: typeOut 0.5s ease-out;
-        }
-
-        @keyframes typeOut {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 16px;
-            background: #2c3e50;
-            animation: blink 1s infinite;
-            margin-left: 2px;
-            vertical-align: middle;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .timer-container {
-            margin: 20px 0;
-            padding: 30px;
-            background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
-            border: 2px solid #b0d4e8;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(176, 212, 232, 0.3);
-        }
-
-
-        .timer-display {
-            font-size: 48px;
-            font-weight: bold;
-            text-align: center;
-            color: #4a6fa5;
-            margin: 20px 0;
-            letter-spacing: 4px;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
-        }
-
-
-        .timer-units {
-            display: flex;
-            justify-content: center;
-            gap: 50px;
-            margin-top: 40px;
-            flex-wrap: wrap;
-            position: relative;
-            z-index: 1;
-        }
-
-        .timer-unit {
-            text-align: center;
-            padding: 15px;
-            background: #ffffff;
-            border: 2px solid #b0d4e8;
-            border-radius: 6px;
-            min-width: 100px;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(176, 212, 232, 0.2);
-        }
-
-        .timer-unit:hover {
-            background: #f0f8ff;
-            border-color: #90c4d8;
-            box-shadow: 0 4px 12px rgba(176, 212, 232, 0.4);
-        }
-
-        .timer-value {
-            font-size: 36px;
-            color: #4a6fa5;
-            display: block;
-            font-weight: bold;
-            transition: transform 0.2s ease;
-            text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
-        }
-
-        .timer-label {
-            font-size: 11px;
-            color: #4a6fa5;
-            margin-top: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .images-container {
-            margin: 20px 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #ffffff 0%, #e8f4f8 100%);
-            border: 2px solid #b0d4e8;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(176, 212, 232, 0.3);
-        }
-
-        .images-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 25px;
-            margin-top: 25px;
-        }
-
-        .image-item {
-            border: 2px solid #b0d4e8;
-            border-radius: 6px;
-            overflow: hidden;
-            background: #ffffff;
-            transition: all 0.3s ease;
-            position: relative;
             cursor: pointer;
-            aspect-ratio: 4 / 3;
+            width: 40px;
+            height: 40px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 2px 8px rgba(176, 212, 232, 0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
         }
 
-        .image-item:hover {
-            border-color: #90c4d8;
+        .close-button:hover {
             background: #f0f8ff;
-            box-shadow: 0 4px 12px rgba(176, 212, 232, 0.4);
+            color: #4a6fa5;
         }
 
-        .image-item img {
+        .modal-title {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .weather-content {
+            font-size: 18px;
+            color: #2c3e50;
+            line-height: 1.8;
+        }
+
+        .weather-location {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            border-left: 4px solid #4a6fa5;
+        }
+
+        .weather-location h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: #4a6fa5;
+        }
+
+        .weather-info {
+            font-size: 16px;
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .photo-item {
+            aspect-ratio: 4 / 3;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 2px solid #b0d4e8;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .photo-item:hover {
+            transform: scale(1.05);
+            border-color: #90c4d8;
+            box-shadow: 0 6px 20px rgba(176, 212, 232, 0.3);
+        }
+
+        .photo-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.4s;
         }
 
-        .image-item:hover img {
-            transform: scale(1.05);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .typing {
-            overflow: hidden;
-            border-right: 2px solid #00ff41;
-            white-space: nowrap;
-            animation: typing 0.5s steps(40, end);
-        }
-
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
-        }
-
-        .error {
-            color: #d32f2f;
-        }
-
-        .success {
+        .notes-content {
+            font-size: 18px;
             color: #2c3e50;
+            line-height: 1.8;
         }
 
-        .ascii-art {
-            color: #00ff41;
-            font-family: 'Courier New', monospace;
-            white-space: pre;
-            font-size: 12px;
-            line-height: 1.2;
-            margin: 20px 0;
-            text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+        .note-item {
+            padding: 20px;
+            margin-bottom: 20px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            border-left: 4px solid #4a6fa5;
         }
 
-        .terminal-line {
-            margin-bottom: 8px;
+        .loading {
+            text-align: center;
+            color: #4a6fa5;
+            font-size: 18px;
+            padding: 20px;
         }
 
-        .input-line {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            width: 100%;
-        }
-
-        .input-line input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #2c3e50;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            font-size: 14px;
-            caret-color: #2c3e50;
-            min-width: 0;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .input-line input.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .input-line input:focus {
-            outline: none;
-        }
-
-        .input-line input::placeholder {
-            color: rgba(74, 111, 165, 0.5);
-        }
-
-        #inputCursor {
-            display: none;
-        }
-
-        .command-history {
-            opacity: 0.7;
-        }
-
-        .typing-command {
-            display: inline-block;
-        }
-
-        /* Mobile optimizations */
         @media (max-width: 768px) {
-            html, body {
-                overflow: auto;
-                -webkit-overflow-scrolling: touch;
+            h1 {
+                font-size: 48px;
+                margin-bottom: 40px;
             }
 
-            body {
-                overflow-x: hidden;
+            .option-button {
+                padding: 20px 24px;
+                font-size: 18px;
             }
 
-            .terminal {
-                min-height: 100vh;
-                height: auto;
+            .modal-content {
+                padding: 30px 20px;
             }
 
-            .terminal-header {
-                padding: 12px 15px;
-                flex-wrap: wrap;
-            }
-
-            .terminal-title {
-                font-size: 11px;
-                margin-left: 10px;
-            }
-
-            .terminal-dot {
-                width: 10px;
-                height: 10px;
-                margin-right: 6px;
-            }
-            .timer-display {
-                font-size: 32px;
-                letter-spacing: 2px;
-                margin: 20px 0;
-            }
-
-            .timer-value {
-                font-size: 28px;
-            }
-
-            .timer-units {
+            .photos-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
                 gap: 15px;
-            }
-
-            .timer-unit {
-                min-width: 80px;
-                padding: 12px;
-            }
-
-            .timer-label {
-                font-size: 10px;
-            }
-
-            .timer-container {
-                padding: 20px;
-                margin: 20px 0;
-            }
-
-            .images-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .images-container {
-                padding: 15px;
-                margin: 20px 0;
-            }
-
-            .terminal-body {
-                font-size: 13px;
-                padding: 15px;
-                line-height: 1.6;
-            }
-
-            .prompt {
-                font-size: 13px;
-            }
-
-            .command {
-                font-size: 13px;
-            }
-
-            .output {
-                font-size: 13px;
-                margin-left: 15px;
-            }
-
-            .input-line {
-                flex-wrap: wrap;
-            }
-
-            .input-line input {
-                font-size: 16px;
-                width: 100%;
-                min-width: 200px;
-                flex: 1 1 auto;
-            }
-
-            .input-line input.active {
-                opacity: 1 !important;
-                pointer-events: auto !important;
-            }
-
-            #inputCursor {
-                display: inline-block !important;
-            }
-
-            .cursor {
-                width: 8px;
-                height: 16px;
-            }
-
-            /* Prevent zoom on input focus on iOS */
-            input, textarea, select {
-                font-size: 16px !important;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .timer-display {
-                font-size: 24px;
-                letter-spacing: 1px;
-            }
-
-            .timer-value {
-                font-size: 22px;
-            }
-
-            .timer-units {
-                gap: 10px;
-            }
-
-            .timer-unit {
-                min-width: 70px;
-                padding: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="terminal" id="initialTerminal">
-        <div class="terminal-header">
-            <div class="terminal-dot dot-red"></div>
-            <div class="terminal-dot dot-yellow"></div>
-            <div class="terminal-dot dot-green"></div>
-            <span class="terminal-title">jolene@countdown: ~</span>
-        </div>
-        <div class="terminal-body" id="terminalBody">
-            <div class="terminal-line">
-                <div class="output success">Last login: Mon Jan 14 00:00:00 on tty1</div>
-            </div>
-            <div class="terminal-line">
-                <div class="output">Welcome to Countdown Terminal v2.0</div>
-            </div>
-            <div class="terminal-line">
-                <div class="output">Type 'help' for available commands</div>
-            </div>
-            <div class="command-line" id="commandLine">
-                <span class="prompt">jolene@countdown:~$</span>
-                <span class="command" id="commandText"></span>
-                <span class="cursor" id="cursor"></span>
-            </div>
-            <div class="output" id="output"></div>
+    <div class="container">
+        <h1>will + jolene</h1>
+        <div class="options">
+            <button class="option-button" onclick="showWeather()">Weather</button>
+            <button class="option-button" onclick="showPhotos()">Photos</button>
+            <button class="option-button" onclick="showNotes()">Notes</button>
         </div>
     </div>
 
-    <div class="terminal" id="timerTerminal" style="display: none;">
-        <div class="terminal-header">
-            <div class="terminal-dot dot-red"></div>
-            <div class="terminal-dot dot-yellow"></div>
-            <div class="terminal-dot dot-green"></div>
-            <span class="terminal-title">jolene@countdown: ~/timer</span>
+    <!-- Weather Modal -->
+    <div id="weatherModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('weatherModal')">&times;</button>
+            <h2 class="modal-title">Weather</h2>
+            <div id="weatherContent" class="weather-content">
+                <div class="loading">Loading weather...</div>
+            </div>
         </div>
-        <div class="terminal-body" id="timerTerminalBody">
-            <div id="animatedCommands"></div>
-            <div class="terminal-line" id="interactiveLine" style="display: none;">
-                <div class="input-line">
-                    <span class="prompt">jolene@countdown:~/timer$</span>
-                    <input type="text" id="commandInput" autocomplete="off" spellcheck="false" placeholder="Type a command...">
-                    <span class="cursor" id="inputCursor"></span>
+    </div>
+
+    <!-- Photos Modal -->
+    <div id="photosModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('photosModal')">&times;</button>
+            <h2 class="modal-title">Photos</h2>
+            <div id="photosContent" class="photos-grid"></div>
+        </div>
+    </div>
+
+    <!-- Notes Modal -->
+    <div id="notesModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('notesModal')">&times;</button>
+            <h2 class="modal-title">Notes</h2>
+            <div id="notesContent" class="notes-content">
+                <div class="note-item">
+                    <h3>Countdown Timer</h3>
+                    <p>Counting down to January 30, 2026 at 4:00 PM EST</p>
+                </div>
+                <div class="note-item">
+                    <h3>Best Girl Ever</h3>
+                    <p>Jolene is the best girl in the world ❤️</p>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Target date: January 30, 2026 at 4:00 PM EST
-        const targetDate = new Date('2026-01-30T16:00:00-05:00');
-        
-        // Images array
         const images = [
             'images/IMG_0972.jpg',
             'images/IMG_0993.jpg',
@@ -600,633 +283,117 @@
             'images/IMG_9627.jpg'
         ];
 
-        // Terminal elements
-        const commandText = document.getElementById('commandText');
-        const output = document.getElementById('output');
-        const cursor = document.getElementById('cursor');
-        const initialTerminal = document.getElementById('initialTerminal');
-        const timerTerminal = document.getElementById('timerTerminal');
-        const timerTerminalBody = document.getElementById('timerTerminalBody');
-        const commandInput = document.getElementById('commandInput');
-        const inputCursor = document.getElementById('inputCursor');
-        const animatedCommandsDiv = document.getElementById('animatedCommands');
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
 
-        // Command history
-        let commandHistory = [];
-        let historyIndex = -1;
-        let currentPath = '~/timer';
-        let isTypingAnimation = false;
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
 
-        // Available commands
-        const commands = {
-            'help': () => `Available commands:
-  help          - Show this help message
-  clear         - Clear the terminal
-  ls            - List files
-  ls -la        - List all files with details
-  cd            - Change directory
-  pwd           - Print working directory
-  date          - Show current date and time
-  countdown     - Show countdown timer info
-  images        - Display images
-  whoami        - Show current user
-  weather       - Show weather for Harrisonburg, VA and Penn State
-  exit          - Exit terminal (reloads page)`,
-            'clear': () => {
-                clearTerminal();
-                return '';
-            },
-            'ls': () => {
-                if (currentPath === '~/timer') {
-                    return 'countdown.sh  images/  README.md';
+        // Close modal when clicking outside
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
                 }
-                return 'No files found';
-            },
-            'ls -la': () => {
-                if (currentPath === '~/timer') {
-                    return `total 3
--rwxr-xr-x  1 jolene jolene  1024 Jan 14 00:00 countdown.sh
-drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
--rw-r--r--  1 jolene jolene   256 Jan 14 00:00 README.md`;
-                }
-                return 'No files found';
-            },
-            'pwd': () => currentPath,
-            'date': () => new Date().toString(),
-            'countdown': () => `Target: January 30, 2026 at 4:00 PM EST\nCurrent time: ${new Date().toString()}`,
-            'images': () => {
-                showImages();
-                return 'Displaying images...';
-            },
-            'whoami': () => 'best girl in the world',
-            'cd': () => 'Usage: cd <directory>',
-            'cd ..': () => {
-                currentPath = '~';
-                return 'Directory changed to ~';
-            },
-            'cd ~': () => {
-                currentPath = '~';
-                return 'Directory changed to ~';
-            },
-            'cd timer': () => {
-                currentPath = '~/timer';
-                return 'Directory changed to ~/timer';
-            },
-            'weather': async () => {
-                return await getWeather();
-            },
-            'whats the weather for when will visits': async () => {
-                return await getWeather();
-            },
-            'exit': () => {
-                window.location.reload();
-                return '';
-            }
+            });
+        });
+
+        const getWeatherDescription = (code) => {
+            const weatherCodes = {
+                0: 'Clear sky',
+                1: 'Mainly clear',
+                2: 'Partly cloudy',
+                3: 'Overcast',
+                45: 'Foggy',
+                48: 'Depositing rime fog',
+                51: 'Light drizzle',
+                53: 'Moderate drizzle',
+                55: 'Dense drizzle',
+                61: 'Slight rain',
+                63: 'Moderate rain',
+                65: 'Heavy rain',
+                71: 'Slight snow',
+                73: 'Moderate snow',
+                75: 'Heavy snow',
+                80: 'Slight rain showers',
+                81: 'Moderate rain showers',
+                82: 'Violent rain showers',
+                85: 'Slight snow showers',
+                86: 'Heavy snow showers',
+                95: 'Thunderstorm',
+                96: 'Thunderstorm with slight hail',
+                99: 'Thunderstorm with heavy hail'
+            };
+            return weatherCodes[code] || 'Unknown';
         };
 
-        async function getWeather() {
+        async function showWeather() {
+            showModal('weatherModal');
+            const content = document.getElementById('weatherContent');
+            content.innerHTML = '<div class="loading">Loading weather...</div>';
+
             try {
-                // Harrisonburg, VA coordinates: 38.4496° N, 78.8689° W
-                // State College, PA (Penn State) coordinates: 40.7934° N, 77.8600° W
-                
+                // Harrisonburg, VA
                 const harrisonburgUrl = 'https://api.open-meteo.com/v1/forecast?latitude=38.4496&longitude=-78.8689&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph';
+                // Penn State (State College, PA)
                 const pennStateUrl = 'https://api.open-meteo.com/v1/forecast?latitude=40.7934&longitude=-77.8600&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph';
-                
-                const [harrisonburgRes, pennStateRes] = await Promise.all([
+
+                const [hburgRes, psRes] = await Promise.all([
                     fetch(harrisonburgUrl),
                     fetch(pennStateUrl)
                 ]);
-                
-                const harrisonburgData = await harrisonburgRes.json();
-                const pennStateData = await pennStateRes.json();
-                
-                const getWeatherDescription = (code) => {
-                    const weatherCodes = {
-                        0: 'Clear sky',
-                        1: 'Mainly clear',
-                        2: 'Partly cloudy',
-                        3: 'Overcast',
-                        45: 'Foggy',
-                        48: 'Depositing rime fog',
-                        51: 'Light drizzle',
-                        53: 'Moderate drizzle',
-                        55: 'Dense drizzle',
-                        61: 'Slight rain',
-                        63: 'Moderate rain',
-                        65: 'Heavy rain',
-                        71: 'Slight snow',
-                        73: 'Moderate snow',
-                        75: 'Heavy snow',
-                        80: 'Slight rain showers',
-                        81: 'Moderate rain showers',
-                        82: 'Violent rain showers',
-                        85: 'Slight snow showers',
-                        86: 'Heavy snow showers',
-                        95: 'Thunderstorm',
-                        96: 'Thunderstorm with slight hail',
-                        99: 'Thunderstorm with heavy hail'
-                    };
-                    return weatherCodes[code] || 'Unknown';
-                };
-                
-                const hburg = harrisonburgData.current;
-                const ps = pennStateData.current;
-                
-                return `Harrisonburg, VA:
-  Temperature: ${hburg.temperature_2m}°F
-  Conditions: ${getWeatherDescription(hburg.weather_code)}
-  Wind Speed: ${hburg.wind_speed_10m} mph
 
-Penn State (State College, PA):
-  Temperature: ${ps.temperature_2m}°F
-  Conditions: ${getWeatherDescription(ps.weather_code)}
-  Wind Speed: ${ps.wind_speed_10m} mph`;
+                const hburgData = await hburgRes.json();
+                const psData = await psRes.json();
+
+                const hburg = hburgData.current;
+                const ps = psData.current;
+
+                content.innerHTML = `
+                    <div class="weather-location">
+                        <h3>Harrisonburg, VA</h3>
+                        <div class="weather-info">
+                            <p><strong>Temperature:</strong> ${hburg.temperature_2m}°F</p>
+                            <p><strong>Conditions:</strong> ${getWeatherDescription(hburg.weather_code)}</p>
+                            <p><strong>Wind Speed:</strong> ${hburg.wind_speed_10m} mph</p>
+                        </div>
+                    </div>
+                    <div class="weather-location">
+                        <h3>Penn State (State College, PA)</h3>
+                        <div class="weather-info">
+                            <p><strong>Temperature:</strong> ${ps.temperature_2m}°F</p>
+                            <p><strong>Conditions:</strong> ${getWeatherDescription(ps.weather_code)}</p>
+                            <p><strong>Wind Speed:</strong> ${ps.wind_speed_10m} mph</p>
+                        </div>
+                    </div>
+                `;
             } catch (error) {
-                return `Error fetching weather data: ${error.message}`;
+                content.innerHTML = `<div class="loading">Error loading weather: ${error.message}</div>`;
             }
         }
 
-        function typeText(element, text, speed = 50, callback) {
-            let index = 0;
-            element.textContent = '';
-            isTypingAnimation = true;
-            
-            const interval = setInterval(() => {
-                if (index < text.length) {
-                    element.textContent += text[index];
-                    index++;
-                } else {
-                    clearInterval(interval);
-                    isTypingAnimation = false;
-                    if (callback) callback();
-                }
-            }, speed);
-        }
+        function showPhotos() {
+            showModal('photosModal');
+            const content = document.getElementById('photosContent');
+            content.innerHTML = '';
 
-        function addAnimatedCommand(prompt, command, outputText, delay = 0) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    const line = document.createElement('div');
-                    line.className = 'terminal-line';
-                    
-                    const commandLine = document.createElement('div');
-                    commandLine.className = 'command-line';
-                    
-                    const promptSpan = document.createElement('span');
-                    promptSpan.className = 'prompt';
-                    promptSpan.textContent = prompt;
-                    
-                    const commandSpan = document.createElement('span');
-                    commandSpan.className = 'command typing-command';
-                    
-                    commandLine.appendChild(promptSpan);
-                    commandLine.appendChild(commandSpan);
-                    line.appendChild(commandLine);
-                    
-                    if (outputText) {
-                        const outputDiv = document.createElement('div');
-                        outputDiv.className = `output ${outputText.includes('error') || outputText.includes('Error') ? 'error' : 'success'}`;
-                        outputDiv.style.display = 'none';
-                        line.appendChild(outputDiv);
-                    }
-                    
-                    animatedCommandsDiv.appendChild(line);
-                    scrollToBottom();
-                    
-                    typeText(commandSpan, command, 60, () => {
-                        if (outputText) {
-                            const outputDiv = line.querySelector('.output');
-                            if (outputDiv) {
-                                outputDiv.style.display = 'block';
-                                typeText(outputDiv, outputText, 30, () => {
-                                    resolve();
-                                });
-                            } else {
-                                resolve();
-                            }
-                        } else {
-                            resolve();
-                        }
-                    });
-                }, delay);
+            images.forEach(imagePath => {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+                const img = document.createElement('img');
+                img.src = imagePath;
+                img.alt = 'Photo';
+                img.loading = 'lazy';
+                photoItem.appendChild(img);
+                content.appendChild(photoItem);
             });
         }
 
-        function typeCommand() {
-            typeText(commandText, 'cd timer', 80, () => {
-                setTimeout(() => {
-                    cursor.style.display = 'none';
-                    output.textContent = '';
-                    output.classList.add('success');
-                    typeText(output, 'Directory changed successfully.', 30, () => {
-                        setTimeout(() => {
-                            // Hide initial terminal completely first
-                            initialTerminal.style.opacity = '0';
-                            initialTerminal.style.transition = 'opacity 0.5s';
-                            setTimeout(() => {
-                                initialTerminal.style.display = 'none';
-                                // Now show timer terminal and start sequence
-                                timerTerminal.style.display = 'flex';
-                                timerTerminal.style.opacity = '0';
-                                timerTerminal.style.transition = 'opacity 0.5s';
-                                setTimeout(() => {
-                                    timerTerminal.style.opacity = '1';
-                                    // Wait a bit more to ensure initial terminal is gone
-                                    setTimeout(() => {
-                                        startAnimatedSequence();
-                                    }, 300);
-                                }, 50);
-                            }, 500);
-                        }, 1000);
-                    });
-                }, 500);
-            });
+        function showNotes() {
+            showModal('notesModal');
         }
-
-        function addTimerContainer() {
-            const animatedCommandsDiv = document.getElementById('animatedCommands');
-            
-            const timerContainer = document.createElement('div');
-            timerContainer.className = 'timer-container';
-            timerContainer.id = 'timerContainer';
-            timerContainer.style.opacity = '0';
-            timerContainer.style.transition = 'opacity 0.5s ease-in';
-            
-            timerContainer.innerHTML = `
-                <div class="timer-display" id="timerDisplay">00:00:00:00</div>
-                <div class="timer-units">
-                    <div class="timer-unit">
-                        <span class="timer-value" id="days">0</span>
-                        <span class="timer-label">Days</span>
-                    </div>
-                    <div class="timer-unit">
-                        <span class="timer-value" id="hours">0</span>
-                        <span class="timer-label">Hours</span>
-                    </div>
-                    <div class="timer-unit">
-                        <span class="timer-value" id="minutes">0</span>
-                        <span class="timer-label">Minutes</span>
-                    </div>
-                    <div class="timer-unit">
-                        <span class="timer-value" id="seconds">0</span>
-                        <span class="timer-label">Seconds</span>
-                    </div>
-                </div>
-            `;
-            
-            animatedCommandsDiv.appendChild(timerContainer);
-            
-            setTimeout(() => {
-                timerContainer.style.opacity = '1';
-            }, 100);
-            
-            startCountdown();
-        }
-
-        async function startAnimatedSequence() {
-            await addAnimatedCommand('jolene@countdown:~/timer$', './countdown.sh', '');
-            await addAnimatedCommand('', '', 'Initializing countdown sequence...', 300);
-                await addAnimatedCommand('', '', 'Target: January 30, 2026 at 4:00 PM EST', 300);
-            await addAnimatedCommand('', '', 'Starting countdown timer...', 300);
-            
-            // Add timer container dynamically after countdown.sh output
-            addTimerContainer();
-            
-            // Wait for timer to appear, then show ls command
-            setTimeout(async () => {
-                await addAnimatedCommand('jolene@countdown:~/timer$', 'ls -la images/', '', 500);
-                await addAnimatedCommand('', '', 'total 11 files found', 300);
-                showImages();
-                // Wait a bit for images to load, then run whoami
-                setTimeout(async () => {
-                    await addAnimatedCommand('jolene@countdown:~/timer$', 'whoami', '', 500);
-                    await addAnimatedCommand('', '', 'best girl in the world', 300);
-                    setTimeout(async () => {
-                        // Ask for Will's weather (Penn State)
-                        await addAnimatedCommand('jolene@countdown:~/timer$', 'whats the weather for when will visits', '', 500);
-                        try {
-                            const pennStateWeather = await getPennStateWeather();
-                            await addAnimatedCommand('', '', pennStateWeather, 300);
-                        } catch (error) {
-                            await addAnimatedCommand('', '', `Error: ${error.message}`, 300);
-                        }
-                        // Ask for Jolene's weather (Harrisonburg) - reverse question
-                        setTimeout(async () => {
-                            await addAnimatedCommand('jolene@countdown:~/timer$', 'whats the weather for when jolene visits', '', 500);
-                            try {
-                                const harrisonburgWeather = await getHarrisonburgWeather();
-                                await addAnimatedCommand('', '', harrisonburgWeather, 300);
-                            } catch (error) {
-                                await addAnimatedCommand('', '', `Error: ${error.message}`, 300);
-                            }
-                            enableInteractiveMode();
-                        }, 1500);
-                    }, 1000);
-                }, 1000);
-            }, 1500);
-        }
-
-        function enableInteractiveMode() {
-            const interactiveLine = document.getElementById('interactiveLine');
-            interactiveLine.style.display = 'block';
-            commandInput.classList.add('active');
-            inputCursor.style.display = 'inline-block';
-            
-            // Update prompt based on current path
-            updatePrompt();
-            
-            // Focus input after a short delay to ensure it's visible
-            setTimeout(() => {
-                commandInput.focus();
-                // Scroll to input on mobile
-                if (window.innerWidth <= 768) {
-                    setTimeout(() => {
-                        commandInput.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }, 300);
-                }
-            }, 500);
-        }
-
-        function updatePrompt() {
-            const prompt = document.querySelector('#interactiveLine .prompt');
-            if (prompt) {
-                prompt.textContent = `jolene@countdown:${currentPath}$`;
-            }
-        }
-
-        async function executeCommand(cmd) {
-            const trimmedCmd = cmd.trim();
-            if (!trimmedCmd) return '';
-            
-            commandHistory.push(trimmedCmd);
-            historyIndex = commandHistory.length;
-            
-            if (commands[trimmedCmd]) {
-                const result = commands[trimmedCmd]();
-                // Handle both sync and async commands
-                return result instanceof Promise ? await result : result;
-            } else if (trimmedCmd.startsWith('cd ')) {
-                const dir = trimmedCmd.substring(3).trim();
-                if (dir === '..' || dir === '~') {
-                    return commands['cd ..']();
-                } else if (dir === 'timer') {
-                    return commands['cd timer']();
-                } else {
-                    return `cd: no such file or directory: ${dir}`;
-                }
-            } else {
-                return `Command not found: ${trimmedCmd}. Type 'help' for available commands.`;
-            }
-        }
-
-        function addTerminalLine(prompt, command, outputText) {
-            const line = document.createElement('div');
-            line.className = 'terminal-line';
-            line.innerHTML = `
-                <div class="command-line">
-                    <span class="prompt">${prompt}</span>
-                    <span class="command">${command}</span>
-                </div>
-                ${outputText ? `<div class="output ${outputText.includes('error') || outputText.includes('Command not found') ? 'error' : 'success'}">${outputText}</div>` : ''}
-            `;
-            const interactiveLine = document.getElementById('interactiveLine');
-            timerTerminalBody.insertBefore(line, interactiveLine);
-            scrollToBottom();
-        }
-
-        function clearTerminal() {
-            const lines = timerTerminalBody.querySelectorAll('.terminal-line:not(#interactiveLine)');
-            lines.forEach(line => line.remove());
-            animatedCommandsDiv.innerHTML = '';
-        }
-
-        function showImages() {
-            // Create images container dynamically after the ls command
-            const animatedCommandsDiv = document.getElementById('animatedCommands');
-            const existingContainer = document.getElementById('imagesContainer');
-            
-            if (existingContainer) {
-                existingContainer.remove();
-            }
-            
-            const imagesContainer = document.createElement('div');
-            imagesContainer.className = 'images-container';
-            imagesContainer.id = 'imagesContainer';
-            imagesContainer.style.opacity = '0';
-            imagesContainer.style.transition = 'opacity 0.5s ease-in';
-            
-            const imagesGrid = document.createElement('div');
-            imagesGrid.className = 'images-grid';
-            imagesGrid.id = 'imagesGrid';
-            
-            imagesContainer.appendChild(imagesGrid);
-            animatedCommandsDiv.appendChild(imagesContainer);
-            
-            setTimeout(() => {
-                imagesContainer.style.opacity = '1';
-            }, 100);
-            
-            loadImages();
-        }
-
-        function scrollToBottom() {
-            setTimeout(() => {
-                timerTerminalBody.scrollTop = timerTerminalBody.scrollHeight;
-            }, 100);
-        }
-
-        function startCountdown() {
-            function updateTimer() {
-                const now = new Date();
-                const difference = targetDate - now;
-
-                if (difference <= 0) {
-                    const timerDisplay = document.getElementById('timerDisplay');
-                    timerDisplay.textContent = 'TIME\'S UP!';
-                    timerDisplay.style.color = '#d32f2f';
-                    timerDisplay.style.textShadow = '0 2px 4px rgba(211, 47, 47, 0.3)';
-                    document.getElementById('days').textContent = '0';
-                    document.getElementById('hours').textContent = '0';
-                    document.getElementById('minutes').textContent = '0';
-                    document.getElementById('seconds').textContent = '0';
-                    return;
-                }
-
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-                const daysEl = document.getElementById('days');
-                const hoursEl = document.getElementById('hours');
-                const minutesEl = document.getElementById('minutes');
-                const secondsEl = document.getElementById('seconds');
-                
-                if (daysEl && daysEl.textContent !== days.toString()) {
-                    daysEl.style.transform = 'scale(1.2)';
-                    setTimeout(() => daysEl.style.transform = 'scale(1)', 200);
-                }
-                if (hoursEl && hoursEl.textContent !== hours.toString().padStart(2, '0')) {
-                    hoursEl.style.transform = 'scale(1.2)';
-                    setTimeout(() => hoursEl.style.transform = 'scale(1)', 200);
-                }
-                if (minutesEl && minutesEl.textContent !== minutes.toString().padStart(2, '0')) {
-                    minutesEl.style.transform = 'scale(1.2)';
-                    setTimeout(() => minutesEl.style.transform = 'scale(1)', 200);
-                }
-                if (secondsEl && secondsEl.textContent !== seconds.toString().padStart(2, '0')) {
-                    secondsEl.style.transform = 'scale(1.2)';
-                    setTimeout(() => secondsEl.style.transform = 'scale(1)', 200);
-                }
-
-                if (daysEl) daysEl.textContent = days;
-                if (hoursEl) hoursEl.textContent = hours.toString().padStart(2, '0');
-                if (minutesEl) minutesEl.textContent = minutes.toString().padStart(2, '0');
-                if (secondsEl) secondsEl.textContent = seconds.toString().padStart(2, '0');
-                
-                const timerDisplay = document.getElementById('timerDisplay');
-                if (timerDisplay) {
-                    timerDisplay.textContent = 
-                        `${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                }
-            }
-
-            updateTimer();
-            setInterval(updateTimer, 1000);
-        }
-
-        function loadImages() {
-            const imagesGrid = document.getElementById('imagesGrid');
-            if (!imagesGrid) return;
-            
-            images.forEach((imagePath, index) => {
-                setTimeout(() => {
-                    const imageItem = document.createElement('div');
-                    imageItem.className = 'image-item';
-                    imageItem.style.opacity = '0';
-                    imageItem.style.transform = 'translateY(20px)';
-                    imageItem.style.transition = 'opacity 0.5s, transform 0.5s';
-                    
-                    const img = document.createElement('img');
-                    img.src = imagePath;
-                    img.alt = 'Image';
-                    img.loading = 'lazy';
-                    img.onerror = function() {
-                        this.style.display = 'none';
-                        imageItem.innerHTML = `<div style="padding: 20px; color: #ff4444; text-align: center; text-shadow: 0 0 10px rgba(255, 68, 68, 0.6);">Failed to load: ${imagePath}</div>`;
-                        imageItem.style.opacity = '1';
-                        imageItem.style.transform = 'translateY(0)';
-                    };
-                    
-                    img.onload = function() {
-                        imageItem.style.opacity = '1';
-                        imageItem.style.transform = 'translateY(0)';
-                    };
-                    
-                    imageItem.appendChild(img);
-                    imagesGrid.appendChild(imageItem);
-                }, index * 100);
-            });
-        }
-
-        // Interactive terminal event handlers
-        commandInput.addEventListener('keydown', (e) => {
-            if (isTypingAnimation) {
-                e.preventDefault();
-                return;
-            }
-
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                const cmd = commandInput.value;
-                commandInput.value = '';
-                
-                if (cmd.trim()) {
-                    addTerminalLine(`jolene@countdown:${currentPath}$`, cmd, '');
-                    updatePrompt();
-                    
-                    // Execute command (may be async)
-                    (async () => {
-                        try {
-                            const result = await executeCommand(cmd);
-                            const lastLine = timerTerminalBody.querySelector('.terminal-line:last-of-type:not(#interactiveLine)');
-                            if (lastLine) {
-                                const outputDiv = document.createElement('div');
-                                outputDiv.className = `output ${result.includes('error') || result.includes('Command not found') || result.includes('no such file') ? 'error' : 'success'}`;
-                                outputDiv.textContent = result || '';
-                                lastLine.appendChild(outputDiv);
-                                scrollToBottom();
-                            }
-                        } catch (error) {
-                            const lastLine = timerTerminalBody.querySelector('.terminal-line:last-of-type:not(#interactiveLine)');
-                            if (lastLine) {
-                                const outputDiv = document.createElement('div');
-                                outputDiv.className = 'output error';
-                                outputDiv.textContent = `Error: ${error.message}`;
-                                lastLine.appendChild(outputDiv);
-                                scrollToBottom();
-                            }
-                        }
-                    })();
-                } else {
-                    addTerminalLine(`jolene@countdown:${currentPath}$`, '', '');
-                }
-                
-                scrollToBottom();
-                commandInput.focus();
-            } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                if (historyIndex > 0) {
-                    historyIndex--;
-                    commandInput.value = commandHistory[historyIndex];
-                }
-            } else if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                if (historyIndex < commandHistory.length - 1) {
-                    historyIndex++;
-                    commandInput.value = commandHistory[historyIndex];
-                } else {
-                    historyIndex = commandHistory.length;
-                    commandInput.value = '';
-                }
-            }
-        });
-
-        // Keep input focused and cursor visible
-        commandInput.addEventListener('focus', () => {
-            inputCursor.style.display = 'inline-block';
-        });
-
-        commandInput.addEventListener('blur', () => {
-            // Don't hide cursor on mobile
-            if (window.innerWidth > 768) {
-                inputCursor.style.display = 'none';
-            }
-        });
-
-        // Mobile touch handling
-        timerTerminalBody.addEventListener('touchstart', (e) => {
-            // Allow scrolling
-        }, { passive: true });
-
-        // Tap to focus input on mobile
-        if (window.innerWidth <= 768) {
-            timerTerminalBody.addEventListener('click', (e) => {
-                if (e.target === timerTerminalBody || e.target.classList.contains('terminal-body')) {
-                    commandInput.focus();
-                }
-            });
-        }
-
-        // Start the terminal animation when page loads
-        window.addEventListener('load', () => {
-            setTimeout(typeCommand, 500);
-        });
-
-        // Handle window resize for mobile
-        window.addEventListener('resize', () => {
-            scrollToBottom();
-        });
     </script>
 </body>
 </html>
