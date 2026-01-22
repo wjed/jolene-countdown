@@ -451,7 +451,7 @@
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">2028-onward</div>
-                    <div class="timeline-event">tbd</div>
+                    <div class="timeline-event">tbd idk maybe marry me plz ty</div>
                 </div>
             </div>
         </div>
@@ -462,27 +462,70 @@
         const canvas = document.getElementById('starsCanvas');
         const ctx = canvas.getContext('2d');
         
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
-        
-        // Create stars
+        // Create stars array
         const stars = [];
         const numStars = 200;
         
-        for (let i = 0; i < numStars; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 1.5 + 0.5,
-                opacity: Math.random(),
-                twinkleSpeed: Math.random() * 0.02 + 0.01
-            });
+        function resizeCanvas() {
+            const oldWidth = canvas.width || window.innerWidth;
+            const oldHeight = canvas.height || window.innerHeight;
+            
+            // Set canvas to full viewport size
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Scale existing stars to new canvas size if they exist
+            if (stars.length > 0 && oldWidth > 0 && oldHeight > 0 && (oldWidth !== canvas.width || oldHeight !== canvas.height)) {
+                const scaleX = canvas.width / oldWidth;
+                const scaleY = canvas.height / oldHeight;
+                stars.forEach(star => {
+                    star.x *= scaleX;
+                    star.y *= scaleY;
+                    // Ensure stars stay within bounds
+                    if (star.x > canvas.width) star.x = canvas.width;
+                    if (star.y > canvas.height) star.y = canvas.height;
+                });
+            }
         }
+        
+        function createStars() {
+            stars.length = 0; // Clear existing stars
+            for (let i = 0; i < numStars; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.5 + 0.5,
+                    opacity: Math.random(),
+                    twinkleSpeed: Math.random() * 0.02 + 0.01
+                });
+            }
+        }
+        
+        // Initialize canvas and stars
+        resizeCanvas();
+        createStars();
+        
+        // Handle window resize with debounce
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                resizeCanvas();
+                // If canvas grew significantly, add more stars to fill the space
+                if (canvas.width * canvas.height > (window.innerWidth * window.innerHeight * 1.2)) {
+                    const additionalStars = Math.floor((canvas.width * canvas.height) / (window.innerWidth * window.innerHeight) * numStars) - numStars;
+                    for (let i = 0; i < additionalStars && stars.length < 400; i++) {
+                        stars.push({
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+                            radius: Math.random() * 1.5 + 0.5,
+                            opacity: Math.random(),
+                            twinkleSpeed: Math.random() * 0.02 + 0.01
+                        });
+                    }
+                }
+            }, 150);
+        });
         
         function animateStars() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
