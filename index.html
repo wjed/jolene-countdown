@@ -224,9 +224,9 @@
     <div class="container">
         <h1>will + jolene</h1>
         <div class="options">
-            <button class="option-button" onclick="showWeather()">Weather</button>
-            <button class="option-button" onclick="showPhotos()">Photos</button>
-            <button class="option-button" onclick="showNotes()">Notes</button>
+            <button class="option-button" onclick="showWeather()">weather</button>
+            <button class="option-button" onclick="showPhotos()">photos</button>
+            <button class="option-button" onclick="showNotes()">notes</button>
         </div>
     </div>
 
@@ -234,9 +234,9 @@
     <div id="weatherModal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="closeModal('weatherModal')">&times;</button>
-            <h2 class="modal-title">Weather</h2>
+            <h2 class="modal-title">weather</h2>
             <div id="weatherContent" class="weather-content">
-                <div class="loading">Loading weather...</div>
+                <div class="loading">loading weather...</div>
             </div>
         </div>
     </div>
@@ -245,7 +245,7 @@
     <div id="photosModal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="closeModal('photosModal')">&times;</button>
-            <h2 class="modal-title">Photos</h2>
+            <h2 class="modal-title">photos</h2>
             <div id="photosContent" class="photos-grid"></div>
         </div>
     </div>
@@ -254,15 +254,15 @@
     <div id="notesModal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="closeModal('notesModal')">&times;</button>
-            <h2 class="modal-title">Notes</h2>
+            <h2 class="modal-title">notes</h2>
             <div id="notesContent" class="notes-content">
                 <div class="note-item">
-                    <h3>Countdown Timer</h3>
-                    <p>Counting down to January 30, 2026 at 4:00 PM EST</p>
+                    <h3>countdown timer</h3>
+                    <p>counting down to january 30, 2026 at 4:00 pm est</p>
                 </div>
                 <div class="note-item">
-                    <h3>Best Girl Ever</h3>
-                    <p>Jolene is the best girl in the world ❤️</p>
+                    <h3>best girl ever</h3>
+                    <p>jolene is the best girl in the world ❤️</p>
                 </div>
             </div>
         </div>
@@ -332,7 +332,7 @@
         async function showWeather() {
             showModal('weatherModal');
             const content = document.getElementById('weatherContent');
-            content.innerHTML = '<div class="loading">Loading weather...</div>';
+            content.innerHTML = '<div class="loading">loading weather...</div>';
 
             try {
                 // Harrisonburg, VA
@@ -353,24 +353,24 @@
 
                 content.innerHTML = `
                     <div class="weather-location">
-                        <h3>Harrisonburg, VA</h3>
+                        <h3>harrisonburg, va</h3>
                         <div class="weather-info">
-                            <p><strong>Temperature:</strong> ${hburg.temperature_2m}°F</p>
-                            <p><strong>Conditions:</strong> ${getWeatherDescription(hburg.weather_code)}</p>
-                            <p><strong>Wind Speed:</strong> ${hburg.wind_speed_10m} mph</p>
+                            <p><strong>temperature:</strong> ${hburg.temperature_2m}°f</p>
+                            <p><strong>conditions:</strong> ${getWeatherDescription(hburg.weather_code)}</p>
+                            <p><strong>wind speed:</strong> ${hburg.wind_speed_10m} mph</p>
                         </div>
                     </div>
                     <div class="weather-location">
-                        <h3>Penn State (State College, PA)</h3>
+                        <h3>penn state (state college, pa)</h3>
                         <div class="weather-info">
-                            <p><strong>Temperature:</strong> ${ps.temperature_2m}°F</p>
-                            <p><strong>Conditions:</strong> ${getWeatherDescription(ps.weather_code)}</p>
-                            <p><strong>Wind Speed:</strong> ${ps.wind_speed_10m} mph</p>
+                            <p><strong>temperature:</strong> ${ps.temperature_2m}°f</p>
+                            <p><strong>conditions:</strong> ${getWeatherDescription(ps.weather_code)}</p>
+                            <p><strong>wind speed:</strong> ${ps.wind_speed_10m} mph</p>
                         </div>
                     </div>
                 `;
             } catch (error) {
-                content.innerHTML = `<div class="loading">Error loading weather: ${error.message}</div>`;
+                content.innerHTML = `<div class="loading">error loading weather: ${error.message}</div>`;
             }
         }
 
@@ -384,7 +384,7 @@
                 photoItem.className = 'photo-item';
                 const img = document.createElement('img');
                 img.src = imagePath;
-                img.alt = 'Photo';
+                img.alt = 'photo';
                 img.loading = 'lazy';
                 photoItem.appendChild(img);
                 content.appendChild(photoItem);
