@@ -14,13 +14,49 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #1a4d1a 0%, #0d3d0d 50%, #002d00 100%);
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            position: relative;
+        }
+
+        /* Starry night effect */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 80%, white, transparent),
+                radial-gradient(1px 1px at 15% 50%, white, transparent),
+                radial-gradient(2px 2px at 70% 20%, white, transparent);
+            background-repeat: repeat;
+            background-size: 200% 200%;
+            opacity: 0.4;
+            animation: twinkle 8s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.6; }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
         }
 
         .container {
@@ -47,8 +83,8 @@
         }
 
         .option-button {
-            background: #004d00;
-            border: 2px solid #006400;
+            background: rgba(26, 26, 46, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
             padding: 20px;
             font-size: 32px;
@@ -59,16 +95,17 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0, 100, 0, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             min-height: 70px;
             aspect-ratio: 1;
+            backdrop-filter: blur(10px);
         }
 
         .option-button:hover {
-            background: #006400;
-            border-color: #008000;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 100, 0, 0.5);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.2);
         }
 
         .option-button i {
@@ -94,15 +131,17 @@
         }
 
         .modal-content {
-            background: #ffffff;
+            background: rgba(10, 14, 39, 0.95);
             border-radius: 16px;
             padding: 40px;
             max-width: 800px;
             width: 100%;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
         .close-button {
@@ -124,8 +163,8 @@
         }
 
         .close-button:hover {
-            background: #e8f5e8;
-            color: #006400;
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
         }
 
         .modal-title {
@@ -144,15 +183,15 @@
         .weather-location {
             margin-bottom: 30px;
             padding: 20px;
-            background: #e8f5e8;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            border-left: 4px solid #006400;
+            border-left: 4px solid rgba(255, 255, 255, 0.3);
         }
 
         .weather-location h3 {
             font-size: 24px;
             margin-bottom: 15px;
-            color: #006400;
+            color: #ffffff;
         }
 
         .weather-info {
@@ -170,7 +209,7 @@
             aspect-ratio: 4 / 3;
             overflow: hidden;
             border-radius: 8px;
-            border: 2px solid #006400;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -197,14 +236,14 @@
         .note-item {
             padding: 20px;
             margin-bottom: 20px;
-            background: #e8f5e8;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            border-left: 4px solid #006400;
+            border-left: 4px solid rgba(255, 255, 255, 0.3);
         }
 
         .loading {
             text-align: center;
-            color: #006400;
+            color: rgba(255, 255, 255, 0.7);
             font-size: 18px;
             padding: 20px;
         }
@@ -218,15 +257,15 @@
         .distance-info {
             margin-bottom: 30px;
             padding: 20px;
-            background: #e8f5e8;
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
-            border-left: 4px solid #006400;
+            border-left: 4px solid rgba(255, 255, 255, 0.3);
         }
 
         .distance-info h3 {
             font-size: 24px;
             margin-bottom: 15px;
-            color: #006400;
+            color: #ffffff;
         }
 
         .map-container {
@@ -235,7 +274,7 @@
             border-radius: 8px;
             overflow: hidden;
             margin-top: 20px;
-            border: 2px solid #006400;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         }
 
         .map-container iframe {
@@ -252,7 +291,7 @@
         .playlist-container {
             margin-bottom: 30px;
             border-radius: 12px;
-            border: 2px solid #006400;
+            border: 2px solid rgba(255, 255, 255, 0.2);
             overflow: hidden;
             background: #000000;
         }
@@ -278,7 +317,7 @@
             position: relative;
             padding-left: 40px;
             padding-bottom: 40px;
-            border-left: 3px solid #006400;
+            border-left: 3px solid rgba(255, 255, 255, 0.3);
         }
 
         .timeline-item:last-child {
@@ -293,15 +332,15 @@
             width: 16px;
             height: 16px;
             border-radius: 50%;
-            background: #006400;
-            border: 3px solid #ffffff;
-            box-shadow: 0 0 0 2px #006400;
+            background: rgba(255, 255, 255, 0.6);
+            border: 3px solid #0a0e27;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3), 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .timeline-date {
             font-size: 20px;
             font-weight: bold;
-            color: #006400;
+            color: #ffffff;
             margin-bottom: 8px;
         }
 
@@ -626,7 +665,7 @@
                     </iframe>
                 </div>
                 <p style="margin-top: 10px; text-align: center; font-size: 14px; color: #666;">
-                    <a href="https://www.openstreetmap.org/?mlat=${centerLat}&mlon=${centerLon}&zoom=7" target="_blank" style="color: #006400;">view larger map</a>
+                    <a href="https://www.openstreetmap.org/?mlat=${centerLat}&mlon=${centerLon}&zoom=7" target="_blank" style="color: rgba(255, 255, 255, 0.7);">view larger map</a>
                 </p>
             `;
         }
