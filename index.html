@@ -590,7 +590,14 @@
             'images/IMG_0972.jpg',
             'images/IMG_0993.jpg',
             'images/IMG_6354.jpg',
-            'images/IMG_9225.jpg'
+            'images/IMG_6732.jpg',
+            'images/IMG_6780.jpg',
+            'images/IMG_6786.jpg',
+            'images/IMG_6830.jpg',
+            'images/IMG_6831.jpg',
+            'images/IMG_6832.jpg',
+            'images/IMG_9225.jpg',
+            'images/IMG_9627.jpg'
         ];
 
         // Terminal elements
@@ -623,6 +630,7 @@
   countdown     - Show countdown timer info
   images        - Display images
   whoami        - Show current user
+  weather       - Show weather for Harrisonburg, VA and Penn State
   exit          - Exit terminal (reloads page)`,
             'clear': () => {
                 clearTerminal();
@@ -664,11 +672,76 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
                 currentPath = '~/timer';
                 return 'Directory changed to ~/timer';
             },
+            'weather': async () => {
+                return await getWeather();
+            },
             'exit': () => {
                 window.location.reload();
                 return '';
             }
         };
+
+        async function getWeather() {
+            try {
+                // Harrisonburg, VA coordinates: 38.4496° N, 78.8689° W
+                // State College, PA (Penn State) coordinates: 40.7934° N, 77.8600° W
+                
+                const harrisonburgUrl = 'https://api.open-meteo.com/v1/forecast?latitude=38.4496&longitude=-78.8689&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph';
+                const pennStateUrl = 'https://api.open-meteo.com/v1/forecast?latitude=40.7934&longitude=-77.8600&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph';
+                
+                const [harrisonburgRes, pennStateRes] = await Promise.all([
+                    fetch(harrisonburgUrl),
+                    fetch(pennStateUrl)
+                ]);
+                
+                const harrisonburgData = await harrisonburgRes.json();
+                const pennStateData = await pennStateRes.json();
+                
+                const getWeatherDescription = (code) => {
+                    const weatherCodes = {
+                        0: 'Clear sky',
+                        1: 'Mainly clear',
+                        2: 'Partly cloudy',
+                        3: 'Overcast',
+                        45: 'Foggy',
+                        48: 'Depositing rime fog',
+                        51: 'Light drizzle',
+                        53: 'Moderate drizzle',
+                        55: 'Dense drizzle',
+                        61: 'Slight rain',
+                        63: 'Moderate rain',
+                        65: 'Heavy rain',
+                        71: 'Slight snow',
+                        73: 'Moderate snow',
+                        75: 'Heavy snow',
+                        80: 'Slight rain showers',
+                        81: 'Moderate rain showers',
+                        82: 'Violent rain showers',
+                        85: 'Slight snow showers',
+                        86: 'Heavy snow showers',
+                        95: 'Thunderstorm',
+                        96: 'Thunderstorm with slight hail',
+                        99: 'Thunderstorm with heavy hail'
+                    };
+                    return weatherCodes[code] || 'Unknown';
+                };
+                
+                const hburg = harrisonburgData.current;
+                const ps = pennStateData.current;
+                
+                return `Harrisonburg, VA:
+  Temperature: ${hburg.temperature_2m}°F
+  Conditions: ${getWeatherDescription(hburg.weather_code)}
+  Wind Speed: ${hburg.wind_speed_10m} mph
+
+Penn State (State College, PA):
+  Temperature: ${ps.temperature_2m}°F
+  Conditions: ${getWeatherDescription(ps.weather_code)}
+  Wind Speed: ${ps.wind_speed_10m} mph`;
+            } catch (error) {
+                return `Error fetching weather data: ${error.message}`;
+            }
+        }
 
         function typeText(element, text, speed = 50, callback) {
             let index = 0;
@@ -819,7 +892,7 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             // Wait for timer to appear, then show ls command
             setTimeout(async () => {
                 await addAnimatedCommand('jolene@countdown:~/timer$', 'ls -la images/', '', 500);
-                await addAnimatedCommand('', '', 'total 4 files found', 300);
+                await addAnimatedCommand('', '', 'total 11 files found', 300);
                 showImages();
                 // Wait a bit for images to load, then run whoami
                 setTimeout(async () => {
@@ -858,7 +931,7 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             }
         }
 
-        function executeCommand(cmd) {
+        async function executeCommand(cmd) {
             const trimmedCmd = cmd.trim();
             if (!trimmedCmd) return '';
             
@@ -866,7 +939,9 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             historyIndex = commandHistory.length;
             
             if (commands[trimmedCmd]) {
-                return commands[trimmedCmd]();
+                const result = commands[trimmedCmd]();
+                // Handle both sync and async commands
+                return result instanceof Promise ? await result : result;
             } else if (trimmedCmd.startsWith('cd ')) {
                 const dir = trimmedCmd.substring(3).trim();
                 if (dir === '..' || dir === '~') {
@@ -1044,9 +1119,32 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
                 commandInput.value = '';
                 
                 if (cmd.trim()) {
-                    const result = executeCommand(cmd);
-                    addTerminalLine(`jolene@countdown:${currentPath}$`, cmd, result || '');
+                    addTerminalLine(`jolene@countdown:${currentPath}$`, cmd, '');
                     updatePrompt();
+                    
+                    // Execute command (may be async)
+                    (async () => {
+                        try {
+                            const result = await executeCommand(cmd);
+                            const lastLine = timerTerminalBody.querySelector('.terminal-line:last-of-type:not(#interactiveLine)');
+                            if (lastLine) {
+                                const outputDiv = document.createElement('div');
+                                outputDiv.className = `output ${result.includes('error') || result.includes('Command not found') || result.includes('no such file') ? 'error' : 'success'}`;
+                                outputDiv.textContent = result || '';
+                                lastLine.appendChild(outputDiv);
+                                scrollToBottom();
+                            }
+                        } catch (error) {
+                            const lastLine = timerTerminalBody.querySelector('.terminal-line:last-of-type:not(#interactiveLine)');
+                            if (lastLine) {
+                                const outputDiv = document.createElement('div');
+                                outputDiv.className = 'output error';
+                                outputDiv.textContent = `Error: ${error.message}`;
+                                lastLine.appendChild(outputDiv);
+                                scrollToBottom();
+                            }
+                        }
+                    })();
                 } else {
                     addTerminalLine(`jolene@countdown:${currentPath}$`, '', '');
                 }
