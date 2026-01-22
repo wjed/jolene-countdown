@@ -380,7 +380,7 @@
         }
 
         .input-line input::placeholder {
-            color: rgba(255, 215, 0, 0.3);
+            color: rgba(74, 111, 165, 0.5);
         }
 
         #inputCursor {
@@ -902,15 +902,25 @@ Penn State (State College, PA):
                     await addAnimatedCommand('jolene@countdown:~/timer$', 'whoami', '', 500);
                     await addAnimatedCommand('', '', 'best girl in the world', 300);
                     setTimeout(async () => {
+                        // Ask for Will's weather (Penn State)
                         await addAnimatedCommand('jolene@countdown:~/timer$', 'whats the weather for when will visits', '', 500);
-                        // Execute weather command and show result
                         try {
-                            const weatherResult = await getWeather();
-                            await addAnimatedCommand('', '', weatherResult, 300);
+                            const pennStateWeather = await getPennStateWeather();
+                            await addAnimatedCommand('', '', pennStateWeather, 300);
                         } catch (error) {
                             await addAnimatedCommand('', '', `Error: ${error.message}`, 300);
                         }
-                        enableInteractiveMode();
+                        // Ask for Jolene's weather (Harrisonburg) - reverse question
+                        setTimeout(async () => {
+                            await addAnimatedCommand('jolene@countdown:~/timer$', 'whats the weather for when jolene visits', '', 500);
+                            try {
+                                const harrisonburgWeather = await getHarrisonburgWeather();
+                                await addAnimatedCommand('', '', harrisonburgWeather, 300);
+                            } catch (error) {
+                                await addAnimatedCommand('', '', `Error: ${error.message}`, 300);
+                            }
+                            enableInteractiveMode();
+                        }, 1500);
                     }, 1000);
                 }, 1000);
             }, 1500);
