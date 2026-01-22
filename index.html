@@ -153,7 +153,7 @@
         }
 
         .prompt {
-            color: #006400;
+            color: #4a6fa5;
             display: inline-block;
             margin-right: 8px;
             font-weight: normal;
@@ -207,7 +207,7 @@
             font-size: 48px;
             font-weight: bold;
             text-align: center;
-            color: #006400;
+            color: #4a6fa5;
             margin: 20px 0;
             letter-spacing: 4px;
             font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
@@ -246,7 +246,7 @@
 
         .timer-value {
             font-size: 36px;
-            color: #006400;
+            color: #4a6fa5;
             display: block;
             font-weight: bold;
             transition: transform 0.2s ease;
@@ -675,6 +675,9 @@ drwxr-xr-x  1 jolene jolene  4096 Jan 14 00:00 images/
             'weather': async () => {
                 return await getWeather();
             },
+            'whats the weather for when will visits': async () => {
+                return await getWeather();
+            },
             'exit': () => {
                 window.location.reload();
                 return '';
@@ -898,7 +901,17 @@ Penn State (State College, PA):
                 setTimeout(async () => {
                     await addAnimatedCommand('jolene@countdown:~/timer$', 'whoami', '', 500);
                     await addAnimatedCommand('', '', 'best girl in the world', 300);
-                    enableInteractiveMode();
+                    setTimeout(async () => {
+                        await addAnimatedCommand('jolene@countdown:~/timer$', 'whats the weather for when will visits', '', 500);
+                        // Execute weather command and show result
+                        try {
+                            const weatherResult = await getWeather();
+                            await addAnimatedCommand('', '', weatherResult, 300);
+                        } catch (error) {
+                            await addAnimatedCommand('', '', `Error: ${error.message}`, 300);
+                        }
+                        enableInteractiveMode();
+                    }, 1000);
                 }, 1000);
             }, 1500);
         }
