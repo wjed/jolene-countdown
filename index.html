@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>will + jolene</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         * {
             margin: 0;
@@ -309,10 +311,48 @@
             border: 2px solid rgba(180, 100, 120, 0.25);
         }
 
-        .map-container iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
+        .map-container.leaflet-container {
+            font-family: inherit;
+        }
+
+        .map-container .leaflet-popup-content-wrapper {
+            background: rgba(45, 15, 22, 0.95);
+            border: 1px solid rgba(180, 100, 120, 0.3);
+            border-radius: 8px;
+            color: rgba(255, 230, 240, 0.9);
+        }
+
+        .map-container .leaflet-popup-tip {
+            background: rgba(45, 15, 22, 0.95);
+        }
+
+        .quote-block {
+            margin-top: 28px;
+            padding: 16px 20px;
+            background: rgba(60, 15, 25, 0.35);
+            border-radius: 12px;
+            border-left: 3px solid rgba(200, 120, 140, 0.5);
+            text-align: left;
+        }
+
+        .quote-block .quote-text {
+            font-size: 15px;
+            color: rgba(255, 230, 240, 0.9);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .quote-block .quote-author {
+            font-size: 12px;
+            color: rgba(255, 220, 230, 0.6);
+            margin-top: 8px;
+        }
+
+        .moon-phase {
+            font-size: 13px;
+            color: rgba(255, 220, 230, 0.7);
+            margin-top: 12px;
+            letter-spacing: 0.5px;
         }
 
         .music-content {
@@ -482,6 +522,11 @@
             <button class="option-button" onclick="showTimeline()" title="timeline"><i class="fas fa-calendar-alt"></i></button>
         </div>
         <button type="button" class="valentine-button" onclick="showValentineModal()">what's this?</button>
+        <div id="quoteBlock" class="quote-block" style="display: none;">
+            <p class="quote-text" id="quoteText"></p>
+            <p class="quote-author" id="quoteAuthor"></p>
+        </div>
+        <p class="moon-phase" id="moonPhase"></p>
     </div>
 
     <!-- Weather Modal -->
@@ -511,11 +556,15 @@
             <h2 class="modal-title">notes</h2>
             <div id="notesContent" class="notes-content">
                 <div class="note-item">
+                    <p style="margin-top: 10px; color: rgba(255, 220, 230, 0.6); font-size: 14px;">2/3/2026</p>
+                    <p style="margin-top: 15px;">so proud of u; so unbelivably smart</p>
+                </div>
+                <div class="note-item">
                     <p style="margin-top: 10px; color: rgba(255, 220, 230, 0.6); font-size: 14px;">2/6/2026</p>
                     <p style="margin-top: 15px;">thank u for being with me at my best and my worst. always grateful for u</p>
                 </div>
                 <div class="note-item">
-                    <p style="margin-top: 10px; color: rgba(255, 220, 230, 0.6); font-size: 14px;">1/28/2025 7:50 PM</p>
+                    <p style="margin-top: 10px; color: rgba(255, 220, 230, 0.6); font-size: 14px;">1/28/2026</p>
                     <p style="margin-top: 15px;">you looked gorgeous on the phone, i am so lucky to have u</p>
                 </div>
                 <div class="note-item">
@@ -752,6 +801,42 @@
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
+        // Love quote from quotable.io (free, no API key)
+        fetch('https://api.quotable.io/random?tags=love')
+            .then(r => r.json())
+            .then(data => {
+                const block = document.getElementById('quoteBlock');
+                const text = document.getElementById('quoteText');
+                const author = document.getElementById('quoteAuthor');
+                if (block && text && author) {
+                    text.textContent = '"' + data.content + '"';
+                    author.textContent = '— ' + (data.author || 'Unknown');
+                    block.style.display = 'block';
+                }
+            })
+            .catch(() => {});
+
+        // Moon phase (client-side, no API)
+        function getMoonPhase() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth() + 1;
+            const day = now.getDate();
+            let c = 0, e = 0, jd = 0, b = 0;
+            if (month < 3) { c = year - 1; e = month + 12; } else { c = year; e = month; }
+            jd = Math.floor(365.25 * c) + Math.floor(30.6001 * (e + 1)) + day - 694039.09;
+            jd /= 29.5305882;
+            b = parseInt(jd);
+            jd -= b;
+            b = Math.round(jd * 8);
+            if (b >= 8) b = 0;
+            const phases = ['new moon', 'waxing crescent', 'first quarter', 'waxing gibbous', 'full moon', 'waning gibbous', 'last quarter', 'waning crescent'];
+            const emoji = ['🌑', '🌒', '🌓', '🌔', '🌕', '🌖', '🌗', '🌘'];
+            return emoji[b] + ' ' + phases[b];
+        }
+        const moonEl = document.getElementById('moonPhase');
+        if (moonEl) moonEl.textContent = "tonight's moon: " + getMoonPhase();
+
         const images = [
             'images/IMG_0972.jpg',
             'images/IMG_0993.jpg',
@@ -892,26 +977,23 @@
             return R * c;
         }
 
+        const MAPTILER_KEY = 'ZfLieNsvBMHToyb5OgLr';
+        let distanceMapInstance = null;
+
         function showDistance() {
+            if (distanceMapInstance) {
+                distanceMapInstance.remove();
+                distanceMapInstance = null;
+            }
             showModal('distanceModal');
             const content = document.getElementById('distanceContent');
-            
-            // James Madison University coordinates: 38.4344° N, 78.8699° W
-            // Penn State University coordinates: 40.7982° N, 77.8599° W
             const jmuLat = 38.4344;
             const jmuLon = -78.8699;
             const pennStateLat = 40.7982;
             const pennStateLon = -77.8599;
-            
-            // Calculate distance
             const distance = calculateDistance(jmuLat, jmuLon, pennStateLat, pennStateLon);
-            const distanceKm = distance * 1.60934; // Convert to kilometers
-            
-            // Create map using OpenStreetMap with route
-            const centerLat = (jmuLat + pennStateLat) / 2;
-            const centerLon = (jmuLon + pennStateLon) / 2;
-            const mapUrl = `https://www.openstreetmap.org/export/embed.html?bbox=${Math.min(jmuLon, pennStateLon) - 0.5},${Math.min(jmuLat, pennStateLat) - 0.5},${Math.max(jmuLon, pennStateLon) + 0.5},${Math.max(jmuLat, pennStateLat) + 0.5}&layer=mapnik&marker=${jmuLat},${jmuLon}&marker=${pennStateLat},${pennStateLon}`;
-            
+            const distanceKm = distance * 1.60934;
+
             content.innerHTML = `
                 <div class="distance-info">
                     <h3>james madison university → penn state university</h3>
@@ -920,21 +1002,43 @@
                         <p><strong>driving time:</strong> approximately ${Math.round(distance / 60)} hours</p>
                     </div>
                 </div>
-                <div class="map-container">
-                    <iframe
-                        src="${mapUrl}"
-                        width="100%"
-                        height="400"
-                        frameborder="0"
-                        style="border: 0;"
-                        allowfullscreen>
-                    </iframe>
-                </div>
+                <div id="distanceMap" class="map-container"></div>
                 <p style="margin-top: 10px; text-align: center; font-size: 14px; color: rgba(255, 220, 230, 0.6);">
-                    <a href="https://www.openstreetmap.org/?mlat=${centerLat}&mlon=${centerLon}&zoom=7" target="_blank" style="color: rgba(255, 255, 255, 0.7);">view larger map</a>
+                    <a href="https://api.maptiler.com/maps/streets/?key=${MAPTILER_KEY}#8/${(jmuLat + pennStateLat) / 2}/${(jmuLon + pennStateLon) / 2}" target="_blank" style="color: rgba(255, 255, 255, 0.7);">view in MapTiler</a>
                 </p>
             `;
+
+            setTimeout(function() {
+                const mapEl = document.getElementById('distanceMap');
+                if (!mapEl) return;
+                const map = L.map('distanceMap').setView([(jmuLat + pennStateLat) / 2, (jmuLon + pennStateLon) / 2], 6);
+                L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=' + MAPTILER_KEY, {
+                    attribution: '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+                    tileSize: 512,
+                    zoomOffset: -1
+                }).addTo(map);
+                L.marker([jmuLat, jmuLon]).addTo(map).bindPopup('<b>James Madison University</b><br>Harrisonburg, VA (will)');
+                L.marker([pennStateLat, pennStateLon]).addTo(map).bindPopup('<b>Penn State University</b><br>State College, PA (jolene)');
+                map.fitBounds([[jmuLat, jmuLon], [pennStateLat, pennStateLon]], { padding: [40, 40] });
+                distanceMapInstance = map;
+            }, 100);
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const distanceModal = document.getElementById('distanceModal');
+            if (distanceModal) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(m) {
+                        if (m.target.classList.contains('active')) return;
+                        if (distanceMapInstance) {
+                            distanceMapInstance.remove();
+                            distanceMapInstance = null;
+                        }
+                    });
+                });
+                observer.observe(distanceModal, { attributes: true, attributeFilter: ['class'] });
+            }
+        });
 
         function showMusic() {
             showModal('musicModal');
