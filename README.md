@@ -1,6 +1,6 @@
 # Jolene - Countdown Timer Terminal
 
-A beautiful, interactive terminal-themed countdown timer counting down to January 30, 2026 at 4:00 PM EST.
+A beautiful, interactive terminal-themed countdown timer counting down to February 13, 2026 at 4:00 PM EST.
 
 ## Features
 
