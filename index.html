@@ -130,25 +130,6 @@
             box-shadow: 0 6px 20px rgba(80, 180, 100, 0.3);
         }
 
-        .valentine-button {
-            margin-top: 24px;
-            padding: 12px 24px;
-            font-size: 15px;
-            color: rgba(220, 255, 200, 0.95);
-            background: rgba(25, 80, 40, 0.5);
-            border: 1px solid rgba(120, 200, 140, 0.4);
-            border-radius: 999px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 0.5px;
-        }
-
-        .valentine-button:hover {
-            background: rgba(40, 100, 55, 0.6);
-            border-color: rgba(150, 220, 170, 0.6);
-            color: #fff;
-        }
-
         .option-button i {
             font-size: 32px;
         }
@@ -422,42 +403,6 @@
             line-height: 1.6;
         }
 
-        .valentine-modal .modal-content {
-            text-align: center;
-            max-width: 420px;
-        }
-
-        .valentine-question {
-            font-size: 26px;
-            color: rgba(255, 255, 255, 0.95);
-            margin-bottom: 28px;
-            line-height: 1.4;
-        }
-
-        .valentine-options {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .valentine-option {
-            padding: 14px 28px;
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.95);
-            background: rgba(40, 120, 55, 0.5);
-            border: 2px solid rgba(120, 200, 140, 0.5);
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .valentine-option:hover {
-            background: rgba(60, 160, 85, 0.6);
-            border-color: rgba(150, 220, 170, 0.65);
-            transform: scale(1.05);
-        }
-
         @media (max-width: 768px) {
             html, body {
                 height: 100dvh !important;
@@ -521,7 +466,6 @@
             <button class="option-button" onclick="showMusic()" title="music"><i class="fas fa-music"></i></button>
             <button class="option-button" onclick="showTimeline()" title="timeline"><i class="fas fa-calendar-alt"></i></button>
         </div>
-        <button type="button" class="valentine-button" onclick="showValentineModal()">what's this?</button>
         <div id="quoteBlock" class="quote-block" style="display: none;">
             <p class="quote-text" id="quoteText"></p>
             <p class="quote-author" id="quoteAuthor"></p>
@@ -605,18 +549,6 @@
                 <div class="playlist-container">
                     <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/7G5VgdvUREXtiLFPXSi3p3?utm_source=generator&theme=0" width="100%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
                 </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Valentine Modal -->
-    <div id="valentineModal" class="modal valentine-modal">
-        <div class="modal-content">
-            <button class="close-button" onclick="closeModal('valentineModal')">&times;</button>
-            <p class="valentine-question">will you be my valentine?</p>
-            <div class="valentine-options">
-                <button type="button" class="valentine-option" onclick="closeModal('valentineModal')">yes</button>
-                <button type="button" class="valentine-option" onclick="closeModal('valentineModal')">yes</button>
             </div>
         </div>
     </div>
@@ -1053,9 +985,6 @@
             showModal('timelineModal');
         }
 
-        function showValentineModal() {
-            showModal('valentineModal');
-        }
     </script>
 </body>
 </html>
