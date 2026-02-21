@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -519,6 +520,89 @@
             line-height: 1.6;
         }
 
+        .messages-list {
+            margin-bottom: 1.5rem;
+            max-height: 280px;
+            overflow-y: auto;
+        }
+        .live-message-item {
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.75rem;
+            background: rgba(20, 55, 30, 0.4);
+            border-radius: 12px;
+            border: 1px solid rgba(100, 200, 130, 0.15);
+            border-left: 4px solid rgba(120, 220, 150, 0.55);
+        }
+        .live-message-item .live-message-from {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            color: rgba(200, 255, 220, 0.9);
+            margin-bottom: 0.35rem;
+        }
+        .live-message-item .live-message-body {
+            font-size: 0.95rem;
+            color: rgba(230, 255, 240, 0.9);
+            line-height: 1.55;
+        }
+        .live-message-item .live-message-time {
+            font-size: 0.7rem;
+            color: rgba(180, 255, 200, 0.5);
+            margin-top: 0.5rem;
+        }
+        .message-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .message-from {
+            width: 100%;
+            max-width: 200px;
+            padding: 0.6rem 0.75rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(20, 55, 30, 0.5);
+            border: 1px solid rgba(100, 200, 130, 0.3);
+            border-radius: 10px;
+        }
+        .message-from option {
+            background: #0d2d14;
+            color: #fff;
+        }
+        .message-text {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(20, 55, 30, 0.5);
+            border: 1px solid rgba(100, 200, 130, 0.3);
+            border-radius: 12px;
+            resize: vertical;
+            min-height: 80px;
+        }
+        .message-text::placeholder {
+            color: rgba(200, 255, 220, 0.5);
+        }
+        .message-submit {
+            align-self: flex-start;
+            padding: 0.6rem 1.25rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #fff;
+            background: rgba(80, 180, 110, 0.5);
+            border: 1px solid rgba(120, 220, 150, 0.5);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+        .message-submit:hover {
+            background: rgba(100, 200, 130, 0.6);
+            border-color: rgba(140, 230, 170, 0.6);
+        }
+
         @media (max-width: 768px) {
             html, body {
                 height: 100dvh !important;
@@ -604,6 +688,7 @@
             <button class="option-button" onclick="showDistance()" title="distance"><i class="bi bi-geo-alt"></i><span class="option-label">distance</span></button>
             <button class="option-button" onclick="showMusic()" title="music"><i class="bi bi-music-note-beamed"></i><span class="option-label">music</span></button>
             <button class="option-button" onclick="showTimeline()" title="timeline"><i class="bi bi-calendar3"></i><span class="option-label">timeline</span></button>
+            <button class="option-button" onclick="showMessages()" title="leave a message"><i class="bi bi-chat-dots"></i><span class="option-label">messages</span></button>
         </div>
         <p class="moon-phase" id="moonPhase"></p>
     </div>
@@ -727,6 +812,24 @@
                     <div class="timeline-event">tbd idk maybe marry me plz ty</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Messages Modal (Supabase) -->
+    <div id="messagesModal" class="modal">
+        <div class="modal-content">
+            <button class="close-button" onclick="closeModal('messagesModal')">&times;</button>
+            <h2 class="modal-title"><i class="bi bi-chat-dots" aria-hidden="true"></i> messages</h2>
+            <div id="messagesList" class="messages-list"></div>
+            <form id="messageForm" class="message-form">
+                <select id="messageFrom" class="message-from" required aria-label="Who is writing">
+                    <option value="">— who’s writing? —</option>
+                    <option value="Will">Will</option>
+                    <option value="Jolene">Jolene</option>
+                </select>
+                <textarea id="messageText" class="message-text" placeholder="Leave a message..." rows="3" required></textarea>
+                <button type="submit" class="message-submit">Send</button>
+            </form>
         </div>
     </div>
 
@@ -931,6 +1034,13 @@
         }
         const moonEl = document.getElementById('moonPhase');
         if (moonEl) moonEl.textContent = "tonight's moon: " + getMoonPhase();
+
+        // Supabase: use your Project URL + anon key (from Project Settings → API)
+        const SUPABASE_URL = 'https://ocjqondxkscnrtjcqvsx.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9janFvbmR4a3NjbnJ0amNxdnN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2NDExMTcsImV4cCI6MjA4NzIxNzExN30.Ac5Me_JASuyn0LbCm1uV7U44VUVT_KXJw1D2zwCio1E';
+        const supabase = typeof window.supabase !== 'undefined'
+            ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+            : null;
 
         const images = [
             'images/IMG_0321.jpg',
@@ -1164,6 +1274,71 @@
         function showTimeline() {
             showModal('timelineModal');
         }
+
+        async function loadMessages() {
+            const listEl = document.getElementById('messagesList');
+            if (!listEl) return;
+            if (!supabase) {
+                listEl.innerHTML = '<p class="loading">Supabase not loaded. Check script.</p>';
+                return;
+            }
+            listEl.innerHTML = '<p class="loading">loading messages...</p>';
+            try {
+                const { data, error } = await supabase
+                    .from('messages')
+                    .select('id, from_name, message, created_at')
+                    .order('created_at', { ascending: false })
+                    .limit(50);
+                if (error) throw error;
+                if (!data || data.length === 0) {
+                    listEl.innerHTML = '<p class="loading">No messages yet. Leave one below.</p>';
+                    return;
+                }
+                listEl.innerHTML = data.map(function (row) {
+                    const time = row.created_at ? new Date(row.created_at).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '';
+                    const from = (row.from_name || 'Someone').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                    const body = (row.message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>');
+                    return '<div class="live-message-item"><p class="live-message-from">' + from + '</p><p class="live-message-body">' + body + '</p><p class="live-message-time">' + time + '</p></div>';
+                }).join('');
+            } catch (err) {
+                listEl.innerHTML = '<p class="loading">Could not load messages. Make sure the table is named &#8220;messages&#8221; and RLS allows read.</p>';
+                console.error(err);
+            }
+        }
+
+        function showMessages() {
+            showModal('messagesModal');
+            loadMessages();
+        }
+
+        document.getElementById('messageForm')?.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!supabase) return;
+            const fromEl = document.getElementById('messageFrom');
+            const textEl = document.getElementById('messageText');
+            const from = fromEl?.value?.trim();
+            const message = textEl?.value?.trim();
+            if (!from || !message) return;
+            const submitBtn = this.querySelector('.message-submit');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+            }
+            try {
+                const { error } = await supabase.from('messages').insert([{ from_name: from, message: message }]);
+                if (error) throw error;
+                textEl.value = '';
+                await loadMessages();
+            } catch (err) {
+                console.error(err);
+                if (submitBtn) submitBtn.textContent = 'Send';
+                alert('Could not send. Check RLS allows insert.');
+            }
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send';
+            }
+        });
 
     </script>
 </body>
