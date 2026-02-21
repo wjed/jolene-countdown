@@ -1037,16 +1037,16 @@
         // Supabase: loaded only when Messages is opened so it never blocks the rest of the site
         const SUPABASE_URL = 'https://ocjqondxkscnrtjcqvsx.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9janFvbmR4a3NjbnJ0amNxdnN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE2NDExMTcsImV4cCI6MjA4NzIxNzExN30.Ac5Me_JASuyn0LbCm1uV7U44VUVT_KXJw1D2zwCio1E';
-        let supabase = null;
+        let supabaseClient = null;
         function getSupabase(cb) {
-            if (supabase) { cb(supabase); return; }
+            if (supabaseClient) { cb(supabaseClient); return; }
             var s = document.createElement('script');
             s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
             s.onload = function() {
                 try {
-                    supabase = window.supabase && window.supabase.createClient ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
-                } catch (e) { supabase = null; }
-                cb(supabase);
+                    supabaseClient = (window.supabase && window.supabase.createClient) ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+                } catch (e) { supabaseClient = null; }
+                cb(supabaseClient);
             };
             s.onerror = function() { cb(null); };
             document.head.appendChild(s);
