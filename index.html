@@ -273,6 +273,14 @@
             color: rgba(255, 255, 255, 0.95);
             margin-bottom: 1.75rem;
             text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .modal-title i {
+            font-size: 1.35rem;
+            opacity: 0.9;
         }
 
         .weather-content {
@@ -357,6 +365,19 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
             border-left-color: rgba(120, 220, 150, 0.9);
+        }
+        .note-date {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            color: rgba(200, 255, 220, 0.65);
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+        }
+        .note-body {
+            margin-top: 0;
+            margin-bottom: 0;
+            line-height: 1.6;
         }
 
         .loading {
@@ -611,27 +632,31 @@
     <div id="notesModal" class="modal">
         <div class="modal-content">
             <button class="close-button" onclick="closeModal('notesModal')">&times;</button>
-            <h2 class="modal-title">notes</h2>
+            <h2 class="modal-title"><i class="bi bi-journal-heart" aria-hidden="true"></i> notes</h2>
             <div id="notesContent" class="notes-content">
                 <div class="note-item">
-                    <p style="margin-top: 10px; color: rgba(200, 255, 220, 0.65); font-size: 14px;">2/20/2026</p>
-                    <p style="margin-top: 15px;">i love you so much, gonna miss u for this next month</p>
+                    <p class="note-date">1/21/2026</p>
+                    <p class="note-body">love ya! keeping this so i can write notes here</p>
                 </div>
                 <div class="note-item">
-                    <p style="margin-top: 10px; color: rgba(200, 255, 220, 0.65); font-size: 14px;">2/3/2026</p>
-                    <p style="margin-top: 15px;">so proud of u; so unbelivably smart</p>
+                    <p class="note-date">1/28/2026</p>
+                    <p class="note-body">you looked gorgeous on the phone, i am so lucky to have u</p>
                 </div>
                 <div class="note-item">
-                    <p style="margin-top: 10px; color: rgba(200, 255, 220, 0.65); font-size: 14px;">2/6/2026</p>
-                    <p style="margin-top: 15px;">thank u for being with me at my best and my worst. always grateful for u</p>
+                    <p class="note-date">2/3/2026</p>
+                    <p class="note-body">so proud of u; so unbelivably smart</p>
                 </div>
                 <div class="note-item">
-                    <p style="margin-top: 10px; color: rgba(200, 255, 220, 0.65); font-size: 14px;">1/28/2026</p>
-                    <p style="margin-top: 15px;">you looked gorgeous on the phone, i am so lucky to have u</p>
+                    <p class="note-date">2/6/2026</p>
+                    <p class="note-body">thank u for being with me at my best and my worst. always grateful for u</p>
                 </div>
                 <div class="note-item">
-                    <p style="margin-top: 10px; color: rgba(200, 255, 220, 0.65); font-size: 14px;">1/21/2026</p>
-                    <p style="margin-top: 15px;">love ya! keeping this so i can write notes here</p>
+                    <p class="note-date">2/15/2026</p>
+                    <p class="note-body">valentines day was amazing with you my love</p>
+                </div>
+                <div class="note-item">
+                    <p class="note-date">2/20/2026</p>
+                    <p class="note-body">i love you so much, gonna miss u for this next month</p>
                 </div>
             </div>
         </div>
@@ -674,12 +699,20 @@
             <h2 class="modal-title">timeline</h2>
             <div id="timelineContent" class="timeline-content">
                 <div class="timeline-item">
-                    <div class="timeline-date">2021</div>
+                    <div class="timeline-date">august 2021</div>
                     <div class="timeline-event">will + jolene met</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">june 2022</div>
+                    <div class="timeline-event">fair date</div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">jan 17 2026</div>
                     <div class="timeline-event">official</div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">february 2026</div>
+                    <div class="timeline-event">first valentines day together</div>
                 </div>
                 <div class="timeline-item">
                     <div class="timeline-date">may 2026</div>
