@@ -27,10 +27,10 @@ var PHOTOS = [
 
 // Logo paths — put your school/gym logos in images/ with these names (or update paths here)
 var LOGOS = {
-  jmu: 'images/jmu-logo.png',
-  pennState: 'images/penn-state-logo.png',
-  urec: 'images/urec-logo.png',
-  planetFitness: 'images/planet-fitness-logo.png'
+  jmu: 'school_logos/jmu-logo.png',
+  pennState: 'school_logos/penn-state-logo.png',
+  urec: 'gyms/urec-logo.png',
+  planetFitness: 'gyms/planet-fitness-logo.png'
 };
 
 // Mobile nav toggle (run after DOM ready)
