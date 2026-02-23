@@ -323,7 +323,7 @@ body {
   opacity: 0.9;
 }
 
-/* Page title (inner pages) — same on every tab */
+/* Page title (inner pages) — same on every tab; extra space so g, y, j, p, q descenders aren't cut off */
 .page-title {
   font-family: var(--font-head);
   font-size: 1.75rem;
@@ -331,8 +331,9 @@ body {
   letter-spacing: 0.1em;
   text-transform: lowercase;
   margin: 0 0 1.5rem 0;
-  padding-top: 0.5rem;
-  line-height: 1.2;
+  padding: 0.5rem 0 0.35em 0;
+  line-height: 1.45;
+  overflow: visible;
 }
 
 .page-title i { margin-right: 0.4rem; opacity: 0.9; font-size: 1.75rem; vertical-align: middle; }
