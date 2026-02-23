@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>question of the day — will + jolene</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">will + jolene</a>
+    <div class="nav-links">
+      <a href="messages.html">messages</a>
+      <a href="lifts.html">lifts</a>
+      <a href="mood.html">mood</a>
+      <a href="photos.html">photos</a>
+      <a href="notes.html">notes</a>
+      <a href="timeline.html">timeline</a>
+      <a href="weather.html">weather</a>
+      <a href="distance.html">distance</a>
+      <a href="music.html">music</a>
+      <a href="qotd.html">question of the day</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container container-wide">
+      <h1 class="page-title"><i class="bi bi-patch-question"></i> question of the day</h1>
+      <p class="qotd-date" id="qotdDate"></p>
+      <div class="qotd-question" id="qotdQuestion"></div>
+      <div class="qotd-responses" id="qotdResponses"></div>
+      <div class="split-row">
+        <div class="split-side side-will card">
+          <span class="split-label">For Will</span>
+          <textarea id="willResponse" placeholder="Your answer..." rows="3"></textarea>
+          <button type="button" class="btn btn-will" id="submitWill">Submit</button>
+        </div>
+        <div class="split-side side-jolene card">
+          <span class="split-label">For Jolene</span>
+          <textarea id="joleneResponse" placeholder="Your answer..." rows="3"></textarea>
+          <button type="button" class="btn btn-jolene" id="submitJolene">Submit</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script src="js/qotd-questions.js"></script>
+  <script>
+    (function() {
+      var QUESTIONS = window.QOTD_QUESTIONS || [];
+      function todayKey() {
+        var d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      }
+      function dayIndex() {
+        var d = new Date();
+        var start = new Date(d.getFullYear(), 0, 0);
+        var diff = d - start;
+        var oneDay = 86400000;
+        var day = Math.floor(diff / oneDay);
+        return (d.getFullYear() * 366 + day) % Math.max(1, QUESTIONS.length);
+      }
+      function getTodaysQuestion() {
+        if (!QUESTIONS.length) return 'No questions loaded.';
+        return QUESTIONS[dayIndex()];
+      }
+      function loadResponses(client) {
+        var date = todayKey();
+        var el = document.getElementById('qotdResponses');
+        if (!client) {
+          el.innerHTML = '<p class="loading">Could not connect.</p>';
+          return;
+        }
+        client.from('qotd_responses').select('from_name, response').eq('response_date', date)
+          .then(function(r) {
+            if (r.error) throw r.error;
+            var willResp = '', joleneResp = '';
+            (r.data || []).forEach(function(row) {
+              if ((row.from_name || '').toLowerCase().indexOf('will') !== -1) willResp = row.response || '';
+              else joleneResp = row.response || '';
+            });
+            document.getElementById('willResponse').value = willResp;
+            document.getElementById('joleneResponse').value = joleneResp;
+            var html = '';
+            if (willResp) html += '<div class="qotd-answer qotd-will"><strong>Will</strong><p>' + (willResp || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</p></div>';
+            if (joleneResp) html += '<div class="qotd-answer qotd-jolene"><strong>Jolene</strong><p>' + (joleneResp || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</p></div>';
+            el.innerHTML = html || '<p class="loading">No responses yet for today. Add yours below.</p>';
+          })
+          .catch(function(err) {
+            el.innerHTML = '<p class="loading">Could not load. Run the QOTD SQL in Supabase first.</p>';
+            console.error(err);
+          });
+      }
+      function submitResponse(from, textareaId, btnId) {
+        var text = document.getElementById(textareaId).value.trim();
+        if (!text) return;
+        var btn = document.getElementById(btnId);
+        if (btn) { btn.disabled = true; btn.textContent = '…'; }
+        var date = todayKey();
+        getSupabase(function(client) {
+          if (!client) { if (btn) { btn.disabled = false; btn.textContent = 'Submit'; } return; }
+          client.from('qotd_responses').upsert(
+            { response_date: date, from_name: from, response: text, updated_at: new Date().toISOString() },
+            { onConflict: 'response_date,from_name' }
+          ).then(function(r) {
+            if (r.error) throw r.error;
+            loadResponses(client);
+          }).catch(function(err) { alert('Could not save.'); console.error(err); }).finally(function() {
+            if (btn) { btn.disabled = false; btn.textContent = 'Submit'; }
+          });
+        });
+      }
+      document.getElementById('qotdDate').textContent = new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+      document.getElementById('qotdQuestion').textContent = getTodaysQuestion();
+      getSupabase(function(c) { loadResponses(c); });
+      document.getElementById('submitWill').addEventListener('click', function() { submitResponse('Will', 'willResponse', 'submitWill'); });
+      document.getElementById('submitJolene').addEventListener('click', function() { submitResponse('Jolene', 'joleneResponse', 'submitJolene'); });
+    })();
+  </script>
+</body>
+</html>

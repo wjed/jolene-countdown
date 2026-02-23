@@ -28,3 +28,19 @@ ALTER TABLE public.mood ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "Allow anon read mood" ON public.mood FOR SELECT TO anon USING (true);
 CREATE POLICY "Allow anon insert mood" ON public.mood FOR INSERT TO anon WITH CHECK (true);
+
+-- 3. Question of the day: one response per person per day (upsert by date + from_name)
+CREATE TABLE IF NOT EXISTS public.qotd_responses (
+  response_date DATE NOT NULL,
+  from_name TEXT NOT NULL,
+  response TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (response_date, from_name)
+);
+
+ALTER TABLE public.qotd_responses ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow anon read qotd" ON public.qotd_responses FOR SELECT TO anon USING (true);
+CREATE POLICY "Allow anon insert qotd" ON public.qotd_responses FOR INSERT TO anon WITH CHECK (true);
+CREATE POLICY "Allow anon update qotd" ON public.qotd_responses FOR UPDATE TO anon USING (true) WITH CHECK (true);

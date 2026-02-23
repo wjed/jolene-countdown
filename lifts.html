@@ -23,11 +23,12 @@
       <a href="weather.html">weather</a>
       <a href="distance.html">distance</a>
       <a href="music.html">music</a>
+      <a href="qotd.html">question of the day</a>
     </div>
   </nav>
 
   <main class="main">
-    <div class="container">
+    <div class="container container-wide">
       <h1 class="page-title"><i class="bi bi-heart-pulse"></i> lifts</h1>
 
       <div class="gym-cards">
@@ -44,32 +45,47 @@
       </div>
 
       <div id="liftsList" class="list"></div>
-      <form id="liftsForm" class="card">
-        <select id="liftsFrom" required>
-          <option value="">— who's logging? —</option>
-          <option value="Will">Will</option>
-          <option value="Jolene">Jolene</option>
-        </select>
-        <p class="muscle-label">Muscle groups today</p>
-        <div id="muscleGrid" class="muscle-grid"></div>
-        <button type="submit" class="btn">Log workout</button>
-      </form>
+
+      <div class="split-row">
+        <div class="split-side side-will card">
+          <span class="split-label">For Will</span>
+          <p class="muscle-label">Muscle groups today</p>
+          <div id="muscleGridWill" class="muscle-grid"></div>
+          <button type="button" class="btn btn-will" id="logWill">Log workout</button>
+        </div>
+        <div class="split-side side-jolene card">
+          <span class="split-label">For Jolene</span>
+          <p class="muscle-label">Muscle groups today</p>
+          <div id="muscleGridJolene" class="muscle-grid"></div>
+          <button type="button" class="btn btn-jolene" id="logJolene">Log workout</button>
+        </div>
+      </div>
     </div>
   </main>
 
   <script src="js/shared.js"></script>
   <script>
     var MUSCLES = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Legs', 'Core'];
-    var grid = document.getElementById('muscleGrid');
-    MUSCLES.forEach(function(m) {
-      var label = document.createElement('label');
-      label.className = 'muscle-chip';
-      label.innerHTML = '<input type="checkbox" name="m" value="' + m + '"> ' + m;
-      label.onclick = function() { var cb = label.querySelector('input'); cb.checked = !cb.checked; label.classList.toggle('selected', cb.checked); };
-      grid.appendChild(label);
-    });
-    function getMuscles() {
-      return Array.from(document.querySelectorAll('#muscleGrid input:checked')).map(function(c) { return c.value; }).join(', ');
+    function buildMuscleGrid(containerId) {
+      var grid = document.getElementById(containerId);
+      if (!grid) return;
+      grid.innerHTML = '';
+      MUSCLES.forEach(function(m) {
+        var label = document.createElement('label');
+        label.className = 'muscle-chip';
+        label.innerHTML = '<input type="checkbox" name="m" value="' + m + '"> ' + m;
+        label.onclick = function() { var cb = label.querySelector('input'); cb.checked = !cb.checked; label.classList.toggle('selected', cb.checked); };
+        grid.appendChild(label);
+      });
+    }
+    buildMuscleGrid('muscleGridWill');
+    buildMuscleGrid('muscleGridJolene');
+    function getMuscles(containerId) {
+      return Array.from(document.querySelectorAll('#' + containerId + ' input:checked')).map(function(c) { return c.value; }).join(', ');
+    }
+    function clearMuscles(containerId) {
+      document.querySelectorAll('#' + containerId + ' input:checked').forEach(function(c) { c.checked = false; });
+      document.querySelectorAll('#' + containerId + ' .muscle-chip').forEach(function(l) { l.classList.remove('selected'); });
     }
     function loadLifts(client) {
       var el = document.getElementById('liftsList');
@@ -87,26 +103,25 @@
         })
         .catch(function(err) { el.innerHTML = '<p class="loading">Run supabase_tables.sql first.</p>'; console.error(err); });
     }
-    getSupabase(function(c) { loadLifts(c); });
-    document.getElementById('liftsForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      var from = document.getElementById('liftsFrom').value.trim();
-      var muscles = getMuscles();
-      if (!from || !muscles) { alert('Pick who and at least one muscle group.'); return; }
-      var btn = this.querySelector('.btn');
+    function logLift(from, gridId, btnId) {
+      var muscles = getMuscles(gridId);
+      if (!muscles) { alert('Pick at least one muscle group.'); return; }
+      var btn = document.getElementById(btnId);
       if (btn) { btn.disabled = true; btn.textContent = 'Logging...'; }
       getSupabase(function(client) {
         if (!client) { if (btn) { btn.disabled = false; btn.textContent = 'Log workout'; } return; }
         client.from('lifts').insert([{ from_name: from, muscles: muscles }]).then(function(r) {
           if (r.error) throw r.error;
-          document.querySelectorAll('#muscleGrid input:checked').forEach(function(c) { c.checked = false; });
-          document.querySelectorAll('#muscleGrid .muscle-chip').forEach(function(l) { l.classList.remove('selected'); });
+          clearMuscles(gridId);
           loadLifts(client);
         }).catch(function(err) { alert('Could not save.'); }).finally(function() {
           if (btn) { btn.disabled = false; btn.textContent = 'Log workout'; }
         });
       });
-    });
+    }
+    getSupabase(function(c) { loadLifts(c); });
+    document.getElementById('logWill').addEventListener('click', function() { logLift('Will', 'muscleGridWill', 'logWill'); });
+    document.getElementById('logJolene').addEventListener('click', function() { logLift('Jolene', 'muscleGridJolene', 'logJolene'); });
   </script>
 </body>
 </html>

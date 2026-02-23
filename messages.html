@@ -23,21 +23,24 @@
       <a href="weather.html">weather</a>
       <a href="distance.html">distance</a>
       <a href="music.html">music</a>
+      <a href="qotd.html">question of the day</a>
     </div>
   </nav>
 
   <main class="main main-messages">
     <div class="messages-wrap">
       <h1 class="page-title"><i class="bi bi-chat-dots"></i> messages</h1>
-      <div id="messagesList" class="chat-thread"></div>
+      <div class="chat-area">
+        <div id="messagesList" class="chat-thread"></div>
+      </div>
       <div class="compose-row">
         <div class="compose-side compose-will">
-          <label class="compose-label">Will</label>
+          <span class="compose-label">For Will</span>
           <textarea id="willText" placeholder="Type a message..." rows="2"></textarea>
           <button type="button" class="btn btn-will" id="sendWill">Send</button>
         </div>
         <div class="compose-side compose-jolene">
-          <label class="compose-label">Jolene</label>
+          <span class="compose-label">For Jolene</span>
           <textarea id="joleneText" placeholder="Type a message..." rows="2"></textarea>
           <button type="button" class="btn btn-jolene" id="sendJolene">Send</button>
         </div>
@@ -46,7 +49,6 @@
   </main>
 
   <script src="js/shared.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script>
     function loadMessages(client) {
       var el = document.getElementById('messagesList');
@@ -65,9 +67,6 @@
             return '<div class="chat-bubble ' + side + '"><div class="chat-body">' + body + '</div><span class="chat-time">' + time + '</span></div>';
           }).join('');
           el.scrollTop = el.scrollHeight;
-          if (window.gsap && el.querySelector('.chat-bubble')) {
-            gsap.fromTo(el.querySelectorAll('.chat-bubble'), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.03, ease: 'power2.out' });
-          }
         })
         .catch(function(err) { el.innerHTML = '<p class="loading">Could not load messages.</p>'; console.error(err); });
     }
