@@ -54,6 +54,7 @@ body {
   background: rgba(4, 14, 8, 0.85);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
+  overflow: visible;
 }
 
 .site-nav a {
@@ -87,10 +88,11 @@ body {
   letter-spacing: 0.04em;
   text-transform: lowercase;
   color: var(--text);
-  padding: 0.25em 0.3em;
+  padding: 0.35em 0.5em 0.4em 0.5em;
   display: inline-block;
   flex-shrink: 0;
   white-space: nowrap;
+  line-height: 1.4;
 }
 
 .nav-toggle {
@@ -149,6 +151,7 @@ body {
   min-height: 100dvh;
   padding-left: 1rem;
   padding-right: 1rem;
+  overflow: visible;
 }
 @media (max-width: 768px) {
   .main { padding-top: 64px; padding-left: 0.75rem; padding-right: 0.75rem; padding-bottom: 2rem; }
@@ -157,8 +160,9 @@ body {
 .container {
   max-width: 720px;
   margin: 0 auto;
+  overflow: visible;
 }
-.container-wide { max-width: 900px; }
+.container-wide { max-width: 900px; overflow: visible; }
 
 /* Will / Jolene split layout (lifts, mood, etc.) */
 .split-row {
@@ -237,11 +241,11 @@ body {
   letter-spacing: 0.04em;
   text-transform: lowercase;
   margin-bottom: 0.5rem;
-  line-height: 1.2;
+  line-height: 1.45;
   color: var(--text);
   overflow: visible;
-  padding-left: 0.15em;
-  padding-right: 0.15em;
+  padding: 0.25em 0.6em 0.4em 0.6em;
+  box-sizing: content-box;
 }
 
 .hero .countdown-label {
