@@ -30,7 +30,7 @@ var LOGOS = {
   jmu: 'images/jmu-logo.png',
   pennState: 'images/penn-state-logo.png',
   urec: 'images/urec-logo.png',
-  pennGym: 'images/penn-gym-logo.png'
+  planetFitness: 'images/planet-fitness-logo.png'
 };
 
 // Mobile nav toggle (run after DOM ready)

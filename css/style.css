@@ -743,6 +743,54 @@ textarea::placeholder { color: var(--text-dim); }
 }
 .link-maps:hover { text-decoration: underline; }
 
+/* Distance page: our schools */
+.school-logos-section {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+.school-logos-section .school-logos-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+.school-logos-section .school-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 0;
+}
+.school-logo-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  min-width: 120px;
+}
+.school-logo-card .school-logo-img {
+  height: 44px;
+  width: auto;
+  max-width: 100px;
+  object-fit: contain;
+  margin-bottom: 0.5rem;
+  opacity: 0.95;
+}
+.school-logo-card .school-logo-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+.school-logo-card .school-logo-who {
+  font-size: 0.7rem;
+  color: var(--text-dim);
+}
+
 .map-container {
   width: 100%;
   height: 320px;
