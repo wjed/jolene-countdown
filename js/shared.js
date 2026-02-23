@@ -29,8 +29,8 @@ var PHOTOS = [
 var LOGOS = {
   jmu: 'school_logos/jmu_logo.png',
   pennState: 'school_logos/psu_logo.png',
-  urec: 'gyms/urec-logo.png',
-  planetFitness: 'gyms/planet-fitness-logo.png'
+  urec: 'gyms/urec.png',
+  planetFitness: 'gyms/pf.png'
 };
 
 // Mobile nav toggle (run after DOM ready)
