@@ -6,12 +6,12 @@
   <title>will + jolene</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <nav class="site-nav">
+  <nav class="site-nav" id="siteNav">
     <a href="index.html" class="nav-logo">will + jolene</a>
     <div class="nav-links">
       <a href="messages.html">messages</a>
@@ -28,19 +28,19 @@
 
   <main class="main">
     <div class="container">
-      <section class="hero">
+      <section class="hero" id="hero">
         <h1>will + jolene</h1>
         <p class="countdown-label">Time until next visit</p>
         <p class="countdown-value" id="countdownTimer">—</p>
         <p class="live-time" id="liveTime"></p>
         <p class="moon-phase" id="moonPhase"></p>
 
-        <div class="school-logos">
+        <div class="school-logos" id="schoolLogos">
           <img src="images/jmu-logo.png" alt="JMU" class="school-logo" onerror="this.style.display='none'">
           <img src="images/penn-state-logo.png" alt="Penn State" class="school-logo" onerror="this.style.display='none'">
         </div>
 
-        <div class="cards">
+        <div class="cards" id="cards">
           <a href="messages.html" class="card-link"><i class="bi bi-chat-dots"></i><span>messages</span></a>
           <a href="lifts.html" class="card-link"><i class="bi bi-heart-pulse"></i><span>lifts</span></a>
           <a href="mood.html" class="card-link"><i class="bi bi-emoji-smile"></i><span>mood</span></a>
@@ -55,7 +55,20 @@
     </div>
   </main>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script>
+    (function() {
+      if (window.gsap) {
+        gsap.set(['#hero h1', '#hero .countdown-label', '#hero .countdown-value', '#hero .live-time', '#hero .moon-phase', '#schoolLogos', '#cards .card-link'], { opacity: 0, y: 24 });
+        gsap.to('#hero h1', { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' });
+        gsap.to('#hero .countdown-label', { opacity: 1, y: 0, duration: 0.5, delay: 0.1, ease: 'power2.out' });
+        gsap.to('#hero .countdown-value', { opacity: 1, y: 0, duration: 0.5, delay: 0.15, ease: 'power2.out' });
+        gsap.to('#hero .live-time', { opacity: 1, y: 0, duration: 0.5, delay: 0.2, ease: 'power2.out' });
+        gsap.to('#hero .moon-phase', { opacity: 1, y: 0, duration: 0.5, delay: 0.25, ease: 'power2.out' });
+        gsap.to('#schoolLogos', { opacity: 1, y: 0, duration: 0.5, delay: 0.3, ease: 'power2.out' });
+        gsap.to('#cards .card-link', { opacity: 1, y: 0, duration: 0.45, stagger: 0.06, delay: 0.35, ease: 'power2.out' });
+      }
+    })();
     function updateCountdown() {
       var target = new Date('2026-03-12T00:00:00-05:00');
       var now = new Date();
