@@ -87,6 +87,10 @@ body {
   letter-spacing: 0.04em;
   text-transform: lowercase;
   color: var(--text);
+  padding: 0.25em 0.3em;
+  display: inline-block;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .nav-toggle {
@@ -219,10 +223,10 @@ body {
 /* Hero / Home */
 .hero {
   text-align: center;
-  padding: 3rem 0 2.5rem;
+  padding: 3rem 1.5rem 2.5rem;
 }
 @media (max-width: 480px) {
-  .hero { padding: 2rem 0 1.5rem; }
+  .hero { padding: 2rem 1rem 1.5rem; }
   .hero h1 { font-size: clamp(1.75rem, 8vw, 2.25rem); letter-spacing: 0.03em; }
 }
 
@@ -235,6 +239,9 @@ body {
   margin-bottom: 0.5rem;
   line-height: 1.2;
   color: var(--text);
+  overflow: visible;
+  padding-left: 0.15em;
+  padding-right: 0.15em;
 }
 
 .hero .countdown-label {
