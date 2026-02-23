@@ -32,3 +32,12 @@ var LOGOS = {
   urec: 'images/urec-logo.png',
   pennGym: 'images/penn-gym-logo.png'
 };
+
+// Mobile nav toggle (run after DOM ready)
+function initNavToggle() {
+  var btn = document.getElementById('navToggle');
+  var links = document.getElementById('navLinks');
+  if (btn && links) btn.addEventListener('click', function() { links.classList.toggle('open'); });
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initNavToggle);
+else initNavToggle();

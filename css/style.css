@@ -21,6 +21,9 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+html { overflow-x: hidden; }
+body { overflow-x: hidden; }
+
 html {
   height: 100%;
   min-height: 100dvh;
@@ -86,6 +89,22 @@ body {
   color: var(--text);
 }
 
+.nav-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 1.35rem;
+  cursor: pointer;
+}
+.nav-toggle:hover { background: var(--bg-card); color: var(--accent); }
+
 .nav-links {
   display: flex;
   gap: 1.5rem;
@@ -93,8 +112,30 @@ body {
   justify-content: center;
 }
 
+@media (max-width: 768px) {
+  .site-nav { flex-wrap: wrap; padding: 0.75rem 1rem; }
+  .nav-toggle { display: flex; }
+  .nav-links {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 0;
+    padding: 0.5rem 0 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a {
+    padding: 0.75rem 1rem;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .nav-links a::after { display: none; }
+}
+
 @media (max-width: 640px) {
-  .nav-links { gap: 1rem; font-size: 0.85rem; }
+  .nav-links { gap: 0; font-size: 0.9rem; }
 }
 
 /* Main content area (below fixed nav) */
@@ -104,6 +145,9 @@ body {
   min-height: 100dvh;
   padding-left: 1rem;
   padding-right: 1rem;
+}
+@media (max-width: 768px) {
+  .main { padding-top: 64px; padding-left: 0.75rem; padding-right: 0.75rem; padding-bottom: 2rem; }
 }
 
 .container {
@@ -177,6 +221,10 @@ body {
   text-align: center;
   padding: 3rem 0 2.5rem;
 }
+@media (max-width: 480px) {
+  .hero { padding: 2rem 0 1.5rem; }
+  .hero h1 { letter-spacing: 0.1em; font-size: clamp(1.85rem, 8vw, 2.5rem); }
+}
 
 .hero h1 {
   font-family: var(--font-head);
@@ -197,12 +245,41 @@ body {
   margin-bottom: 0.35rem;
 }
 
-.hero .countdown-value {
-  font-family: var(--font-head);
-  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-  color: var(--text);
-  font-weight: 500;
+/* Countdown: big numbers, small labels */
+.countdown {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(1rem, 4vw, 2rem);
   margin-bottom: 1.5rem;
+}
+.countdown-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 4rem;
+}
+.countdown-num {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-head);
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+.countdown-label-unit {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+@media (max-width: 380px) {
+  .countdown { gap: 0.75rem; }
+  .countdown-unit { min-width: 3.25rem; }
+  .countdown-num { font-size: 1.5rem; }
 }
 
 .hero .live-time {
@@ -368,15 +445,20 @@ body {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  padding: 1.5rem 1rem;
+  padding: 1.25rem 0.75rem;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   text-decoration: none;
   color: var(--text);
-  transition: transform 0.3s cubic-bezier(0.34, 1.4, 0.64, 1), background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.25);
-  min-height: 120px;
+  min-height: 100px;
+}
+@media (max-width: 480px) {
+  .cards { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+  .card-link { min-height: 88px; padding: 1rem 0.5rem; }
+  .card-link span { font-size: 0.6rem; }
 }
 
 .card-link:hover {
@@ -440,7 +522,8 @@ textarea::placeholder { color: var(--text-dim); }
 
 .btn {
   display: inline-block;
-  padding: 0.6rem 1.25rem;
+  padding: 0.7rem 1.35rem;
+  min-height: 44px;
   font-family: var(--font);
   font-size: 0.9rem;
   font-weight: 500;
@@ -450,6 +533,9 @@ textarea::placeholder { color: var(--text-dim); }
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease;
+}
+@media (max-width: 480px) {
+  .btn { padding: 0.75rem 1.25rem; min-height: 44px; }
 }
 
 .btn:hover {
@@ -578,8 +664,11 @@ textarea::placeholder { color: var(--text-dim); }
 /* Photos grid */
 .photos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 1rem;
+}
+@media (max-width: 400px) {
+  .photos-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
 }
 
 .photos-grid .photo-item {
@@ -601,7 +690,55 @@ textarea::placeholder { color: var(--text-dim); }
 }
 
 .weather-block h3, .distance-block h3 { font-size: 1rem; margin-bottom: 0.5rem; }
-.map-container { width: 100%; height: 360px; border-radius: var(--radius-sm); overflow: hidden; margin-top: 1rem; border: 1px solid var(--border); }
+
+/* Distance page hero */
+.distance-hero {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  margin-bottom: 1rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.distance-miles { margin-bottom: 0.5rem; }
+.distance-num {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-head);
+  font-size: clamp(2.5rem, 10vw, 4rem);
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+.distance-unit {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  display: block;
+  margin-top: 0.25rem;
+}
+.distance-route {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 0.25rem;
+}
+.distance-drive { font-size: 0.8rem; color: var(--text-dim); }
+.distance-open { margin-top: 1rem; text-align: center; }
+.link-maps {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.link-maps:hover { text-decoration: underline; }
+
+.map-container {
+  width: 100%;
+  height: 320px;
+  min-height: 240px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+@media (min-width: 600px) { .map-container { height: 380px; } }
 
 /* Loading */
 .loading { text-align: center; color: var(--text-muted); padding: 1.5rem; font-size: 0.9rem; }

@@ -14,7 +14,8 @@
 <body>
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">will + jolene</a>
-    <div class="nav-links">
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="bi bi-list"></i></button>
+    <div class="nav-links" id="navLinks">
       <a href="messages.html">messages</a>
       <a href="lifts.html">lifts</a>
       <a href="mood.html">mood</a>
@@ -31,25 +32,49 @@
   <main class="main">
     <div class="container">
       <h1 class="page-title"><i class="bi bi-geo-alt"></i> distance</h1>
-      <div id="distanceInfo" class="distance-block"></div>
+      <div class="distance-hero">
+        <div class="distance-miles">
+          <span class="distance-num" id="distanceNum">—</span>
+          <span class="distance-unit">miles apart</span>
+        </div>
+        <p class="distance-route">Harrisonburg (Will) → State College (Jolene)</p>
+        <p class="distance-drive">~<span id="driveHours">—</span> hours driving</p>
+      </div>
       <div id="map" class="map-container"></div>
+      <p class="distance-open">
+        <a href="#" id="openInMaps" target="_blank" rel="noopener" class="link-maps">Open route in Google Maps</a>
+      </p>
     </div>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script>
-    var jmuLat = 38.4344, jmuLon = -78.8699, psLat = 40.7982, psLon = -77.8599;
-    var R = 3959;
-    var dLat = (psLat - jmuLat) * Math.PI / 180, dLon = (psLon - jmuLon) * Math.PI / 180;
-    var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(jmuLat*Math.PI/180)*Math.cos(psLat*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
-    var dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    var km = (dist * 1.60934).toFixed(1);
-    document.getElementById('distanceInfo').innerHTML = '<h3>JMU (Harrisonburg) → Penn State (State College)</h3><p><strong>Distance:</strong> ' + dist.toFixed(1) + ' miles (' + km + ' km)</p><p><strong>Driving:</strong> ~' + Math.round(dist/60) + ' hours</p>';
-    var map = L.map('map').setView([(jmuLat+psLat)/2, (jmuLon+psLon)/2], 6);
-    L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=ZfLieNsvBMHToyb5OgLr', { attribution: '© MapTiler © OSM' }).addTo(map);
-    L.marker([jmuLat, jmuLon]).addTo(map).bindPopup('<b>JMU</b><br>Harrisonburg, VA (Will)');
-    L.marker([psLat, psLon]).addTo(map).bindPopup('<b>Penn State</b><br>State College, PA (Jolene)');
-    map.fitBounds([[jmuLat, jmuLon], [psLat, psLon]], { padding: [30, 30] });
+    (function() {
+      var jmuLat = 38.4344, jmuLon = -78.8699, psLat = 40.7982, psLon = -77.8599;
+      var R = 3959;
+      var dLat = (psLat - jmuLat) * Math.PI / 180, dLon = (psLon - jmuLon) * Math.PI / 180;
+      var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(jmuLat*Math.PI/180)*Math.cos(psLat*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+      var dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      var km = (dist * 1.60934).toFixed(1);
+      document.getElementById('distanceNum').textContent = dist.toFixed(1);
+      document.getElementById('driveHours').textContent = Math.round(dist / 60);
+      document.getElementById('openInMaps').href = 'https://www.google.com/maps/dir/Harrisonburg,+VA/State+College,+PA';
+      var map = L.map('map').setView([(jmuLat+psLat)/2, (jmuLon+psLon)/2], 6);
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+      }).addTo(map);
+      var line = L.polyline([[jmuLat, jmuLon], [psLat, psLon]], {
+        color: 'rgba(93, 216, 138, 0.8)',
+        weight: 3,
+        opacity: 0.9
+      }).addTo(map);
+      L.marker([jmuLat, jmuLon]).addTo(map).bindPopup('<b>JMU</b><br>Harrisonburg, VA · Will');
+      L.marker([psLat, psLon]).addTo(map).bindPopup('<b>Penn State</b><br>State College, PA · Jolene');
+      map.fitBounds([[jmuLat, jmuLon], [psLat, psLon]], { padding: [40, 40] });
+    })();
   </script>
+  <script src="js/shared.js"></script>
 </body>
 </html>

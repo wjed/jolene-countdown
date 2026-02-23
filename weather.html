@@ -13,7 +13,8 @@
 <body>
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">will + jolene</a>
-    <div class="nav-links">
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="bi bi-list"></i></button>
+    <div class="nav-links" id="navLinks">
       <a href="messages.html">messages</a>
       <a href="lifts.html">lifts</a>
       <a href="mood.html">mood</a>
@@ -34,6 +35,7 @@
     </div>
   </main>
 
+  <script src="js/shared.js"></script>
   <script>
     var codes = { 0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast', 45:'Foggy', 48:'Rime fog', 51:'Light drizzle', 53:'Moderate drizzle', 55:'Dense drizzle', 61:'Slight rain', 63:'Moderate rain', 65:'Heavy rain', 71:'Slight snow', 73:'Moderate snow', 75:'Heavy snow', 80:'Slight rain showers', 81:'Moderate rain showers', 82:'Violent rain showers', 85:'Slight snow showers', 86:'Heavy snow showers', 95:'Thunderstorm', 96:'Thunderstorm + hail', 99:'Thunderstorm + heavy hail' };
     function desc(c) { return codes[c] || 'Unknown'; }

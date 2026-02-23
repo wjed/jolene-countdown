@@ -13,7 +13,8 @@
 <body>
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">will + jolene</a>
-    <div class="nav-links">
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="bi bi-list"></i></button>
+    <div class="nav-links" id="navLinks">
       <a href="messages.html">messages</a>
       <a href="lifts.html">lifts</a>
       <a href="mood.html">mood</a>
@@ -32,7 +33,11 @@
       <section class="hero">
         <h1>will + jolene</h1>
         <p class="countdown-label">Time until next visit</p>
-        <p class="countdown-value" id="countdownTimer">—</p>
+        <div class="countdown" id="countdown" aria-live="polite">
+          <div class="countdown-unit"><span class="countdown-num" id="cdDays">—</span><span class="countdown-label-unit">days</span></div>
+          <div class="countdown-unit"><span class="countdown-num" id="cdHours">—</span><span class="countdown-label-unit">hours</span></div>
+          <div class="countdown-unit"><span class="countdown-num" id="cdMins">—</span><span class="countdown-label-unit">min</span></div>
+        </div>
         <p class="live-time" id="liveTime"></p>
         <p class="moon-phase" id="moonPhase"></p>
 
@@ -57,18 +62,23 @@
     </div>
   </main>
 
+  <script src="js/shared.js"></script>
   <script>
     function updateCountdown() {
       var target = new Date('2026-03-12T00:00:00-05:00');
       var now = new Date();
       var diff = target - now;
-      var el = document.getElementById('countdownTimer');
-      if (!el) return;
-      if (diff <= 0) { el.textContent = '0 days, 0 hours, 0 minutes'; return; }
+      var daysEl = document.getElementById('cdDays');
+      var hoursEl = document.getElementById('cdHours');
+      var minsEl = document.getElementById('cdMins');
+      if (!daysEl || !hoursEl || !minsEl) return;
+      if (diff <= 0) { daysEl.textContent = '0'; hoursEl.textContent = '0'; minsEl.textContent = '0'; return; }
       var days = Math.floor(diff / (1000 * 60 * 60 * 24));
       var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      el.textContent = days + ' days, ' + hours + ' hours, ' + mins + ' minutes';
+      daysEl.textContent = String(days);
+      hoursEl.textContent = String(hours).padStart(2, '0');
+      minsEl.textContent = String(mins).padStart(2, '0');
     }
     function updateLiveTime() {
       var el = document.getElementById('liveTime');
