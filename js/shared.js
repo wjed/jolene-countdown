@@ -27,8 +27,8 @@ var PHOTOS = [
 
 // Logo paths — put your school/gym logos in images/ with these names (or update paths here)
 var LOGOS = {
-  jmu: 'school_logos/jmu-logo.png',
-  pennState: 'school_logos/penn-state-logo.png',
+  jmu: 'school_logos/jmu_logo.png',
+  pennState: 'school_logos/psu_logo.png',
   urec: 'gyms/urec-logo.png',
   planetFitness: 'gyms/planet-fitness-logo.png'
 };
