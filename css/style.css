@@ -1,4 +1,12 @@
-/* will + jolene — design system + GSAP-ready */
+/* will + jolene — design system */
+@font-face {
+  font-family: 'Styrene B';
+  src: url('../fonts/Styrene B Regular Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg-deep: #030806;
   --bg-mid: #08120c;
@@ -15,8 +23,8 @@
   --radius: 20px;
   --radius-sm: 14px;
   --shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
-  --font: 'Sora', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-head: 'Syne', 'Sora', sans-serif;
+  --font: 'Styrene B', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-head: 'Styrene B', sans-serif;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
