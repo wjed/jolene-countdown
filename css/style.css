@@ -323,16 +323,16 @@ body {
   opacity: 0.9;
 }
 
-/* Page title (inner pages) — same on every tab; extra space so g, y, j, p, q descenders aren't cut off */
+/* Page title (inner pages) — Sora so g/y/j/p/q descenders show; plenty of room below */
 .page-title {
-  font-family: var(--font-head);
+  font-family: var(--font);
   font-size: 1.75rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   text-transform: lowercase;
   margin: 0 0 1.5rem 0;
-  padding: 0.5rem 0 0.35em 0;
-  line-height: 1.45;
+  padding: 0.5rem 0 0.5em 0;
+  line-height: 1.5;
   overflow: visible;
 }
 
