@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>weather — will + jolene</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">will + jolene</a>
+    <div class="nav-links">
+      <a href="messages.html">messages</a>
+      <a href="lifts.html">lifts</a>
+      <a href="mood.html">mood</a>
+      <a href="photos.html">photos</a>
+      <a href="notes.html">notes</a>
+      <a href="timeline.html">timeline</a>
+      <a href="weather.html">weather</a>
+      <a href="distance.html">distance</a>
+      <a href="music.html">music</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <h1 class="page-title"><i class="bi bi-cloud-sun"></i> weather</h1>
+      <div id="weatherContent"><p class="loading">loading...</p></div>
+    </div>
+  </main>
+
+  <script>
+    var codes = { 0:'Clear sky', 1:'Mainly clear', 2:'Partly cloudy', 3:'Overcast', 45:'Foggy', 48:'Rime fog', 51:'Light drizzle', 53:'Moderate drizzle', 55:'Dense drizzle', 61:'Slight rain', 63:'Moderate rain', 65:'Heavy rain', 71:'Slight snow', 73:'Moderate snow', 75:'Heavy snow', 80:'Slight rain showers', 81:'Moderate rain showers', 82:'Violent rain showers', 85:'Slight snow showers', 86:'Heavy snow showers', 95:'Thunderstorm', 96:'Thunderstorm + hail', 99:'Thunderstorm + heavy hail' };
+    function desc(c) { return codes[c] || 'Unknown'; }
+    function formatSun(iso) {
+      if (!iso) return '—';
+      return new Date(iso).toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', hour12: true });
+    }
+    var hUrl = 'https://api.open-meteo.com/v1/forecast?latitude=38.4496&longitude=-78.8689&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph';
+    var pUrl = 'https://api.open-meteo.com/v1/forecast?latitude=40.7934&longitude=-77.8600&current=temperature_2m,weather_code,wind_speed_10m&temperature_unit=fahrenheit&wind_speed_unit=mph';
+    var s1 = 'https://api.sunrise-sunset.org/json?lat=38.4496&lng=-78.8689&formatted=0';
+    var s2 = 'https://api.sunrise-sunset.org/json?lat=40.7934&lng=-77.8600&formatted=0';
+    Promise.all([fetch(hUrl), fetch(pUrl), fetch(s1), fetch(s2)]).then(function([a,b,c,d]) {
+      return Promise.all([a.json(), b.json(), c.json(), d.json()]);
+    }).then(function([h, p, sH, sP]) {
+      var sunH = sH.results, sunP = sP.results;
+      var hSun = sunH ? formatSun(sunH.sunrise) + ' / ' + formatSun(sunH.sunset) : '—';
+      var pSun = sunP ? formatSun(sunP.sunrise) + ' / ' + formatSun(sunP.sunset) : '—';
+      var html = '<div class="weather-block"><h3>Harrisonburg, VA (Will)</h3><p><strong>Temp:</strong> ' + h.current.temperature_2m + '°F</p><p><strong>Conditions:</strong> ' + desc(h.current.weather_code) + '</p><p><strong>Wind:</strong> ' + h.current.wind_speed_10m + ' mph</p><p><strong>Sunrise / sunset:</strong> ' + hSun + '</p></div>';
+      html += '<div class="weather-block"><h3>State College, PA (Jolene)</h3><p><strong>Temp:</strong> ' + p.current.temperature_2m + '°F</p><p><strong>Conditions:</strong> ' + desc(p.current.weather_code) + '</p><p><strong>Wind:</strong> ' + p.current.wind_speed_10m + ' mph</p><p><strong>Sunrise / sunset:</strong> ' + pSun + '</p></div>';
+      document.getElementById('weatherContent').innerHTML = html;
+    }).catch(function() {
+      document.getElementById('weatherContent').innerHTML = '<p class="loading">Could not load weather.</p>';
+    });
+  </script>
+</body>
+</html>

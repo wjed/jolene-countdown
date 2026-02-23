@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>lifts — will + jolene</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">will + jolene</a>
+    <div class="nav-links">
+      <a href="messages.html">messages</a>
+      <a href="lifts.html">lifts</a>
+      <a href="mood.html">mood</a>
+      <a href="photos.html">photos</a>
+      <a href="notes.html">notes</a>
+      <a href="timeline.html">timeline</a>
+      <a href="weather.html">weather</a>
+      <a href="distance.html">distance</a>
+      <a href="music.html">music</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <h1 class="page-title"><i class="bi bi-heart-pulse"></i> lifts</h1>
+
+      <div class="gym-cards">
+        <div class="gym-card">
+          <img class="gym-logo" src="images/urec-logo.png" alt="JMU UREC" onerror="this.style.display='none'">
+          <p class="gym-name">JMU UREC</p>
+          <p class="gym-who">Will · Harrisonburg</p>
+        </div>
+        <div class="gym-card">
+          <img class="gym-logo" src="images/penn-gym-logo.png" alt="Penn State" onerror="this.style.display='none'">
+          <p class="gym-name">Penn State</p>
+          <p class="gym-who">Jolene · State College</p>
+        </div>
+      </div>
+
+      <div id="liftsList" class="list"></div>
+      <form id="liftsForm" class="card">
+        <select id="liftsFrom" required>
+          <option value="">— who's logging? —</option>
+          <option value="Will">Will</option>
+          <option value="Jolene">Jolene</option>
+        </select>
+        <p class="muscle-label">Muscle groups today</p>
+        <div id="muscleGrid" class="muscle-grid"></div>
+        <button type="submit" class="btn">Log workout</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script>
+    var MUSCLES = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Legs', 'Core'];
+    var grid = document.getElementById('muscleGrid');
+    MUSCLES.forEach(function(m) {
+      var label = document.createElement('label');
+      label.className = 'muscle-chip';
+      label.innerHTML = '<input type="checkbox" name="m" value="' + m + '"> ' + m;
+      label.onclick = function() { var cb = label.querySelector('input'); cb.checked = !cb.checked; label.classList.toggle('selected', cb.checked); };
+      grid.appendChild(label);
+    });
+    function getMuscles() {
+      return Array.from(document.querySelectorAll('#muscleGrid input:checked')).map(function(c) { return c.value; }).join(', ');
+    }
+    function loadLifts(client) {
+      var el = document.getElementById('liftsList');
+      if (!el) return;
+      if (!client) { el.innerHTML = '<p class="loading">Could not connect.</p>'; return; }
+      el.innerHTML = '<p class="loading">loading...</p>';
+      client.from('lifts').select('id, from_name, muscles, log_date, created_at').order('created_at', { ascending: false }).limit(30)
+        .then(function(r) {
+          if (r.error) throw r.error;
+          if (!r.data || r.data.length === 0) { el.innerHTML = '<p class="loading">No lifts yet. Log one below.</p>'; return; }
+          el.innerHTML = r.data.map(function(row) {
+            var d = row.log_date ? new Date(row.log_date + 'Z').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
+            return '<div class="list-item"><p class="who">' + (row.from_name || '').replace(/</g, '&lt;') + '</p><p class="body">' + (row.muscles || '').replace(/</g, '&lt;') + '</p><p class="meta">' + d + '</p></div>';
+          }).join('');
+        })
+        .catch(function(err) { el.innerHTML = '<p class="loading">Run supabase_tables.sql first.</p>'; console.error(err); });
+    }
+    getSupabase(function(c) { loadLifts(c); });
+    document.getElementById('liftsForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var from = document.getElementById('liftsFrom').value.trim();
+      var muscles = getMuscles();
+      if (!from || !muscles) { alert('Pick who and at least one muscle group.'); return; }
+      var btn = this.querySelector('.btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Logging...'; }
+      getSupabase(function(client) {
+        if (!client) { if (btn) { btn.disabled = false; btn.textContent = 'Log workout'; } return; }
+        client.from('lifts').insert([{ from_name: from, muscles: muscles }]).then(function(r) {
+          if (r.error) throw r.error;
+          document.querySelectorAll('#muscleGrid input:checked').forEach(function(c) { c.checked = false; });
+          document.querySelectorAll('#muscleGrid .muscle-chip').forEach(function(l) { l.classList.remove('selected'); });
+          loadLifts(client);
+        }).catch(function(err) { alert('Could not save.'); }).finally(function() {
+          if (btn) { btn.disabled = false; btn.textContent = 'Log workout'; }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

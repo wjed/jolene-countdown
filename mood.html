@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>mood — will + jolene</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">will + jolene</a>
+    <div class="nav-links">
+      <a href="messages.html">messages</a>
+      <a href="lifts.html">lifts</a>
+      <a href="mood.html">mood</a>
+      <a href="photos.html">photos</a>
+      <a href="notes.html">notes</a>
+      <a href="timeline.html">timeline</a>
+      <a href="weather.html">weather</a>
+      <a href="distance.html">distance</a>
+      <a href="music.html">music</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <h1 class="page-title"><i class="bi bi-emoji-smile"></i> how we're feeling</h1>
+      <div id="moodList" class="list"></div>
+      <form id="moodForm" class="card">
+        <select id="moodFrom" required>
+          <option value="">— who's logging? —</option>
+          <option value="Will">Will</option>
+          <option value="Jolene">Jolene</option>
+        </select>
+        <div class="mood-scale-wrap">
+          <label>How are you feeling? (1–10)</label>
+          <input type="range" id="moodScore" min="1" max="10" value="7">
+          <p class="mood-scale-value" id="moodScoreValue">7</p>
+        </div>
+        <textarea id="moodNote" placeholder="Optional note..." rows="2"></textarea>
+        <button type="submit" class="btn">Save</button>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/shared.js"></script>
+  <script>
+    document.getElementById('moodScore').addEventListener('input', function() {
+      document.getElementById('moodScoreValue').textContent = this.value;
+    });
+    function loadMood(client) {
+      var el = document.getElementById('moodList');
+      if (!el) return;
+      if (!client) { el.innerHTML = '<p class="loading">Could not connect.</p>'; return; }
+      el.innerHTML = '<p class="loading">loading...</p>';
+      client.from('mood').select('id, from_name, score, note, created_at').order('created_at', { ascending: false }).limit(20)
+        .then(function(r) {
+          if (r.error) throw r.error;
+          if (!r.data || r.data.length === 0) { el.innerHTML = '<p class="loading">No check-ins yet.</p>'; return; }
+          el.innerHTML = r.data.map(function(row) {
+            var time = row.created_at ? new Date(row.created_at).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '';
+            var who = (row.from_name || '').replace(/</g, '&lt;');
+            var note = (row.note || '').replace(/</g, '&lt;').replace(/\n/g, '<br>');
+            return '<div class="list-item"><p class="who">' + who + '</p><p class="body"><strong>' + row.score + '/10</strong>' + (note ? '<br>' + note : '') + '</p><p class="meta">' + time + '</p></div>';
+          }).join('');
+        })
+        .catch(function(err) { el.innerHTML = '<p class="loading">Run supabase_tables.sql first.</p>'; console.error(err); });
+    }
+    getSupabase(function(c) { loadMood(c); });
+    document.getElementById('moodForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      var from = document.getElementById('moodFrom').value.trim();
+      var score = parseInt(document.getElementById('moodScore').value || '5', 10);
+      var note = document.getElementById('moodNote').value.trim() || null;
+      if (!from) return;
+      var btn = this.querySelector('.btn');
+      if (btn) { btn.disabled = true; btn.textContent = 'Saving...'; }
+      getSupabase(function(client) {
+        if (!client) { if (btn) { btn.disabled = false; btn.textContent = 'Save'; } return; }
+        client.from('mood').insert([{ from_name: from, score: score, note: note }]).then(function(r) {
+          if (r.error) throw r.error;
+          document.getElementById('moodNote').value = '';
+          loadMood(client);
+        }).catch(function(err) { alert('Could not save.'); }).finally(function() {
+          if (btn) { btn.disabled = false; btn.textContent = 'Save'; }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

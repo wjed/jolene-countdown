@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>distance — will + jolene</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">will + jolene</a>
+    <div class="nav-links">
+      <a href="messages.html">messages</a>
+      <a href="lifts.html">lifts</a>
+      <a href="mood.html">mood</a>
+      <a href="photos.html">photos</a>
+      <a href="notes.html">notes</a>
+      <a href="timeline.html">timeline</a>
+      <a href="weather.html">weather</a>
+      <a href="distance.html">distance</a>
+      <a href="music.html">music</a>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="container">
+      <h1 class="page-title"><i class="bi bi-geo-alt"></i> distance</h1>
+      <div id="distanceInfo" class="distance-block"></div>
+      <div id="map" class="map-container"></div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script>
+    var jmuLat = 38.4344, jmuLon = -78.8699, psLat = 40.7982, psLon = -77.8599;
+    var R = 3959;
+    var dLat = (psLat - jmuLat) * Math.PI / 180, dLon = (psLon - jmuLon) * Math.PI / 180;
+    var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(jmuLat*Math.PI/180)*Math.cos(psLat*Math.PI/180)*Math.sin(dLon/2)*Math.sin(dLon/2);
+    var dist = R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var km = (dist * 1.60934).toFixed(1);
+    document.getElementById('distanceInfo').innerHTML = '<h3>JMU (Harrisonburg) → Penn State (State College)</h3><p><strong>Distance:</strong> ' + dist.toFixed(1) + ' miles (' + km + ' km)</p><p><strong>Driving:</strong> ~' + Math.round(dist/60) + ' hours</p>';
+    var map = L.map('map').setView([(jmuLat+psLat)/2, (jmuLon+psLon)/2], 6);
+    L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=ZfLieNsvBMHToyb5OgLr', { attribution: '© MapTiler © OSM' }).addTo(map);
+    L.marker([jmuLat, jmuLon]).addTo(map).bindPopup('<b>JMU</b><br>Harrisonburg, VA (Will)');
+    L.marker([psLat, psLon]).addTo(map).bindPopup('<b>Penn State</b><br>State College, PA (Jolene)');
+    map.fitBounds([[jmuLat, jmuLon], [psLat, psLon]], { padding: [30, 30] });
+  </script>
+</body>
+</html>
