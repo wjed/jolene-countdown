@@ -39,5 +39,42 @@ function initNavToggle() {
   var links = document.getElementById('navLinks');
   if (btn && links) btn.addEventListener('click', function() { links.classList.toggle('open'); });
 }
-if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initNavToggle);
-else initNavToggle();
+
+// Dark mode: apply saved theme and init toggle
+var THEME_KEY = 'will-jolene-theme';
+function getTheme() {
+  try {
+    var s = localStorage.getItem(THEME_KEY);
+    if (s === 'dark' || s === 'light') return s;
+  } catch (e) {}
+  return 'light';
+}
+function setTheme(mode) {
+  var root = document.documentElement;
+  root.setAttribute('data-theme', mode);
+  try { localStorage.setItem(THEME_KEY, mode); } catch (e) {}
+  var btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.setAttribute('aria-label', mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    var icon = btn.querySelector('i');
+    if (icon) icon.className = mode === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-fill';
+  }
+}
+function initTheme() {
+  setTheme(getTheme());
+  var btn = document.getElementById('themeToggle');
+  if (btn) btn.addEventListener('click', function() {
+    var next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function() {
+    initTheme();
+    initNavToggle();
+  });
+} else {
+  initTheme();
+  initNavToggle();
+}
