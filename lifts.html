@@ -45,28 +45,46 @@
         </div>
       </div>
 
-      <div id="liftsList" class="list"></div>
-
-      <div class="split-row">
-        <div class="split-side side-will card">
-          <span class="split-label">For Will</span>
-          <p class="muscle-label">Muscle groups today</p>
-          <div id="muscleGridWill" class="muscle-grid"></div>
-          <button type="button" class="btn btn-will" id="logWill">Log workout</button>
+      <div class="lifts-calendar-wrap">
+        <div class="lifts-calendar-header">
+          <span class="lifts-calendar-month" id="calendarMonthTitle"></span>
+          <div class="lifts-calendar-nav">
+            <button type="button" id="calendarPrev" aria-label="Previous month"><i class="bi bi-chevron-left"></i></button>
+            <button type="button" id="calendarNext" aria-label="Next month"><i class="bi bi-chevron-right"></i></button>
+          </div>
         </div>
-        <div class="split-side side-jolene card">
-          <span class="split-label">For Jolene</span>
-          <p class="muscle-label">Muscle groups today</p>
-          <div id="muscleGridJolene" class="muscle-grid"></div>
-          <button type="button" class="btn btn-jolene" id="logJolene">Log workout</button>
+        <div class="lifts-calendar-weekdays">
+          <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
         </div>
+        <div class="lifts-calendar-grid" id="liftsCalendarGrid"></div>
       </div>
+
+      <section class="lifts-log-section">
+        <h2>Log workout</h2>
+        <div class="log-cards">
+          <div class="log-card will">
+            <span class="split-label">Will</span>
+            <p class="muscle-label">Muscle groups</p>
+            <div id="muscleGridWill" class="muscle-grid"></div>
+            <button type="button" class="btn btn-will" id="logWill">Log workout</button>
+          </div>
+          <div class="log-card jolene">
+            <span class="split-label">Jolene</span>
+            <p class="muscle-label">Muscle groups</p>
+            <div id="muscleGridJolene" class="muscle-grid"></div>
+            <button type="button" class="btn btn-jolene" id="logJolene">Log workout</button>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
   <script src="js/shared.js"></script>
   <script>
     var MUSCLES = ['Chest', 'Back', 'Shoulders', 'Biceps', 'Triceps', 'Legs', 'Core'];
+    var calendarYear, calendarMonth;
+    var liftsByDate = {};
+
     function buildMuscleGrid(containerId) {
       var grid = document.getElementById(containerId);
       if (!grid) return;
@@ -81,6 +99,7 @@
     }
     buildMuscleGrid('muscleGridWill');
     buildMuscleGrid('muscleGridJolene');
+
     function getMuscles(containerId) {
       return Array.from(document.querySelectorAll('#' + containerId + ' input:checked')).map(function(c) { return c.value; }).join(', ');
     }
@@ -88,22 +107,97 @@
       document.querySelectorAll('#' + containerId + ' input:checked').forEach(function(c) { c.checked = false; });
       document.querySelectorAll('#' + containerId + ' .muscle-chip').forEach(function(l) { l.classList.remove('selected'); });
     }
-    function loadLifts(client) {
-      var el = document.getElementById('liftsList');
-      if (!el) return;
-      if (!client) { el.innerHTML = '<p class="loading">Could not connect.</p>'; return; }
-      el.innerHTML = '<p class="loading">loading...</p>';
-      client.from('lifts').select('id, from_name, muscles, log_date, created_at').order('created_at', { ascending: false }).limit(30)
+
+    function setCalendarMonth(y, m) {
+      calendarYear = y;
+      calendarMonth = m;
+      var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+      var title = document.getElementById('calendarMonthTitle');
+      if (title) title.textContent = monthNames[m] + ' ' + y;
+      renderCalendar();
+    }
+
+    function getDaysInMonth(y, m) {
+      return new Date(y, m + 1, 0).getDate();
+    }
+    function getFirstWeekday(y, m) {
+      return new Date(y, m, 1).getDay();
+    }
+
+    function renderCalendar() {
+      var grid = document.getElementById('liftsCalendarGrid');
+      if (!grid) return;
+      var daysInMonth = getDaysInMonth(calendarYear, calendarMonth);
+      var firstDay = getFirstWeekday(calendarYear, calendarMonth);
+      var today = new Date();
+      var todayKey = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+
+      grid.innerHTML = '';
+      var cells = [];
+      var prevMonth = calendarMonth === 0 ? 11 : calendarMonth - 1;
+      var prevYear = calendarMonth === 0 ? calendarYear - 1 : calendarYear;
+      var prevDays = getDaysInMonth(prevYear, prevMonth);
+      for (var i = 0; i < firstDay; i++) {
+        var d = prevDays - firstDay + i + 1;
+        cells.push({ day: d, other: true, key: prevYear + '-' + String(prevMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0') });
+      }
+      for (var d = 1; d <= daysInMonth; d++) {
+        var key = calendarYear + '-' + String(calendarMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+        cells.push({ day: d, other: false, key: key });
+      }
+      var remaining = 42 - cells.length;
+      for (var n = 1; n <= remaining; n++) {
+        cells.push({ day: n, other: true, key: '' });
+      }
+
+      cells.forEach(function(cell) {
+        var div = document.createElement('div');
+        div.className = 'lifts-calendar-day';
+        if (cell.other) div.classList.add('other-month');
+        if (cell.key === todayKey) div.classList.add('today');
+
+        var num = document.createElement('div');
+        num.className = 'lifts-calendar-day-num';
+        num.textContent = cell.day;
+        div.appendChild(num);
+
+        var entries = liftsByDate[cell.key];
+        if (entries && entries.length) {
+          entries.forEach(function(entry) {
+            var e = document.createElement('div');
+            e.className = 'lifts-calendar-day-entry ' + (entry.from_name.toLowerCase().indexOf('will') !== -1 ? 'will' : 'jolene');
+            e.textContent = (entry.from_name || '').split(' ')[0] + ': ' + (entry.muscles || '').substring(0, 20) + (entry.muscles && entry.muscles.length > 20 ? '…' : '');
+            e.title = entry.muscles || '';
+            div.appendChild(e);
+          });
+        }
+        grid.appendChild(div);
+      });
+    }
+
+    function loadLiftsForCalendar(client) {
+      if (!client) return;
+      var start = new Date(calendarYear, calendarMonth, 1);
+      var end = new Date(calendarYear, calendarMonth + 1, 0);
+      var startStr = start.toISOString().slice(0, 10);
+      var endStr = end.toISOString().slice(0, 10);
+      client.from('lifts').select('from_name, muscles, log_date')
+        .gte('log_date', startStr)
+        .lte('log_date', endStr)
+        .order('log_date', { ascending: true })
         .then(function(r) {
           if (r.error) throw r.error;
-          if (!r.data || r.data.length === 0) { el.innerHTML = '<p class="loading">No lifts yet. Log one below.</p>'; return; }
-          el.innerHTML = r.data.map(function(row) {
-            var d = row.log_date ? new Date(row.log_date + 'Z').toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : '';
-            return '<div class="list-item"><p class="who">' + (row.from_name || '').replace(/</g, '&lt;') + '</p><p class="body">' + (row.muscles || '').replace(/</g, '&lt;') + '</p><p class="meta">' + d + '</p></div>';
-          }).join('');
+          liftsByDate = {};
+          (r.data || []).forEach(function(row) {
+            var key = row.log_date;
+            if (!liftsByDate[key]) liftsByDate[key] = [];
+            liftsByDate[key].push(row);
+          });
+          renderCalendar();
         })
-        .catch(function(err) { el.innerHTML = '<p class="loading">Run supabase_tables.sql first.</p>'; console.error(err); });
+        .catch(function(err) { console.error(err); renderCalendar(); });
     }
+
     function logLift(from, gridId, btnId) {
       var muscles = getMuscles(gridId);
       if (!muscles) { alert('Pick at least one muscle group.'); return; }
@@ -114,13 +208,30 @@
         client.from('lifts').insert([{ from_name: from, muscles: muscles }]).then(function(r) {
           if (r.error) throw r.error;
           clearMuscles(gridId);
-          loadLifts(client);
+          loadLiftsForCalendar(client);
         }).catch(function(err) { alert('Could not save.'); }).finally(function() {
           if (btn) { btn.disabled = false; btn.textContent = 'Log workout'; }
         });
       });
     }
-    getSupabase(function(c) { loadLifts(c); });
+
+    var now = new Date();
+    setCalendarMonth(now.getFullYear(), now.getMonth());
+
+    document.getElementById('calendarPrev').addEventListener('click', function() {
+      if (calendarMonth === 0) setCalendarMonth(calendarYear - 1, 11);
+      else setCalendarMonth(calendarYear, calendarMonth - 1);
+      getSupabase(function(c) { loadLiftsForCalendar(c); });
+    });
+    document.getElementById('calendarNext').addEventListener('click', function() {
+      if (calendarMonth === 11) setCalendarMonth(calendarYear + 1, 0);
+      else setCalendarMonth(calendarYear, calendarMonth + 1);
+      getSupabase(function(c) { loadLiftsForCalendar(c); });
+    });
+
+    getSupabase(function(c) {
+      loadLiftsForCalendar(c);
+    });
     document.getElementById('logWill').addEventListener('click', function() { logLift('Will', 'muscleGridWill', 'logWill'); });
     document.getElementById('logJolene').addEventListener('click', function() { logLift('Jolene', 'muscleGridJolene', 'logJolene'); });
   </script>

@@ -132,24 +132,14 @@ body {
   font-size: 0.9rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  transition: color 0.2s ease;
-  position: relative;
+  padding: 0.35em 0.6em;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s ease, background 0.2s ease;
 }
-
-.site-nav a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 2px;
-  background: var(--primary);
-  border-radius: var(--radius-pill);
-  transition: width 0.25s ease;
+.site-nav a:hover {
+  color: var(--text);
+  background: var(--bg-section);
 }
-
-.site-nav a:hover { color: var(--primary); }
-.site-nav a:hover::after { width: 100%; }
 
 .nav-logo {
   font-family: var(--font-head);
@@ -212,20 +202,21 @@ body {
     display: flex;
     align-items: center;
   }
-  .nav-links a::after { display: none; }
 }
 
 @media (max-width: 640px) {
   .nav-links { gap: 0; font-size: 0.88rem; }
 }
 
-/* ——— Hero (section strip + card-style content) ——— */
+/* ——— Hero (section strip + pastel gradient) ——— */
 .hero {
   text-align: center;
   padding: 2.5rem 1.5rem 2rem;
-  background: var(--bg-section);
+  background: linear-gradient(135deg, var(--pastel-sky) 0%, var(--bg-section) 40%, var(--highlight) 100%);
   border-radius: var(--radius);
   margin-bottom: 1.5rem;
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-md);
 }
 @media (max-width: 480px) {
   .hero { padding: 2rem 1rem 1.5rem; }
@@ -351,16 +342,30 @@ body {
 }
 
 .card-link:hover {
-  background: var(--bg-alt);
-  border-color: var(--border-focus);
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
+/* Card link pastel variety (cycle through utility colors) */
+.card-link:nth-child(5n+1) { background: var(--bg-card); border-color: var(--border); }
+.card-link:nth-child(5n+1):hover { background: var(--pastel-sky); border-color: var(--primary); }
+.card-link:nth-child(5n+2) { background: var(--bg-alt); border-color: var(--border-soft); }
+.card-link:nth-child(5n+2):hover { background: var(--pastel-aqua); border-color: var(--accent); }
+.card-link:nth-child(5n+3) { background: var(--bg-card); border-color: var(--border); }
+.card-link:nth-child(5n+3):hover { background: var(--pastel-lilac); border-color: var(--secondary); }
+.card-link:nth-child(5n+4) { background: var(--bg-alt); border-color: var(--border-soft); }
+.card-link:nth-child(5n+4):hover { background: var(--highlight); border-color: var(--cta); }
+.card-link:nth-child(5n+5) { background: var(--bg-card); border-color: var(--border); }
+.card-link:nth-child(5n+5):hover { background: var(--pastel-green); border-color: var(--success); }
+
 .card-link i {
   font-size: 1.65rem;
-  color: var(--primary);
 }
+.card-link:nth-child(5n+1) i { color: var(--primary); }
+.card-link:nth-child(5n+2) i { color: var(--pastel-aqua); }
+.card-link:nth-child(5n+3) i { color: var(--secondary); }
+.card-link:nth-child(5n+4) i { color: var(--cta); }
+.card-link:nth-child(5n+5) i { color: var(--pastel-green); }
 
 .card-link span {
   font-size: 0.65rem;
@@ -671,6 +676,120 @@ textarea::placeholder { color: var(--text-light); }
 .gym-card .gym-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text); }
 .gym-card .gym-who { font-size: 0.75rem; color: var(--text-muted); }
 
+/* ——— Lifts: calendar view ——— */
+.lifts-calendar-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.lifts-calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.lifts-calendar-month {
+  font-family: var(--font-head);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.lifts-calendar-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+.lifts-calendar-nav button {
+  padding: 0.4rem 0.75rem;
+  font-size: 0.85rem;
+  background: var(--bg-section);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.lifts-calendar-nav button:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--btn-primary-text);
+}
+.lifts-calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  text-align: center;
+}
+.lifts-calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+.lifts-calendar-day {
+  min-height: 64px;
+  padding: 4px;
+  background: var(--bg-section);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-soft);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.lifts-calendar-day.other-month {
+  opacity: 0.5;
+  background: var(--bg-alt);
+}
+.lifts-calendar-day.today {
+  border-color: var(--cta);
+  background: var(--highlight);
+  color: var(--text);
+  font-weight: 600;
+}
+.lifts-calendar-day-num {
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 4px;
+}
+.lifts-calendar-day-entry {
+  font-size: 0.65rem;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lifts-calendar-day-entry.will { background: var(--primary); color: var(--btn-primary-text); }
+.lifts-calendar-day-entry.jolene { background: var(--secondary); color: var(--btn-secondary-text); }
+.lifts-log-section { margin-top: 1.5rem; }
+.lifts-log-section h2 {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+.log-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px) { .log-cards { grid-template-columns: 1fr; } }
+.log-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+.log-card.will { border-top: 4px solid var(--primary); }
+.log-card.jolene { border-top: 4px solid var(--secondary); }
+.log-card .muscle-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+.log-card .muscle-grid { margin-bottom: 0.75rem; }
+.log-card .btn { width: 100%; }
+
 /* ——— Muscle chips ——— */
 .muscle-grid {
   display: flex;
@@ -700,6 +819,99 @@ textarea::placeholder { color: var(--text-light); }
 .mood-scale-wrap label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
 .mood-scale-wrap input[type="range"] { width: 100%; max-width: 280px; height: 8px; accent-color: var(--primary); }
 .mood-scale-value { font-size: 1.2rem; font-weight: 600; margin-top: 0.35rem; color: var(--primary); }
+
+/* ——— Mood tracker (grid by day) ——— */
+.mood-tracker-wrap {
+  margin-bottom: 1.5rem;
+}
+.mood-tracker-wrap h2 {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+.mood-tracker-header {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr;
+  gap: 1rem;
+  padding: 0.5rem 1.2rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--divider);
+  margin-bottom: 0.5rem;
+}
+.mood-col-will { color: var(--primary); }
+.mood-col-jolene { color: var(--secondary); }
+@media (max-width: 640px) {
+  .mood-tracker-header { grid-template-columns: 1fr 1fr; }
+  .mood-tracker-header .mood-day-date { display: none; }
+}
+.mood-tracker-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.mood-day-card {
+  display: grid;
+  grid-template-columns: 100px 1fr 1fr;
+  align-items: start;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+}
+@media (max-width: 640px) {
+  .mood-day-card {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+  .mood-day-card .mood-day-date { grid-column: 1 / -1; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-soft); }
+}
+.mood-day-date {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.mood-day-will, .mood-day-jolene {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.mood-score-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.mood-score-pill.will { background: var(--pastel-sky); border: 1px solid var(--primary); }
+.mood-score-pill.jolene { background: var(--pastel-lilac); border: 1px solid var(--secondary); }
+.mood-day-note {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+.mood-checkin-section { margin-top: 1.5rem; }
+.mood-checkin-section h2 {
+  font-family: var(--font-head);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
 
 /* ——— Notes ——— */
 .note-item {

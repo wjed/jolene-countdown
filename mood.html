@@ -31,29 +31,42 @@
   <main class="main">
     <div class="container container-wide">
       <h1 class="page-title"><i class="bi bi-emoji-smile"></i> how we're feeling</h1>
-      <div id="moodList" class="list"></div>
-      <div class="split-row">
-        <div class="split-side side-will card">
-          <span class="split-label">For Will</span>
-          <div class="mood-scale-wrap">
-            <label>How are you feeling? (1–10)</label>
-            <input type="range" id="moodScoreWill" min="1" max="10" value="7">
-            <p class="mood-scale-value" id="moodScoreValueWill">7</p>
-          </div>
-          <textarea id="moodNoteWill" placeholder="Optional note..." rows="2"></textarea>
-          <button type="button" class="btn btn-will" id="saveMoodWill">Save</button>
+
+      <div class="mood-tracker-wrap">
+        <h2>Mood log</h2>
+        <div class="mood-tracker-header">
+          <span class="mood-day-date">Date</span>
+          <span class="mood-col-will">Will</span>
+          <span class="mood-col-jolene">Jolene</span>
         </div>
-        <div class="split-side side-jolene card">
-          <span class="split-label">For Jolene</span>
-          <div class="mood-scale-wrap">
-            <label>How are you feeling? (1–10)</label>
-            <input type="range" id="moodScoreJolene" min="1" max="10" value="7">
-            <p class="mood-scale-value" id="moodScoreValueJolene">7</p>
-          </div>
-          <textarea id="moodNoteJolene" placeholder="Optional note..." rows="2"></textarea>
-          <button type="button" class="btn btn-jolene" id="saveMoodJolene">Save</button>
-        </div>
+        <div class="mood-tracker-grid" id="moodTrackerGrid"></div>
       </div>
+
+      <section class="mood-checkin-section">
+        <h2>Check in</h2>
+        <div class="split-row">
+          <div class="split-side side-will card">
+            <span class="split-label">Will</span>
+            <div class="mood-scale-wrap">
+              <label>How are you feeling? (1–10)</label>
+              <input type="range" id="moodScoreWill" min="1" max="10" value="7">
+              <p class="mood-scale-value" id="moodScoreValueWill">7</p>
+            </div>
+            <textarea id="moodNoteWill" placeholder="Optional note..." rows="2"></textarea>
+            <button type="button" class="btn btn-will" id="saveMoodWill">Save</button>
+          </div>
+          <div class="split-side side-jolene card">
+            <span class="split-label">Jolene</span>
+            <div class="mood-scale-wrap">
+              <label>How are you feeling? (1–10)</label>
+              <input type="range" id="moodScoreJolene" min="1" max="10" value="7">
+              <p class="mood-scale-value" id="moodScoreValueJolene">7</p>
+            </div>
+            <textarea id="moodNoteJolene" placeholder="Optional note..." rows="2"></textarea>
+            <button type="button" class="btn btn-jolene" id="saveMoodJolene">Save</button>
+          </div>
+        </div>
+      </section>
     </div>
   </main>
 
@@ -65,24 +78,64 @@
     document.getElementById('moodScoreJolene').addEventListener('input', function() {
       document.getElementById('moodScoreValueJolene').textContent = this.value;
     });
+
     function loadMood(client) {
-      var el = document.getElementById('moodList');
+      var el = document.getElementById('moodTrackerGrid');
       if (!el) return;
-      if (!client) { el.innerHTML = '<p class="loading">Could not connect.</p>'; return; }
-      el.innerHTML = '<p class="loading">loading...</p>';
-      client.from('mood').select('id, from_name, score, note, created_at').order('created_at', { ascending: false }).limit(20)
+      if (!client) {
+        el.innerHTML = '<p class="loading">Could not connect.</p>';
+        return;
+      }
+      el.innerHTML = '<p class="loading">Loading…</p>';
+      client.from('mood').select('id, from_name, score, note, created_at').order('created_at', { ascending: false }).limit(60)
         .then(function(r) {
           if (r.error) throw r.error;
-          if (!r.data || r.data.length === 0) { el.innerHTML = '<p class="loading">No check-ins yet.</p>'; return; }
-          el.innerHTML = r.data.map(function(row) {
-            var time = row.created_at ? new Date(row.created_at).toLocaleString(undefined, { dateStyle: 'short', timeStyle: 'short' }) : '';
-            var who = (row.from_name || '').replace(/</g, '&lt;');
-            var note = (row.note || '').replace(/</g, '&lt;').replace(/\n/g, '<br>');
-            return '<div class="list-item"><p class="who">' + who + '</p><p class="body"><strong>' + row.score + '/10</strong>' + (note ? '<br>' + note : '') + '</p><p class="meta">' + time + '</p></div>';
+          var data = r.data || [];
+          if (data.length === 0) {
+            el.innerHTML = '<p class="loading">No check-ins yet. Add one below.</p>';
+            return;
+          }
+          var byDate = {};
+          data.forEach(function(row) {
+            var dateStr = row.created_at ? row.created_at.slice(0, 10) : '';
+            if (!dateStr) return;
+            if (!byDate[dateStr]) byDate[dateStr] = { will: null, jolene: null };
+            var isWill = (row.from_name || '').toLowerCase().indexOf('will') !== -1;
+            if (isWill) byDate[dateStr].will = row;
+            else byDate[dateStr].jolene = row;
+          });
+          var dates = Object.keys(byDate).sort().reverse();
+          el.innerHTML = dates.map(function(dateStr) {
+            var d = new Date(dateStr + 'T12:00:00');
+            var dateLabel = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+            var day = byDate[dateStr];
+            var willHtml = '';
+            if (day.will) {
+              willHtml = '<span class="mood-score-pill will">' + day.will.score + '/10</span>';
+              if (day.will.note) willHtml += '<div class="mood-day-note">' + (day.will.note || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</div>';
+            } else {
+              willHtml = '<span class="mood-day-note">—</span>';
+            }
+            var joleneHtml = '';
+            if (day.jolene) {
+              joleneHtml = '<span class="mood-score-pill jolene">' + day.jolene.score + '/10</span>';
+              if (day.jolene.note) joleneHtml += '<div class="mood-day-note">' + (day.jolene.note || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\n/g, '<br>') + '</div>';
+            } else {
+              joleneHtml = '<span class="mood-day-note">—</span>';
+            }
+            return '<div class="mood-day-card">' +
+              '<div class="mood-day-date">' + dateLabel + '</div>' +
+              '<div class="mood-day-will">' + willHtml + '</div>' +
+              '<div class="mood-day-jolene">' + joleneHtml + '</div>' +
+              '</div>';
           }).join('');
         })
-        .catch(function(err) { el.innerHTML = '<p class="loading">Run supabase_tables.sql first.</p>'; console.error(err); });
+        .catch(function(err) {
+          el.innerHTML = '<p class="loading">Could not load. Run supabase_tables.sql first.</p>';
+          console.error(err);
+        });
     }
+
     function saveMood(from, scoreId, noteId, btnId) {
       var score = parseInt(document.getElementById(scoreId).value || '5', 10);
       var note = document.getElementById(noteId).value.trim() || null;
@@ -99,6 +152,7 @@
         });
       });
     }
+
     getSupabase(function(c) { loadMood(c); });
     document.getElementById('saveMoodWill').addEventListener('click', function() {
       saveMood('Will', 'moodScoreWill', 'moodNoteWill', 'saveMoodWill');
