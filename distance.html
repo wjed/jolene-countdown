@@ -75,14 +75,14 @@
       document.getElementById('driveHours').textContent = Math.round(dist / 60);
       document.getElementById('openInMaps').href = 'https://www.google.com/maps/dir/Harrisonburg,+VA/State+College,+PA';
       var map = L.map('map').setView([(jmuLat+psLat)/2, (jmuLon+psLon)/2], 6);
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         subdomains: 'abcd',
         maxZoom: 20
       }).addTo(map);
       var line = L.polyline([[jmuLat, jmuLon], [psLat, psLon]], {
-        color: 'rgba(93, 216, 138, 0.8)',
-        weight: 3,
+        color: '#FFAAA5',
+        weight: 4,
         opacity: 0.9
       }).addTo(map);
       L.marker([jmuLat, jmuLon]).addTo(map).bindPopup('<b>JMU</b><br>Harrisonburg, VA · Will');
