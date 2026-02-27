@@ -684,12 +684,14 @@ textarea::placeholder { color: var(--text-light); }
   padding: 1.25rem;
   margin-bottom: 1.5rem;
   box-shadow: var(--shadow);
+  overflow-x: auto;
 }
 .lifts-calendar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  flex-shrink: 0;
 }
 .lifts-calendar-month {
   font-family: var(--font-head);
@@ -718,32 +720,37 @@ textarea::placeholder { color: var(--text-light); }
 }
 .lifts-calendar-weekdays {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 2px;
-  margin-bottom: 0.5rem;
-  font-size: 0.65rem;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 4px;
+  margin-bottom: 6px;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   color: var(--text-muted);
   text-align: center;
+  min-width: 320px;
 }
 .lifts-calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   gap: 4px;
+  min-width: 320px;
 }
 .lifts-calendar-day {
-  min-height: 64px;
-  padding: 4px;
+  min-height: 56px;
+  padding: 6px;
   background: var(--bg-section);
-  border-radius: var(--radius-sm);
+  border-radius: 8px;
   border: 1px solid var(--border-soft);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .lifts-calendar-day.other-month {
-  opacity: 0.5;
+  opacity: 0.45;
   background: var(--bg-alt);
 }
 .lifts-calendar-day.today {
@@ -755,18 +762,26 @@ textarea::placeholder { color: var(--text-light); }
 .lifts-calendar-day-num {
   font-variant-numeric: tabular-nums;
   margin-bottom: 4px;
+  flex-shrink: 0;
 }
 .lifts-calendar-day-entry {
-  font-size: 0.65rem;
+  font-size: 0.6rem;
+  line-height: 1.2;
   padding: 2px 4px;
   border-radius: 4px;
   margin-bottom: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex-shrink: 0;
 }
+.lifts-calendar-day-entry:last-child { margin-bottom: 0; }
 .lifts-calendar-day-entry.will { background: var(--primary); color: var(--btn-primary-text); }
 .lifts-calendar-day-entry.jolene { background: var(--secondary); color: var(--btn-secondary-text); }
+@media (max-width: 480px) {
+  .lifts-calendar-day { min-height: 48px; padding: 4px; font-size: 0.7rem; }
+  .lifts-calendar-day-entry { font-size: 0.55rem; }
+}
 .lifts-log-section { margin-top: 1.5rem; }
 .lifts-log-section h2 {
   font-family: var(--font-head);
@@ -775,20 +790,39 @@ textarea::placeholder { color: var(--text-light); }
   color: var(--text);
   margin-bottom: 1rem;
 }
-.log-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-@media (max-width: 640px) { .log-cards { grid-template-columns: 1fr; } }
+.log-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+@media (max-width: 640px) {
+  .log-cards { grid-template-columns: 1fr; }
+}
 .log-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 1.25rem;
   box-shadow: var(--shadow);
+  min-width: 0;
 }
 .log-card.will { border-top: 4px solid var(--primary); }
 .log-card.jolene { border-top: 4px solid var(--secondary); }
-.log-card .muscle-label { font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
-.log-card .muscle-grid { margin-bottom: 0.75rem; }
-.log-card .btn { width: 100%; }
+.log-card .split-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.log-card .muscle-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+.log-card .muscle-grid {
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+.log-card .btn { width: 100%; margin-top: 0.25rem; }
 
 /* ——— Muscle chips ——— */
 .muscle-grid {
@@ -823,6 +857,11 @@ textarea::placeholder { color: var(--text-light); }
 /* ——— Mood tracker (grid by day) ——— */
 .mood-tracker-wrap {
   margin-bottom: 1.5rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
 }
 .mood-tracker-wrap h2 {
   font-family: var(--font-head);
@@ -833,76 +872,93 @@ textarea::placeholder { color: var(--text-light); }
 }
 .mood-tracker-header {
   display: grid;
-  grid-template-columns: 100px 1fr 1fr;
+  grid-template-columns: 110px 1fr 1fr;
   gap: 1rem;
-  padding: 0.5rem 1.2rem;
-  font-size: 0.75rem;
+  padding: 0.6rem 0;
+  font-size: 0.7rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-muted);
-  border-bottom: 1px solid var(--divider);
+  border-bottom: 2px solid var(--divider);
   margin-bottom: 0.5rem;
 }
+.mood-tracker-header .mood-day-date { color: var(--text-secondary); }
 .mood-col-will { color: var(--primary); }
 .mood-col-jolene { color: var(--secondary); }
-@media (max-width: 640px) {
-  .mood-tracker-header { grid-template-columns: 1fr 1fr; }
-  .mood-tracker-header .mood-day-date { display: none; }
-}
 .mood-tracker-grid {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
+}
+.mood-tracker-grid .loading {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.9rem;
 }
 .mood-day-card {
   display: grid;
-  grid-template-columns: 100px 1fr 1fr;
+  grid-template-columns: 110px 1fr 1fr;
   align-items: start;
   gap: 1rem;
-  padding: 1rem 1.2rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow);
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  min-width: 0;
 }
+.mood-day-card:last-child { border-bottom: none; }
 @media (max-width: 640px) {
+  .mood-tracker-header {
+    grid-template-columns: 1fr 1fr;
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .mood-tracker-header .mood-day-date { display: none; }
   .mood-day-card {
     grid-template-columns: 1fr 1fr;
     gap: 0.75rem;
+    padding: 1rem 0;
   }
-  .mood-day-card .mood-day-date { grid-column: 1 / -1; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border-soft); }
+  .mood-day-card .mood-day-date {
+    grid-column: 1 / -1;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.25rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
 }
 .mood-day-date {
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: var(--text);
+  line-height: 1.3;
 }
-.mood-day-will, .mood-day-jolene {
+.mood-day-will,
+.mood-day-jolene {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
 }
 .mood-score-pill {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 2.25rem;
-  height: 2.25rem;
+  min-width: 2.5rem;
+  height: 2rem;
   padding: 0 0.5rem;
   border-radius: var(--radius-pill);
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text);
+  align-self: flex-start;
 }
 .mood-score-pill.will { background: var(--pastel-sky); border: 1px solid var(--primary); }
 .mood-score-pill.jolene { background: var(--pastel-lilac); border: 1px solid var(--secondary); }
 .mood-day-note {
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-top: 0.25rem;
   line-height: 1.4;
+  word-break: break-word;
 }
 .mood-checkin-section { margin-top: 1.5rem; }
 .mood-checkin-section h2 {
