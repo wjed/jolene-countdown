@@ -2,110 +2,463 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>will + jolene</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      var t = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
   <link rel="stylesheet" href="css/style.css">
-  <script>try{var t=localStorage.getItem('will-jolene-theme');if(t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
 </head>
 <body>
-  <nav class="site-nav">
-    <a href="index.html" class="nav-logo">will + jolene</a>
-    <button type="button" class="nav-toggle" id="navToggle" aria-label="Toggle menu"><i class="bi bi-list"></i></button>
-    <div class="nav-links" id="navLinks">
-      <a href="messages.html">messages</a>
-      <a href="lifts.html">lifts</a>
-      <a href="mood.html">mood</a>
-      <a href="photos.html">photos</a>
-      <a href="notes.html">notes</a>
-      <a href="timeline.html">timeline</a>
-      <a href="weather.html">weather</a>
-      <a href="distance.html">distance</a>
-      <a href="music.html">music</a>
-      <a href="qotd.html">question of the day</a>
-      <button type="button" id="themeToggle" class="nav-theme-link" aria-label="Switch to dark mode" title="Dark mode"><i class="bi bi-moon-fill"></i></button>
+
+<!-- INTRO OVERLAY -->
+<div id="intro">
+  <span id="intro-text"></span>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-top">
+      <div class="brand">
+        <div class="brand-icon">&#9825;</div>
+        <span class="brand-name">will + jolene</span>
+      </div>
+      <button class="icon-btn theme-toggle" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
     </div>
-  </nav>
-
-  <main class="main">
-    <div class="container">
-      <section class="hero">
-        <h1>will + jolene</h1>
-        <p class="countdown-label">Time until next visit</p>
-        <div class="countdown" id="countdown" aria-live="polite">
-          <div class="countdown-unit"><span class="countdown-num" id="cdDays">—</span><span class="countdown-label-unit">days</span></div>
-          <div class="countdown-unit"><span class="countdown-num" id="cdHours">—</span><span class="countdown-label-unit">hours</span></div>
-          <div class="countdown-unit"><span class="countdown-num" id="cdMins">—</span><span class="countdown-label-unit">min</span></div>
-        </div>
-        <p class="live-time" id="liveTime"></p>
-        <p class="moon-phase" id="moonPhase"></p>
-
-        <div class="school-logos hero-logos">
-          <img src="school_logos/jmu_logo.png" alt="JMU" class="school-logo" onerror="this.style.display='none'">
-          <img src="school_logos/psu_logo.png" alt="Penn State" class="school-logo" onerror="this.style.display='none'">
-        </div>
-
-        <div class="cards">
-          <a href="messages.html" class="card-link"><i class="bi bi-chat-dots"></i><span>messages</span></a>
-          <a href="lifts.html" class="card-link"><i class="bi bi-heart-pulse"></i><span>lifts</span></a>
-          <a href="mood.html" class="card-link"><i class="bi bi-emoji-smile"></i><span>mood</span></a>
-          <a href="photos.html" class="card-link"><i class="bi bi-images"></i><span>photos</span></a>
-          <a href="notes.html" class="card-link"><i class="bi bi-journal-text"></i><span>notes</span></a>
-          <a href="timeline.html" class="card-link"><i class="bi bi-calendar3"></i><span>timeline</span></a>
-          <a href="weather.html" class="card-link"><i class="bi bi-cloud-sun"></i><span>weather</span></a>
-          <a href="distance.html" class="card-link"><i class="bi bi-geo-alt"></i><span>distance</span></a>
-          <a href="music.html" class="card-link"><i class="bi bi-music-note-beamed"></i><span>music</span></a>
-          <a href="qotd.html" class="card-link"><i class="bi bi-patch-question"></i><span>question of the day</span></a>
-        </div>
-      </section>
+    <div class="sidebar-body">
+      <div class="sidebar-label">Topics</div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn" data-qa="about">About Us</button>
+        <button class="nav-btn" data-qa="met">How We Met</button>
+        <button class="nav-btn" data-qa="timeline">Our Timeline</button>
+        <button class="nav-btn" data-qa="notes">Notes from Will</button>
+        <button class="nav-btn" data-qa="distance">Long Distance</button>
+        <button class="nav-btn" data-qa="future">What's Next</button>
+        <button class="nav-btn" data-qa="photos">Our Photos</button>
+        <button class="nav-btn" data-qa="fun">Fun Facts</button>
+      </nav>
     </div>
-  </main>
+    <div class="sidebar-footer">
+      <span class="sidebar-tagline">est. january 17, 2026</span>
+    </div>
+  </aside>
 
-  <script src="js/shared.js"></script>
-  <script>
-    function updateCountdown() {
-      var target = new Date('2026-03-12T18:30:00-05:00');
-      var now = new Date();
-      var diff = target - now;
-      var daysEl = document.getElementById('cdDays');
-      var hoursEl = document.getElementById('cdHours');
-      var minsEl = document.getElementById('cdMins');
-      if (!daysEl || !hoursEl || !minsEl) return;
-      if (diff <= 0) { daysEl.textContent = '0'; hoursEl.textContent = '0'; minsEl.textContent = '0'; return; }
-      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      daysEl.textContent = String(days);
-      hoursEl.textContent = String(hours).padStart(2, '0');
-      minsEl.textContent = String(mins).padStart(2, '0');
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- MAIN -->
+  <div class="main" id="mainArea">
+    <!-- Mobile header -->
+    <header class="mobile-hdr">
+      <button class="icon-btn" id="mobileSidebarBtn" aria-label="Open sidebar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <span class="mobile-title">will + jolene</span>
+      <button class="icon-btn theme-toggle" id="mobileThemeBtn" aria-label="Toggle theme">
+        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+    </header>
+
+    <!-- Welcome screen -->
+    <div class="welcome" id="welcome">
+      <div class="welcome-inner">
+        <div class="couple-avatar">
+          <img src="images/IMG_6354.jpg" alt="Will and Jolene" onerror="this.style.display='none';this.parentElement.classList.add('avatar-fallback')">
+        </div>
+        <h1 class="welcome-h1">will + jolene</h1>
+        <p class="welcome-tagline">together since january 17, 2026 &middot; jmu &amp; penn state</p>
+        <p class="welcome-desc">Ask anything about us &mdash; how we met, our story, notes, what&rsquo;s next.</p>
+        <div class="prompt-grid">
+          <button class="prompt-card" data-qa="about">
+            <div class="prompt-card-title">Who are Will and Jolene?</div>
+            <div class="prompt-card-desc">The basics about us</div>
+          </button>
+          <button class="prompt-card" data-qa="met">
+            <div class="prompt-card-title">How did they meet?</div>
+            <div class="prompt-card-desc">The beginning of the story</div>
+          </button>
+          <button class="prompt-card" data-qa="timeline">
+            <div class="prompt-card-title">Our timeline</div>
+            <div class="prompt-card-desc">From 2021 to now and beyond</div>
+          </button>
+          <button class="prompt-card" data-qa="notes">
+            <div class="prompt-card-title">Notes from Will</div>
+            <div class="prompt-card-desc">Things Will wrote for Jolene</div>
+          </button>
+          <button class="prompt-card" data-qa="distance">
+            <div class="prompt-card-title">Long distance</div>
+            <div class="prompt-card-desc">JMU and Penn State, ~175 miles apart</div>
+          </button>
+          <button class="prompt-card" data-qa="future">
+            <div class="prompt-card-title">What's next</div>
+            <div class="prompt-card-desc">Graduation, Palantir, and beyond</div>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Messages -->
+    <div class="messages" id="messages"></div>
+
+    <!-- Input area -->
+    <div class="input-area">
+      <div class="suggestions" id="suggestions"></div>
+      <div class="input-box">
+        <textarea
+          id="inputText"
+          placeholder="Ask about Will and Jolene..."
+          rows="1"
+          aria-label="Ask a question"
+        ></textarea>
+        <button class="send-btn" id="sendBtn" disabled aria-label="Send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+        </button>
+        <button class="stop-btn" id="stopBtn" aria-label="Stop" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+        </button>
+      </div>
+      <p class="disclaimer">built with love by will, for jolene</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── BACKGROUND-SAFE TIMER ─────────────────────────────────────
+var wTimeout;
+try {
+  var _tw = new Worker(URL.createObjectURL(new Blob(
+    ['self.onmessage=function(e){setTimeout(function(){self.postMessage(e.data)},e.data.d)}'],
+    {type:'application/javascript'}
+  )));
+  var _tcb = {}, _tid = 0;
+  _tw.onmessage = function(e) { var f=_tcb[e.data.id]; if(f){delete _tcb[e.data.id];f();} };
+  wTimeout = function(fn, delay) { var id=++_tid; _tcb[id]=fn; _tw.postMessage({id:id,d:delay}); };
+} catch(e) { wTimeout = function(fn, delay) { setTimeout(fn, delay); }; }
+
+// ── INTRO ANIMATION ───────────────────────────────────────────
+(function() {
+  var intro = document.getElementById('intro');
+  var container = document.getElementById('intro-text');
+  var lines = [
+    'hi, welcome to will + jolene.',
+    'this is our little corner of the internet',
+    'built to keep everything in one place',
+    'ask us anything.',
+  ];
+  var CHAR_MS = 40, LINE_PAUSE = 300, lineIdx = 0, activeEl = null;
+  function nextLine() {
+    if (lineIdx >= lines.length) {
+      if (activeEl) activeEl.classList.add('done');
+      wTimeout(function() { intro.classList.add('fade-out'); wTimeout(function() { intro.remove(); }, 800); }, 700);
+      return;
     }
-    function updateLiveTime() {
-      var el = document.getElementById('liveTime');
-      if (!el) return;
-      var t = new Date().toLocaleTimeString('en-US', { timeZone: 'America/New_York', hour: 'numeric', minute: '2-digit', second: '2-digit', hour12: true });
-      el.textContent = 'Harrisonburg ' + t + ' · State College ' + t;
+    if (activeEl) activeEl.classList.add('done');
+    var span = document.createElement('span');
+    span.className = 'intro-line';
+    container.appendChild(span);
+    activeEl = span;
+    var text = lines[lineIdx++], i = 0;
+    function typeChar() {
+      if (i < text.length) { span.textContent += text[i++]; wTimeout(typeChar, CHAR_MS); }
+      else { wTimeout(nextLine, LINE_PAUSE); }
     }
-    function getMoonPhase() {
-      var now = new Date();
-      var y = now.getFullYear(), m = now.getMonth() + 1, d = now.getDate();
-      var c = m < 3 ? y - 1 : y, e = m < 3 ? m + 12 : m;
-      var jd = Math.floor(365.25 * c) + Math.floor(30.6001 * (e + 1)) + d - 694039.09;
-      jd = jd / 29.5305882;
-      var b = Math.round((jd - Math.floor(jd)) * 8);
-      if (b >= 8) b = 0;
-      var phases = ['new moon', 'waxing crescent', 'first quarter', 'waxing gibbous', 'full moon', 'waning gibbous', 'last quarter', 'waning crescent'];
-      var emoji = ['🌑','🌒','🌓','🌔','🌕','🌖','🌗','🌘'];
-      return emoji[b] + ' ' + phases[b];
+    typeChar();
+  }
+  nextLine();
+})();
+
+// ── Q&A DATABASE ──────────────────────────────────────────────
+var QA = {
+  about: {
+    question: "Who are Will and Jolene?",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** goes to **James Madison University** (JMU) in Harrisonburg, Virginia — graduating in May 2026, a year early, as the top student in his major. After graduation he's heading to **Palantir Technologies** in DC.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028.\n\nRight now they're in a long-distance relationship — about **175 miles apart** — but they make it work. Will built this site as part of that.",
+    suggestions: ["met", "distance", "future"]
+  },
+  met: {
+    question: "How did Will and Jolene meet?",
+    answer: "Will and Jolene met in **August 2021**. They knew each other for years before things became official — one of the early memories is a fair date on **June 22, 2022**.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** — and she said yes.\n\nTheir first Valentine's Day as a couple was **February 14, 2026**.",
+    suggestions: ["timeline", "notes", "about"]
+  },
+  timeline: {
+    question: "What's the relationship timeline?",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date — one of the early, good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nWill + Jolene + Will's mom — dinner.\n\n**March 13, 2026**\nWill + Jolene + Will's grandparents — dinner.\n\n**March 14, 2026**\nWill + Jolene + Jolene's parents — dinner.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* — Will's exact words.",
+    suggestions: ["notes", "future", "about"]
+  },
+  notes: {
+    question: "What has Will written to Jolene?",
+    answer: "Will keeps notes — little things he wants Jolene to see and remember.\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*",
+    suggestions: ["timeline", "about", "future"]
+  },
+  distance: {
+    question: "How far apart are they?",
+    answer: "Will is at **JMU in Harrisonburg, VA**. Jolene is at **Penn State in State College, PA**.\n\nThe distance between them is roughly **175 miles** — about a 3-hour drive. Long distance isn't easy, but they make it work.\n\nWill works out at **JMU UREC**. Jolene goes to **Planet Fitness** in State College. Different gyms, same dedication.\n\nThe original version of this site had a shared gym log, mood tracker, messaging, and a daily question of the day. Now it's something simpler — a place to ask about them.",
+    suggestions: ["about", "timeline", "future"]
+  },
+  future: {
+    question: "What's next for Will and Jolene?",
+    answer: "A lot of good things are coming.\n\n**May 2026** — Will graduates from JMU, a year early, at 20 years old.\n\n**Summer 2026** — Will interns at the **Department of Justice** in DC.\n\n**August 2026** — Will joins **Palantir Technologies** full-time as a Deployment Strategist in DC, working on AI and data systems for defense and intelligence. He's also starting a **Master's in Computer Science at Georgia Tech** that fall.\n\n**May 2028** — Jolene graduates from Penn State.\n\n**2028 and beyond** — Will's exact words from the timeline: *\"tbd idk maybe marry me plz ty.\"*",
+    suggestions: ["timeline", "about", "notes"]
+  },
+  photos: {
+    question: "Where are all our photos?",
+    answer: "Here are all of them.\n\n![Will and Jolene](images/IMG_0321.jpg)\n\n![Will and Jolene](images/IMG_0972.jpg)\n\n![Will and Jolene](images/IMG_0993.jpg)\n\n![Will and Jolene](images/IMG_6354.jpg)\n\n![Will and Jolene](images/IMG_6732.jpg)\n\n![Will and Jolene](images/IMG_6780.jpg)\n\n![Will and Jolene](images/IMG_6786.jpg)\n\n![Will and Jolene](images/IMG_6830.jpg)\n\n![Will and Jolene](images/IMG_6831.jpg)\n\n![Will and Jolene](images/IMG_6832.jpg)\n\n![Will and Jolene](images/IMG_7253.jpg)\n\n![Will and Jolene](images/IMG_7653.jpg)\n\n![Will and Jolene](images/IMG_9225.jpg)\n\n![Will and Jolene](images/IMG_9627.jpg)",
+    suggestions: ["about", "notes", "timeline"]
+  },
+  fun: {
+    question: "Tell me something fun about them",
+    answer: "A few things worth knowing:\n\n- Will built this site himself. It started as a countdown clock with shared messages, a gym log, mood tracking, and a daily question of the day. Now it's a chatbot about the two of them.\n- Their relationship timeline literally ends with *\"tbd idk maybe marry me plz ty\"* — which is very Will.\n- Will has been writing notes to Jolene since the week they started dating.\n- They're ~175 miles apart. A 3-hour drive. Worth every one.\n- Will is graduating JMU as the top student in his major, a year early, at 20. Jolene is brilliant too — Will's words: *\"so proud of u; so unbelivably smart.\"*\n- They became official on January 17, 2026 and had their first Valentine's Day together exactly 28 days later.",
+    suggestions: ["notes", "timeline", "about"]
+  }
+};
+
+// ── KEYWORD MATCHING ──────────────────────────────────────────
+var KEYWORD_MAP = [
+  { keys: ['who', 'about', 'tell me', 'overview', 'both', 'couple', 'hi', 'hello', 'hey', 'what is', 'introduce'], id: 'about' },
+  { keys: ['meet', 'met', 'start', 'beginning', 'first', 'how did', 'story', 'origin', 'fair'], id: 'met' },
+  { keys: ['timeline', 'history', 'when', 'date', 'dates', 'january', 'official', 'milestone', 'event', 'order', 'chronolog'], id: 'timeline' },
+  { keys: ['note', 'notes', 'wrote', 'write', 'written', 'letter', 'message', 'said', 'words', 'quotes'], id: 'notes' },
+  { keys: ['distance', 'far', 'miles', 'long distance', 'jmu', 'penn state', 'apart', 'harrisonburg', 'state college', 'gym', 'urec', 'planet fitness', 'drive'], id: 'distance' },
+  { keys: ['future', 'next', 'plan', 'plans', 'graduation', 'graduate', 'palantir', 'after', 'coming', 'upcoming', 'doj', 'georgia tech', 'marry', 'marriage', 'wedding', 'ring'], id: 'future' },
+  { keys: ['photo', 'photos', 'picture', 'pictures', 'image', 'images', 'pic', 'pics', 'look', 'see them', 'show'], id: 'photos' },
+  { keys: ['fun', 'fact', 'facts', 'interesting', 'misc', 'random', 'something about', 'tell me something', 'cool'], id: 'fun' }
+];
+
+// ── STATE ──────────────────────────────────────────────────────
+var chatActive = false, isStreaming = false, stopRequested = false, activeNavBtn = null;
+
+function setStreaming(val) {
+  isStreaming = val;
+  var stopBtn = document.getElementById('stopBtn');
+  var sendBtn = document.getElementById('sendBtn');
+  if (stopBtn) stopBtn.style.display = val ? 'flex' : 'none';
+  if (sendBtn) sendBtn.style.display = val ? 'none' : 'flex';
+}
+
+// ── MARKDOWN PARSER ───────────────────────────────────────────
+function md(text) {
+  var out = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  out = out.replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  var lines = out.split('\n'), result = [], i = 0;
+  while (i < lines.length) {
+    var line = lines[i];
+    if (line.startsWith('## ')) { result.push({ type:'block', html:'<h3 class="mh">'+line.slice(3)+'</h3>' }); i++; continue; }
+    if (line.trim() === '---') { result.push({ type:'block', html:'<hr class="mhr">' }); i++; continue; }
+    var imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imgMatch) {
+      result.push({ type:'block', html:'<figure class="chat-img"><img src="'+imgMatch[2]+'" alt="'+imgMatch[1]+'" loading="lazy" onerror="this.parentElement.style.display=\'none\'"></figure>' });
+      i++; continue;
     }
-    updateCountdown();
-    setInterval(updateCountdown, 60000);
-    updateLiveTime();
-    setInterval(updateLiveTime, 1000);
-    var moonEl = document.getElementById('moonPhase');
-    if (moonEl) moonEl.textContent = "tonight's moon: " + getMoonPhase();
-  </script>
+    if (line.startsWith('- ')) {
+      var items = [];
+      while (i < lines.length && lines[i].startsWith('- ')) { items.push('<li>'+lines[i].slice(2)+'</li>'); i++; }
+      result.push({ type:'block', html:'<ul class="mul">'+items.join('')+'</ul>' }); continue;
+    }
+    if (line.trim() === '') { result.push({ type:'break' }); i++; continue; }
+    result.push({ type:'text', content:line }); i++;
+  }
+  var final = [], pBuf = [];
+  for (var ri = 0; ri < result.length; ri++) {
+    var r = result[ri];
+    if (r.type === 'text') { pBuf.push(r.content); }
+    else { if (pBuf.length) { final.push('<p>'+pBuf.join('<br>')+'</p>'); pBuf = []; } if (r.type === 'block') final.push(r.html); }
+  }
+  if (pBuf.length) final.push('<p>'+pBuf.join('<br>')+'</p>');
+  return final.join('\n');
+}
+
+// ── STREAMING ANIMATION ───────────────────────────────────────
+function streamHTML(element, htmlContent, onDone) {
+  var CHAR_DELAY = 8, CURSOR_HTML = '<span class="cursor"></span>';
+  var temp = document.createElement('div'); temp.innerHTML = htmlContent;
+  var blocks = Array.from(temp.children);
+  element.innerHTML = '';
+  var blockIdx = 0;
+  function nextBlock() {
+    if (blockIdx >= blocks.length) { onDone && onDone(); return; }
+    var src = blocks[blockIdx++], tag = src.tagName.toLowerCase();
+    if (tag === 'hr' || tag === 'figure') { element.appendChild(src.cloneNode(true)); scrollToBottom(); nextBlock(); return; }
+    if (tag === 'ul' || tag === 'ol') {
+      var listEl = document.createElement(tag);
+      if (src.className) listEl.className = src.className;
+      element.appendChild(listEl);
+      var liSrcs = Array.from(src.children), liIdx = 0;
+      function nextLi() {
+        if (liIdx >= liSrcs.length) { nextBlock(); return; }
+        var liEl = document.createElement('li'); listEl.appendChild(liEl);
+        typeTokens(liEl, liSrcs[liIdx++].innerHTML, nextLi);
+      }
+      nextLi(); return;
+    }
+    var el = document.createElement(tag);
+    if (src.className) el.className = src.className;
+    element.appendChild(el); typeTokens(el, src.innerHTML, nextBlock);
+  }
+  function tokenize(html) {
+    var tokens = [], re = /(<[^>]+>)|([^<])/g, m;
+    while ((m = re.exec(html)) !== null) tokens.push({ type: m[1] ? 'tag' : 'char', value: m[0] });
+    return tokens;
+  }
+  function typeTokens(el, html, onComplete) {
+    var tokens = tokenize(html), i = 0, built = '';
+    function step() {
+      if (stopRequested) { el.innerHTML = html; onComplete(); return; }
+      if (i >= tokens.length) { el.innerHTML = html; scrollToBottom(); onComplete(); return; }
+      var tok = tokens[i++]; built += tok.value; el.innerHTML = built + CURSOR_HTML;
+      if (tok.type === 'char') { if (i % 8 === 0) scrollToBottom(); wTimeout(step, CHAR_DELAY); }
+      else { wTimeout(step, 0); }
+    }
+    step();
+  }
+  nextBlock();
+}
+
+// ── CHAT LOGIC ────────────────────────────────────────────────
+function showChat() {
+  if (!chatActive) { chatActive = true; document.getElementById('mainArea').classList.add('chat-mode'); }
+}
+function scrollToBottom() {
+  var msgs = document.getElementById('messages'); msgs.scrollTop = msgs.scrollHeight;
+}
+function addUserMessage(text) {
+  var msgs = document.getElementById('messages');
+  var div = document.createElement('div'); div.className = 'msg msg-user';
+  div.innerHTML = '<div class="msg-bubble">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
+  msgs.appendChild(div); scrollToBottom();
+}
+function botAvatarHTML() {
+  return '<div class="bot-avatar"><img src="images/IMG_6354.jpg" alt="will + jolene" onerror="this.style.display=\'none\';this.parentElement.classList.add(\'avatar-fallback\')"></div>';
+}
+function addThinkingIndicator() {
+  var msgs = document.getElementById('messages');
+  var div = document.createElement('div'); div.className = 'msg msg-bot'; div.id = 'thinking';
+  div.innerHTML = botAvatarHTML()+'<div class="msg-body"><div class="thinking-dots"><span></span><span></span><span></span></div></div>';
+  msgs.appendChild(div); scrollToBottom(); return div;
+}
+function renderSuggestions(ids) {
+  var el = document.getElementById('suggestions'); el.innerHTML = '';
+  ids.forEach(function(id) {
+    if (!QA[id]) return;
+    var btn = document.createElement('button'); btn.className = 'suggestion-chip';
+    btn.textContent = QA[id].question;
+    btn.addEventListener('click', function() { triggerQuestion(id); });
+    el.appendChild(btn);
+  });
+}
+function setActiveNav(id) {
+  if (activeNavBtn) activeNavBtn.classList.remove('active');
+  var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
+  if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
+}
+function deliverAnswer(qaId) {
+  var qa = QA[qaId];
+  var thinking = addThinkingIndicator();
+  var delay = 600 + Math.random() * 400;
+  setTimeout(function() {
+    thinking.remove();
+    var msgs = document.getElementById('messages');
+    var div = document.createElement('div'); div.className = 'msg msg-bot';
+    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
+    msgs.appendChild(div);
+    var contentEl = div.querySelector('.msg-content');
+    streamHTML(contentEl, md(qa.answer), function() {
+      setStreaming(false); renderSuggestions(qa.suggestions); scrollToBottom();
+    });
+    scrollToBottom();
+  }, delay);
+}
+function triggerQuestion(id) {
+  if (isStreaming) return;
+  var qa = QA[id]; if (!qa) return;
+  setStreaming(true); stopRequested = false;
+  showChat(); setActiveNav(id); renderSuggestions([]);
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('show');
+  addUserMessage(qa.question);
+  setTimeout(function() { deliverAnswer(id); }, 40);
+}
+function matchQuestion(input) {
+  var lower = input.toLowerCase(), best = null, bestScore = 0;
+  KEYWORD_MAP.forEach(function(item) {
+    var score = 0;
+    item.keys.forEach(function(k) { if (lower.includes(k)) score++; });
+    if (score > bestScore) { bestScore = score; best = item.id; }
+  });
+  return bestScore > 0 ? best : null;
+}
+function handleSend() {
+  var input = document.getElementById('inputText');
+  var text = input.value.trim(); if (!text || isStreaming) return;
+  input.value = ''; input.style.height = '';
+  document.getElementById('sendBtn').disabled = true;
+  var matched = matchQuestion(text);
+  setStreaming(true); stopRequested = false;
+  showChat(); renderSuggestions([]);
+  addUserMessage(text);
+  if (matched) { setActiveNav(matched); setTimeout(function() { deliverAnswer(matched); }, 40); }
+  else {
+    var thinking = addThinkingIndicator();
+    setTimeout(function() {
+      thinking.remove();
+      var msgs = document.getElementById('messages');
+      var div = document.createElement('div'); div.className = 'msg msg-bot';
+      div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
+      msgs.appendChild(div);
+      var fallback = "I can answer questions about Will and Jolene — **how they met**, **their timeline**, **notes from Will**, **long distance**, **what's next**, and more. Try one of the suggestions below!";
+      streamHTML(div.querySelector('.msg-content'), md(fallback), function() {
+        setStreaming(false); renderSuggestions(['about', 'met', 'notes']); scrollToBottom();
+      });
+      scrollToBottom();
+    }, 700);
+  }
+}
+// ── THEME ──────────────────────────────────────────────────────
+function toggleTheme() {
+  var cur = document.documentElement.getAttribute('data-theme');
+  var next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('theme', next);
+}
+// ── INIT ───────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.prompt-card, .nav-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { triggerQuestion(btn.dataset.qa); });
+  });
+  document.getElementById('themeBtn').addEventListener('click', toggleTheme);
+  document.getElementById('mobileThemeBtn').addEventListener('click', toggleTheme);
+  document.getElementById('mobileSidebarBtn').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('sidebarOverlay').classList.add('show');
+  });
+  document.getElementById('sidebarOverlay').addEventListener('click', function() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('show');
+  });
+  var inputText = document.getElementById('inputText');
+  var sendBtn = document.getElementById('sendBtn');
+  inputText.addEventListener('input', function() {
+    inputText.style.height = 'auto';
+    inputText.style.height = Math.min(inputText.scrollHeight, 160) + 'px';
+    sendBtn.disabled = !inputText.value.trim();
+  });
+  inputText.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!sendBtn.disabled) handleSend(); }
+  });
+  sendBtn.addEventListener('click', handleSend);
+  document.getElementById('stopBtn').addEventListener('click', function() { stopRequested = true; });
+});
+</script>
 </body>
 </html>
