@@ -46,6 +46,7 @@
         <button class="nav-btn" data-qa="future">What's Next</button>
         <button class="nav-btn" data-qa="photos">Our Photos</button>
         <button class="nav-btn" data-qa="fun">Fun Facts</button>
+        <button class="nav-btn" data-qa="countdown">Next Visit</button>
       </nav>
     </div>
     <div class="sidebar-footer">
@@ -79,6 +80,12 @@
         <h1 class="welcome-h1">will + jolene</h1>
         <p class="welcome-tagline">together since january 17, 2026 &middot; jmu &amp; penn state</p>
         <p class="welcome-desc">how we met, our story, notes, photos, what's next.</p>
+        <div class="next-visit" id="nextVisitWelcome">
+          <span class="next-visit-label">next visit in</span>
+          <div class="next-visit-timer">
+            <span id="nv-d">--</span><span class="nv-sep">d</span><span id="nv-h">--</span><span class="nv-sep">h</span><span id="nv-m">--</span><span class="nv-sep">m</span><span id="nv-s">--</span><span class="nv-sep">s</span>
+          </div>
+        </div>
         <div class="prompt-grid">
           <button class="prompt-card" data-qa="about">
             <div class="prompt-card-title">Who are Will and Jolene?</div>
@@ -103,6 +110,10 @@
           <button class="prompt-card" data-qa="future">
             <div class="prompt-card-title">What's next</div>
             <div class="prompt-card-desc">Graduation, Palantir, and beyond</div>
+          </button>
+          <button class="prompt-card" data-qa="countdown">
+            <div class="prompt-card-title">Next visit</div>
+            <div class="prompt-card-desc">Countdown to March 12</div>
           </button>
         </div>
       </div>
@@ -215,12 +226,80 @@ var QA = {
     answer: "Here are all of them.\n\n![Will and Jolene](images/IMG_0321.jpg)\n\n![Will and Jolene](images/IMG_0972.jpg)\n\n![Will and Jolene](images/IMG_0993.jpg)\n\n![Will and Jolene](images/IMG_6354.jpg)\n\n![Will and Jolene](images/IMG_6732.jpg)\n\n![Will and Jolene](images/IMG_6780.jpg)\n\n![Will and Jolene](images/IMG_6786.jpg)\n\n![Will and Jolene](images/IMG_6830.jpg)\n\n![Will and Jolene](images/IMG_6831.jpg)\n\n![Will and Jolene](images/IMG_6832.jpg)\n\n![Will and Jolene](images/IMG_7253.jpg)\n\n![Will and Jolene](images/IMG_7653.jpg)\n\n![Will and Jolene](images/IMG_9225.jpg)\n\n![Will and Jolene](images/IMG_9627.jpg)",
     suggestions: ["about", "notes", "timeline"]
   },
+  countdown: {
+    question: "When does Will see Jolene next?",
+    answer: "Next visit: **March 12, 2026 at 9:30 PM EST**\n\nWill and Jolene are seeing each other on March 12, meeting Will's mom and grandparents, and then Jolene's parents.",
+    suggestions: ["notes", "timeline", "future"]
+  },
   fun: {
     question: "Tell me something fun about them",
     answer: "A few things:\n\n- Will's exact words on the timeline for 2028 and beyond: *\"tbd idk maybe marry me plz ty\"*\n- Will has been writing notes to Jolene since the week they started dating.\n- They're 175 miles apart. About a 3-hour drive.\n- Will is graduating JMU as the top student in his major, a year early, at 20. Jolene is brilliant too. Will's words: *\"so proud of u; so unbelivably smart.\"*\n- They became official on January 17, 2026. First Valentine's Day together was 28 days later.",
     suggestions: ["notes", "timeline", "about"]
   }
 };
+
+// ── COUNTDOWN ─────────────────────────────────────────────────
+var NEXT_VISIT = new Date('2026-03-13T02:30:00Z'); // Mar 12 9:30 PM EST
+function getCountdownParts() {
+  var diff = NEXT_VISIT - Date.now();
+  if (diff <= 0) return null;
+  var s = Math.floor(diff / 1000);
+  var d = Math.floor(s / 86400); s -= d * 86400;
+  var h = Math.floor(s / 3600); s -= h * 3600;
+  var m = Math.floor(s / 60); s -= m * 60;
+  return { d: d, h: h, m: m, s: s };
+}
+function pad(n) { return n < 10 ? '0'+n : ''+n; }
+function startWelcomeCountdown() {
+  var el = document.getElementById('nextVisitWelcome');
+  if (!el) return;
+  function tick() {
+    var p = getCountdownParts();
+    if (!p) {
+      el.innerHTML = '<span class="next-visit-passed">see you soon &#9825;</span>';
+      return;
+    }
+    document.getElementById('nv-d').textContent = p.d;
+    document.getElementById('nv-h').textContent = pad(p.h);
+    document.getElementById('nv-m').textContent = pad(p.m);
+    document.getElementById('nv-s').textContent = pad(p.s);
+  }
+  tick();
+  setInterval(tick, 1000);
+}
+function injectCountdownWidget(parentEl, suggestions) {
+  var widget = document.createElement('div');
+  widget.className = 'countdown-widget';
+  var p = getCountdownParts();
+  if (!p) {
+    widget.innerHTML = '<div class="cd-date">March 12, 2026 at 9:30 PM EST</div><div class="cd-passed">see you soon &#9825;</div>';
+    parentEl.appendChild(widget); return;
+  }
+  widget.innerHTML =
+    '<div class="cd-date">March 12, 2026 at 9:30 PM EST</div>'+
+    '<div class="countdown-grid">'+
+      '<div class="cd-unit"><span class="cd-num" id="cw-d">'+p.d+'</span><span class="cd-label">days</span></div>'+
+      '<div class="cd-unit"><span class="cd-num" id="cw-h">'+pad(p.h)+'</span><span class="cd-label">hours</span></div>'+
+      '<div class="cd-unit"><span class="cd-num" id="cw-m">'+pad(p.m)+'</span><span class="cd-label">minutes</span></div>'+
+      '<div class="cd-unit"><span class="cd-num" id="cw-s">'+pad(p.s)+'</span><span class="cd-label">seconds</span></div>'+
+    '</div>';
+  parentEl.appendChild(widget);
+  var iv = setInterval(function() {
+    var q = getCountdownParts();
+    if (!q) {
+      clearInterval(iv);
+      widget.innerHTML = '<div class="cd-date">March 12, 2026 at 9:30 PM EST</div><div class="cd-passed">see you soon &#9825;</div>';
+      return;
+    }
+    var dEl=document.getElementById('cw-d'), hEl=document.getElementById('cw-h'),
+        mEl=document.getElementById('cw-m'), sEl=document.getElementById('cw-s');
+    if (dEl) dEl.textContent = q.d;
+    if (hEl) hEl.textContent = pad(q.h);
+    if (mEl) mEl.textContent = pad(q.m);
+    if (sEl) sEl.textContent = pad(q.s);
+    scrollToBottom();
+  }, 1000);
+}
 
 // ── KEYWORD MATCHING ──────────────────────────────────────────
 var KEYWORD_MAP = [
@@ -231,6 +310,7 @@ var KEYWORD_MAP = [
   { keys: ['distance', 'far', 'miles', 'long distance', 'jmu', 'penn state', 'apart', 'harrisonburg', 'state college', 'gym', 'urec', 'planet fitness', 'drive'], id: 'distance' },
   { keys: ['future', 'next', 'plan', 'plans', 'graduation', 'graduate', 'palantir', 'after', 'coming', 'upcoming', 'doj', 'georgia tech', 'marry', 'marriage', 'wedding', 'ring'], id: 'future' },
   { keys: ['photo', 'photos', 'picture', 'pictures', 'image', 'images', 'pic', 'pics', 'look', 'see them', 'show'], id: 'photos' },
+  { keys: ['countdown', 'when', 'next visit', 'see jolene', 'see will', 'next time', 'visit'], id: 'countdown' },
   { keys: ['fun', 'fact', 'facts', 'interesting', 'misc', 'random', 'something about', 'tell me something', 'cool'], id: 'fun' }
 ];
 
@@ -374,6 +454,7 @@ function deliverAnswer(qaId) {
     msgs.appendChild(div);
     var contentEl = div.querySelector('.msg-content');
     streamHTML(contentEl, md(qa.answer), function() {
+      if (qaId === 'countdown') injectCountdownWidget(contentEl, qa.suggestions);
       setStreaming(false); renderSuggestions(qa.suggestions); scrollToBottom();
     });
     scrollToBottom();
@@ -458,6 +539,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   sendBtn.addEventListener('click', handleSend);
   document.getElementById('stopBtn').addEventListener('click', function() { stopRequested = true; });
+  startWelcomeCountdown();
 });
 </script>
 </body>

@@ -360,3 +360,77 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
 ::selection { background: rgba(45,158,95,.2); color: var(--text); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* ── COUNTDOWN ───────────────────────────────────────────────── */
+.next-visit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 12px 0 20px;
+}
+.next-visit-label {
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.next-visit-timer {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: .02em;
+  font-variant-numeric: tabular-nums;
+}
+.nv-sep {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--text-3);
+  margin: 0 4px 0 1px;
+}
+.nv-sep:last-child { margin-right: 0; }
+.next-visit-passed { color: var(--text-2); font-size: 14px; }
+.countdown-widget {
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: var(--accent-faint);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.cd-date {
+  font-size: 13px;
+  color: var(--text-2);
+  margin-bottom: 14px;
+}
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+.cd-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.cd-num {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.cd-label {
+  font-size: 11px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.cd-passed {
+  font-size: 14px;
+  color: var(--text-2);
+  padding: 8px 0;
+}
+@media (max-width: 680px) {
+  .next-visit { align-items: flex-start; }
+  .cd-num { font-size: 22px; }
+}
