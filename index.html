@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <script>
     (function() {
-      var t = localStorage.getItem('theme') || 'light';
+      var t = localStorage.getItem('theme') || 'dark';
       document.documentElement.setAttribute('data-theme', t);
     })();
   </script>
@@ -78,7 +78,7 @@
         </div>
         <h1 class="welcome-h1">will + jolene</h1>
         <p class="welcome-tagline">together since january 17, 2026 &middot; jmu &amp; penn state</p>
-        <p class="welcome-desc">Ask anything about us &mdash; how we met, our story, notes, what&rsquo;s next.</p>
+        <p class="welcome-desc">Ask anything &mdash; how we met, our story, notes, what&rsquo;s next.</p>
         <div class="prompt-grid">
           <button class="prompt-card" data-qa="about">
             <div class="prompt-card-title">Who are Will and Jolene?</div>
@@ -151,10 +151,10 @@ try {
   var intro = document.getElementById('intro');
   var container = document.getElementById('intro-text');
   var lines = [
-    'hi, welcome to will + jolene.',
-    'this is our little corner of the internet',
-    'built to keep everything in one place',
-    'ask us anything.',
+    'hi jolene.',
+    'i know i get super busy sometimes',
+    'so i made you this',
+    'everything about us, right here.',
   ];
   var CHAR_MS = 40, LINE_PAUSE = 300, lineIdx = 0, activeEl = null;
   function nextLine() {
@@ -202,7 +202,7 @@ var QA = {
   },
   distance: {
     question: "How far apart are they?",
-    answer: "Will is at **JMU in Harrisonburg, VA**. Jolene is at **Penn State in State College, PA**.\n\nThe distance between them is roughly **175 miles** — about a 3-hour drive. Long distance isn't easy, but they make it work.\n\nWill works out at **JMU UREC**. Jolene goes to **Planet Fitness** in State College. Different gyms, same dedication.\n\nThe original version of this site had a shared gym log, mood tracker, messaging, and a daily question of the day. Now it's something simpler — a place to ask about them.",
+    answer: "Will is at **JMU in Harrisonburg, VA**. Jolene is at **Penn State in State College, PA**.\n\nThe distance between them is roughly **175 miles** — about a 3-hour drive. Long distance isn't easy, but they make it work.\n\nWill works out at **JMU UREC**. Jolene goes to **Planet Fitness** in State College. Different gyms, same dedication.",
     suggestions: ["about", "timeline", "future"]
   },
   future: {
@@ -217,7 +217,7 @@ var QA = {
   },
   fun: {
     question: "Tell me something fun about them",
-    answer: "A few things worth knowing:\n\n- Will built this site himself. It started as a countdown clock with shared messages, a gym log, mood tracking, and a daily question of the day. Now it's a chatbot about the two of them.\n- Their relationship timeline literally ends with *\"tbd idk maybe marry me plz ty\"* — which is very Will.\n- Will has been writing notes to Jolene since the week they started dating.\n- They're ~175 miles apart. A 3-hour drive. Worth every one.\n- Will is graduating JMU as the top student in his major, a year early, at 20. Jolene is brilliant too — Will's words: *\"so proud of u; so unbelivably smart.\"*\n- They became official on January 17, 2026 and had their first Valentine's Day together exactly 28 days later.",
+    answer: "A few things:\n\n- Their relationship timeline ends with *\"tbd idk maybe marry me plz ty\"* — which is very Will.\n- Will has been writing notes to Jolene since the week they started dating.\n- They're ~175 miles apart. A 3-hour drive. Worth every one.\n- Will is graduating JMU as the top student in his major, a year early, at 20. Jolene is brilliant too — Will's words: *\"so proud of u; so unbelivably smart.\"*\n- They became official on January 17, 2026 and had their first Valentine's Day together exactly 28 days later.",
     suggestions: ["notes", "timeline", "about"]
   }
 };
