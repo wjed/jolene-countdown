@@ -3,21 +3,21 @@
    ============================================================ */
 /* ── VARIABLES ──────────────────────────────────────────────── */
 :root {
-  --bg:            #faf9f7;
-  --sidebar-bg:    #f0ede8;
-  --sidebar-hover: #e5e1da;
-  --sidebar-active:#ddd8cf;
-  --border:        #ddd8cf;
-  --text:          #1a1917;
-  --text-2:        #6b6760;
-  --text-3:        #9c9891;
+  --bg:            #f6f8f6;
+  --sidebar-bg:    #eaf0ea;
+  --sidebar-hover: #dde8dd;
+  --sidebar-active:#cfdecf;
+  --border:        #c8d8c8;
+  --text:          #1a1f1a;
+  --text-2:        #4d6b50;
+  --text-3:        #8aaa8d;
   --accent:        #2d9e5f;
   --accent-hover:  #258c52;
-  --accent-faint:  #edf7f2;
-  --user-bg:       #eceae4;
+  --accent-faint:  #e4f2e8;
+  --user-bg:       #e2ece2;
   --input-bg:      #ffffff;
-  --input-border:  #d5d1c8;
-  --card-hover:    #f5f2ec;
+  --input-border:  #b8ccb8;
+  --card-hover:    #dfe9df;
   --shadow-sm:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
   --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.06);
   --shadow-focus:  0 0 0 2px rgba(45,158,95,.35);
@@ -28,21 +28,21 @@
   --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 [data-theme="dark"] {
-  --bg:            #080f0a;
-  --sidebar-bg:    #060d08;
-  --sidebar-hover: #0f1f13;
-  --sidebar-active:#152b1b;
-  --border:        #1a3322;
-  --text:          #d4edd8;
-  --text-2:        #7aad88;
-  --text-3:        #3d6b4a;
+  --bg:            #0e1210;
+  --sidebar-bg:    #111510;
+  --sidebar-hover: #1a2118;
+  --sidebar-active:#1f2a1e;
+  --border:        #263022;
+  --text:          #dde8dd;
+  --text-2:        #8aaa8d;
+  --text-3:        #4d6b50;
   --accent:        #5dd88a;
   --accent-hover:  #70e09a;
-  --accent-faint:  #0c2416;
-  --user-bg:       #0f2117;
-  --input-bg:      #0a180f;
-  --input-border:  #1a3322;
-  --card-hover:    #0e1f14;
+  --accent-faint:  #12231a;
+  --user-bg:       #182118;
+  --input-bg:      #131a12;
+  --input-border:  #263022;
+  --card-hover:    #172018;
   --shadow-sm:     0 1px 3px rgba(0,0,0,.4);
   --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.3);
   --shadow-focus:  0 0 0 2px rgba(93,216,138,.4);
