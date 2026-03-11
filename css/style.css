@@ -3,21 +3,21 @@
    ============================================================ */
 /* ── VARIABLES ──────────────────────────────────────────────── */
 :root {
-  --bg:            #f6f8f6;
-  --sidebar-bg:    #eaf0ea;
-  --sidebar-hover: #dde8dd;
-  --sidebar-active:#cfdecf;
-  --border:        #c8d8c8;
-  --text:          #1a1f1a;
-  --text-2:        #4d6b50;
-  --text-3:        #8aaa8d;
+  --bg:            #faf9f7;
+  --sidebar-bg:    #f0ede8;
+  --sidebar-hover: #e5e1da;
+  --sidebar-active:#ddd8cf;
+  --border:        #ddd8cf;
+  --text:          #1a1917;
+  --text-2:        #6b6760;
+  --text-3:        #9c9891;
   --accent:        #2d9e5f;
   --accent-hover:  #258c52;
-  --accent-faint:  #e4f2e8;
-  --user-bg:       #e2ece2;
+  --accent-faint:  #edf7f2;
+  --user-bg:       #eceae4;
   --input-bg:      #ffffff;
-  --input-border:  #b8ccb8;
-  --card-hover:    #dfe9df;
+  --input-border:  #d5d1c8;
+  --card-hover:    #f5f2ec;
   --shadow-sm:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
   --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.06);
   --shadow-focus:  0 0 0 2px rgba(45,158,95,.35);

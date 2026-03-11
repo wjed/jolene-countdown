@@ -239,7 +239,7 @@ var QA = {
 };
 
 // ── COUNTDOWN ─────────────────────────────────────────────────
-var NEXT_VISIT = new Date('2026-03-13T02:30:00Z'); // Mar 12 9:30 PM EST
+var NEXT_VISIT = new Date('2026-03-13T01:30:00Z'); // Mar 12 9:30 PM EDT (UTC-4)
 function getCountdownParts() {
   var diff = NEXT_VISIT - Date.now();
   if (diff <= 0) return null;
