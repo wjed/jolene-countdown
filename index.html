@@ -301,18 +301,33 @@ function injectCountdownWidget(parentEl, suggestions) {
   }, 1000);
 }
 
-// ── KEYWORD MATCHING ──────────────────────────────────────────
-var KEYWORD_MAP = [
-  { keys: ['who', 'about', 'tell me', 'overview', 'both', 'couple', 'hi', 'hello', 'hey', 'what is', 'introduce'], id: 'about' },
-  { keys: ['meet', 'met', 'start', 'beginning', 'first', 'how did', 'story', 'origin', 'fair'], id: 'met' },
-  { keys: ['timeline', 'history', 'when', 'date', 'dates', 'january', 'official', 'milestone', 'event', 'order', 'chronolog'], id: 'timeline' },
-  { keys: ['note', 'notes', 'wrote', 'write', 'written', 'letter', 'message', 'said', 'words', 'quotes'], id: 'notes' },
-  { keys: ['distance', 'far', 'miles', 'long distance', 'jmu', 'penn state', 'apart', 'harrisonburg', 'state college', 'gym', 'urec', 'planet fitness', 'drive'], id: 'distance' },
-  { keys: ['future', 'next', 'plan', 'plans', 'graduation', 'graduate', 'palantir', 'after', 'coming', 'upcoming', 'doj', 'georgia tech', 'marry', 'marriage', 'wedding', 'ring'], id: 'future' },
-  { keys: ['photo', 'photos', 'picture', 'pictures', 'image', 'images', 'pic', 'pics', 'look', 'see them', 'show'], id: 'photos' },
-  { keys: ['countdown', 'when', 'next visit', 'see jolene', 'see will', 'next time', 'visit'], id: 'countdown' },
-  { keys: ['fun', 'fact', 'facts', 'interesting', 'misc', 'random', 'something about', 'tell me something', 'cool'], id: 'fun' }
-];
+// ── MISTRAL CONFIG ─────────────────────────────────────────────
+var WORKER_URL = 'https://jolene-countdown.jolene-proxy.workers.dev';
+var conversationId = null;
+var currentAbort = null;
+
+function callMistral(userMessage) {
+  if (currentAbort) { try { currentAbort.abort(); } catch(e) {} }
+  var controller = new AbortController();
+  currentAbort = controller;
+  return fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ conversationId: conversationId, inputs: [{ role: 'user', content: userMessage }] }),
+    signal: controller.signal
+  })
+    .then(function(resp) { return resp.json(); })
+    .then(function(data) {
+      if (data.conversation_id) conversationId = data.conversation_id;
+      var text = '';
+      if (data.outputs) {
+        data.outputs.forEach(function(o) {
+          if (o.type === 'message' && o.message && o.message.content) text += o.message.content;
+        });
+      }
+      return text || 'hmm, something went wrong on my end. try again!';
+    });
+}
 
 // ── STATE ──────────────────────────────────────────────────────
 var chatActive = false, isStreaming = false, stopRequested = false, activeNavBtn = null;
@@ -442,23 +457,35 @@ function setActiveNav(id) {
   var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
   if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
 }
-function deliverAnswer(qaId) {
-  var qa = QA[qaId];
+function deliverAIAnswer(userText, isCountdown) {
   var thinking = addThinkingIndicator();
-  var delay = 600 + Math.random() * 400;
-  setTimeout(function() {
+  callMistral(userText).then(function(answer) {
     thinking.remove();
+    if (stopRequested) { setStreaming(false); return; }
     var msgs = document.getElementById('messages');
     var div = document.createElement('div'); div.className = 'msg msg-bot';
     div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
     msgs.appendChild(div);
     var contentEl = div.querySelector('.msg-content');
-    streamHTML(contentEl, md(qa.answer), function() {
-      if (qaId === 'countdown') injectCountdownWidget(contentEl, qa.suggestions);
-      setStreaming(false); renderSuggestions(qa.suggestions); scrollToBottom();
+    streamHTML(contentEl, md(answer), function() {
+      if (isCountdown) injectCountdownWidget(contentEl, ['notes', 'future', 'about']);
+      setStreaming(false);
+      renderSuggestions(['met', 'notes', 'future', 'about']);
+      scrollToBottom();
     });
     scrollToBottom();
-  }, delay);
+  }).catch(function(err) {
+    if (err && err.name === 'AbortError') return;
+    thinking.remove();
+    setStreaming(false);
+    var msgs = document.getElementById('messages');
+    var div = document.createElement('div'); div.className = 'msg msg-bot';
+    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
+    msgs.appendChild(div);
+    streamHTML(div.querySelector('.msg-content'), md('hmm, something went wrong connecting. check the api key and try again!'), function() {
+      setStreaming(false);
+    });
+  });
 }
 function triggerQuestion(id) {
   if (isStreaming) return;
@@ -468,42 +495,17 @@ function triggerQuestion(id) {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('show');
   addUserMessage(qa.question);
-  setTimeout(function() { deliverAnswer(id); }, 40);
-}
-function matchQuestion(input) {
-  var lower = input.toLowerCase(), best = null, bestScore = 0;
-  KEYWORD_MAP.forEach(function(item) {
-    var score = 0;
-    item.keys.forEach(function(k) { if (lower.includes(k)) score++; });
-    if (score > bestScore) { bestScore = score; best = item.id; }
-  });
-  return bestScore > 0 ? best : null;
+  deliverAIAnswer(qa.question, id === 'countdown');
 }
 function handleSend() {
   var input = document.getElementById('inputText');
   var text = input.value.trim(); if (!text || isStreaming) return;
   input.value = ''; input.style.height = '';
   document.getElementById('sendBtn').disabled = true;
-  var matched = matchQuestion(text);
   setStreaming(true); stopRequested = false;
   showChat(); renderSuggestions([]);
   addUserMessage(text);
-  if (matched) { setActiveNav(matched); setTimeout(function() { deliverAnswer(matched); }, 40); }
-  else {
-    var thinking = addThinkingIndicator();
-    setTimeout(function() {
-      thinking.remove();
-      var msgs = document.getElementById('messages');
-      var div = document.createElement('div'); div.className = 'msg msg-bot';
-      div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
-      msgs.appendChild(div);
-      var fallback = "I can answer questions about Will and Jolene — **how they met**, **their timeline**, **notes from Will**, **long distance**, **what's next**, and more. Try one of the suggestions below!";
-      streamHTML(div.querySelector('.msg-content'), md(fallback), function() {
-        setStreaming(false); renderSuggestions(['about', 'met', 'notes']); scrollToBottom();
-      });
-      scrollToBottom();
-    }, 700);
-  }
+  deliverAIAnswer(text, false);
 }
 // ── THEME ──────────────────────────────────────────────────────
 function toggleTheme() {
