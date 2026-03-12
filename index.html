@@ -193,7 +193,7 @@ try {
   function nextLine() {
     if (lineIdx >= lines.length) {
       if (activeEl) activeEl.classList.add('done');
-      wTimeout(function() { intro.classList.add('fade-out'); wTimeout(function() { intro.remove(); }, 800); }, 700);
+      wTimeout(function() { intro.classList.add('fade-out'); wTimeout(function() { intro.remove(); deliverAutoIntro(); }, 800); }, 700);
       return;
     }
     if (activeEl) activeEl.classList.add('done');
@@ -544,6 +544,23 @@ function setActiveNav(id) {
   if (activeNavBtn) activeNavBtn.classList.remove('active');
   var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
   if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
+}
+function deliverAutoIntro() {
+  showChat();
+  setStreaming(true); stopRequested = false;
+  var thinking = addThinkingIndicator();
+  setTimeout(function() {
+    thinking.remove();
+    var msgs = document.getElementById('messages');
+    var div = document.createElement('div'); div.className = 'msg msg-bot';
+    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
+    msgs.appendChild(div);
+    var text = "hey jolene 💛\n\ni made this for you because i get super busy sometimes, and i'm not always the best at showing everything i feel.\n\nso i put it all in one place. our story, the timeline, every note i've written you, our photos, what's coming next for us — it's all here, whenever you want it.\n\nuse the sidebar to explore. i love you so much.\n\n— will";
+    streamHTML(div.querySelector('.msg-content'), md(text), function() {
+      setStreaming(false); scrollToBottom();
+    });
+    scrollToBottom();
+  }, 600);
 }
 function deliverAnswer(qaId) {
   var qa = QA[qaId];
