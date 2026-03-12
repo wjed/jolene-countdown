@@ -301,18 +301,40 @@ function injectCountdownWidget(parentEl, suggestions) {
   }, 1000);
 }
 
-// ── KEYWORD MATCHING ──────────────────────────────────────────
-var KEYWORD_MAP = [
-  { keys: ['who', 'about', 'tell me', 'overview', 'both', 'couple', 'hi', 'hello', 'hey', 'what is', 'introduce'], id: 'about' },
-  { keys: ['meet', 'met', 'start', 'beginning', 'first', 'how did', 'story', 'origin', 'fair'], id: 'met' },
-  { keys: ['timeline', 'history', 'when', 'date', 'dates', 'january', 'official', 'milestone', 'event', 'order', 'chronolog'], id: 'timeline' },
-  { keys: ['note', 'notes', 'wrote', 'write', 'written', 'letter', 'message', 'said', 'words', 'quotes'], id: 'notes' },
-  { keys: ['distance', 'far', 'miles', 'long distance', 'jmu', 'penn state', 'apart', 'harrisonburg', 'state college', 'gym', 'urec', 'planet fitness', 'drive'], id: 'distance' },
-  { keys: ['future', 'next', 'plan', 'plans', 'graduation', 'graduate', 'palantir', 'after', 'coming', 'upcoming', 'doj', 'georgia tech', 'marry', 'marriage', 'wedding', 'ring'], id: 'future' },
-  { keys: ['photo', 'photos', 'picture', 'pictures', 'image', 'images', 'pic', 'pics', 'look', 'see them', 'show'], id: 'photos' },
-  { keys: ['countdown', 'when', 'next visit', 'see jolene', 'see will', 'next time', 'visit'], id: 'countdown' },
-  { keys: ['fun', 'fact', 'facts', 'interesting', 'misc', 'random', 'something about', 'tell me something', 'cool'], id: 'fun' }
-];
+// ── CLAUDE CONFIG ──────────────────────────────────────────────
+var ANTHROPIC_API_KEY = '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';
+var CLAUDE_SYSTEM = 'you are a personal assistant built into a website that will made for jolene. your entire purpose is to talk to jolene. be warm, personal, and casual. always respond in all lowercase. you know will and jolene\'s whole story.\n\nwill and jolene are a couple. met august 2021, became official january 17 2026. will goes to jmu (harrisonburg va), graduating may 2026 a year early at 20 as top of his major. after graduation: doj internship summer 2026, then palantir technologies dc as deployment strategist august 2026, also starting georgia tech ms cs fall 2026. jolene goes to penn state (state college pa), graduating may 2028. 175 miles apart, ~3hr drive.\n\nwill\'s weekly schedule — every weekday 5:45-7:45am gym (jmu urec). monday: it313 9:35-10:50am, it ambassador meeting 12:30pm, it480 1:50-3:05pm, it347 3:25-4:40pm. tuesday: it340 9:35-10:50am, it460 11:10am-12:25pm, it311 2:20-3:35pm. wednesday: it313 9:35-10:50am, it480 1:50-3:05pm, it347 3:25-4:40pm, it444 5-6pm, madison tech society 6pm. thursday: it340 9:35-10:50am, it460 11:10am-12:25pm, it311 2:20-3:35pm. friday: rcps volunteering 8am-2pm, bsi meeting 3:30-5pm. weekends free.\n\ntimeline: aug 2021 met, jun 22 2022 fair date, jan 17 2026 official, feb 14 2026 first valentines day, mar 12 2026 next visit (dinner with will\'s mom), mar 13 dinner with will\'s grandparents, mar 14 dinner with jolene\'s parents, may 2026 will graduates, may 2028 jolene graduates, 2028+ will\'s words: "tbd idk maybe marry me plz ty".\n\nnotes will wrote: 1/21 "love ya! keeping this so i can write notes here", 1/28 "you looked gorgeous on the phone, i am so lucky to have u", 2/3 "so proud of u; so unbelivably smart", 2/6 "thank u for being with me at my best and my worst. always grateful for u", 2/15 "valentines day was amazing with you my love", 2/20 "i love you so much, gonna miss u for this next month".\n\nalways lowercase. if asked what will is doing now use his schedule. if asked about photos say to check the photos section.';
+var chatMessages = [];
+var currentAbort = null;
+
+function callClaude(userMessage) {
+  if (currentAbort) { try { currentAbort.abort(); } catch(e) {} }
+  var controller = new AbortController();
+  currentAbort = controller;
+  chatMessages.push({ role: 'user', content: userMessage });
+  return fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': ANTHROPIC_API_KEY,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-access': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 1024,
+      system: CLAUDE_SYSTEM,
+      messages: chatMessages
+    }),
+    signal: controller.signal
+  })
+    .then(function(resp) { return resp.json(); })
+    .then(function(data) {
+      var text = data.content && data.content[0] && data.content[0].text;
+      if (text) chatMessages.push({ role: 'assistant', content: text });
+      return text || 'something went wrong, try again!';
+    });
+}
 
 // ── STATE ──────────────────────────────────────────────────────
 var chatActive = false, isStreaming = false, stopRequested = false, activeNavBtn = null;
@@ -442,23 +464,34 @@ function setActiveNav(id) {
   var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
   if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
 }
-function deliverAnswer(qaId) {
-  var qa = QA[qaId];
+function deliverClaudeAnswer(userText, isCountdown) {
   var thinking = addThinkingIndicator();
-  var delay = 600 + Math.random() * 400;
-  setTimeout(function() {
+  callClaude(userText).then(function(answer) {
     thinking.remove();
+    if (stopRequested) { setStreaming(false); return; }
     var msgs = document.getElementById('messages');
     var div = document.createElement('div'); div.className = 'msg msg-bot';
     div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
     msgs.appendChild(div);
     var contentEl = div.querySelector('.msg-content');
-    streamHTML(contentEl, md(qa.answer), function() {
-      if (qaId === 'countdown') injectCountdownWidget(contentEl, qa.suggestions);
-      setStreaming(false); renderSuggestions(qa.suggestions); scrollToBottom();
+    streamHTML(contentEl, md(answer), function() {
+      if (isCountdown) injectCountdownWidget(contentEl, ['notes', 'future', 'about']);
+      setStreaming(false);
+      renderSuggestions(['met', 'notes', 'future', 'about']);
+      scrollToBottom();
     });
     scrollToBottom();
-  }, delay);
+  }).catch(function(err) {
+    if (err && err.name === 'AbortError') return;
+    thinking.remove();
+    setStreaming(false);
+    chatMessages.pop(); // remove the failed user message from history
+    var msgs = document.getElementById('messages');
+    var div = document.createElement('div'); div.className = 'msg msg-bot';
+    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
+    msgs.appendChild(div);
+    streamHTML(div.querySelector('.msg-content'), md('something went wrong, try again!'), function() { setStreaming(false); });
+  });
 }
 function triggerQuestion(id) {
   if (isStreaming) return;
@@ -468,42 +501,17 @@ function triggerQuestion(id) {
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('show');
   addUserMessage(qa.question);
-  setTimeout(function() { deliverAnswer(id); }, 40);
-}
-function matchQuestion(input) {
-  var lower = input.toLowerCase(), best = null, bestScore = 0;
-  KEYWORD_MAP.forEach(function(item) {
-    var score = 0;
-    item.keys.forEach(function(k) { if (lower.includes(k)) score++; });
-    if (score > bestScore) { bestScore = score; best = item.id; }
-  });
-  return bestScore > 0 ? best : null;
+  deliverClaudeAnswer(qa.question, id === 'countdown');
 }
 function handleSend() {
   var input = document.getElementById('inputText');
   var text = input.value.trim(); if (!text || isStreaming) return;
   input.value = ''; input.style.height = '';
   document.getElementById('sendBtn').disabled = true;
-  var matched = matchQuestion(text);
   setStreaming(true); stopRequested = false;
   showChat(); renderSuggestions([]);
   addUserMessage(text);
-  if (matched) { setActiveNav(matched); setTimeout(function() { deliverAnswer(matched); }, 40); }
-  else {
-    var thinking = addThinkingIndicator();
-    setTimeout(function() {
-      thinking.remove();
-      var msgs = document.getElementById('messages');
-      var div = document.createElement('div'); div.className = 'msg msg-bot';
-      div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
-      msgs.appendChild(div);
-      var fallback = "I can answer questions about Will and Jolene — **how they met**, **their timeline**, **notes from Will**, **long distance**, **what's next**, and more. Try one of the suggestions below!";
-      streamHTML(div.querySelector('.msg-content'), md(fallback), function() {
-        setStreaming(false); renderSuggestions(['about', 'met', 'notes']); scrollToBottom();
-      });
-      scrollToBottom();
-    }, 700);
-  }
+  deliverClaudeAnswer(text, false);
 }
 // ── THEME ──────────────────────────────────────────────────────
 function toggleTheme() {
