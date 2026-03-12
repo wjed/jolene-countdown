@@ -206,7 +206,7 @@ body {
 /* ── MESSAGES ───────────────────────────────────────────────── */
 .messages {
   flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch;
-  padding: 24px 20px 10px; scroll-behavior: smooth;
+  padding: 28vh 20px 10px; scroll-behavior: smooth;
   scrollbar-width: thin; scrollbar-color: var(--border) transparent;
 }
 .messages::-webkit-scrollbar { width: 5px; }

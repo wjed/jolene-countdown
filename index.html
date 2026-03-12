@@ -84,6 +84,7 @@
           <button class="nav-btn" data-qa="photos">Our photos</button>
           <button class="nav-btn" data-qa="fun">Fun facts</button>
           <button class="nav-btn" data-qa="sweet">Say something sweet</button>
+          <button class="nav-btn" data-qa="whatsup">What is Will up to right now?</button>
         </nav>
       </div>
     </div>
@@ -96,7 +97,7 @@
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
   <!-- MAIN -->
-  <div class="main" id="mainArea">
+  <div class="main chat-mode" id="mainArea">
     <!-- Mobile header -->
     <header class="mobile-hdr">
       <button class="icon-btn" id="mobileSidebarBtn" aria-label="Open sidebar">
@@ -424,6 +425,11 @@ var QA = {
     question: "Say something sweet about them",
     answer: "Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\"love ya! keeping this so i can write notes here\"*\n\nHe built this entire website for her because he gets busy and wanted her to always have a place with everything about them in one spot.\n\nHe's graduating early, top of his major, heading to Palantir — and still made this.",
     suggestions: []
+  },
+  whatsup: {
+    question: "What is Will up to right now?",
+    answer: function() { return getWillNow(); },
+    suggestions: []
   }
 };
 
@@ -545,6 +551,52 @@ function setActiveNav(id) {
   var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
   if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
 }
+// ── WILL'S SCHEDULE ───────────────────────────────────────────
+function getWillNow() {
+  var now = new Date();
+  var day = now.getDay(), h = now.getHours(), m = now.getMinutes();
+  var t = h * 60 + m;
+  function between(sh, sm, eh, em) { return t >= sh*60+sm && t < eh*60+em; }
+  function fmt(sh, sm) { var a = sh<12?'am':'pm', h12=sh%12||12; return sm===0?h12+a:h12+':'+(sm<10?'0'+sm:sm)+a; }
+  var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  if (day === 0 || day === 6) return 'it\'s '+days[day]+' — no classes or commitments. he\'s probably free.';
+  var blocks = [{ sh:5,sm:45,eh:7,em:45,name:'at the gym (jmu urec)' }];
+  if (day===1) {
+    blocks.push({ sh:9,sm:35,eh:10,em:50,name:'in it 313: community projects' });
+    blocks.push({ sh:12,sm:30,eh:13,em:15,name:'at the it ambassador meeting' });
+    blocks.push({ sh:13,sm:50,eh:15,em:5,name:'in it-480: cloud computing & iac' });
+    blocks.push({ sh:15,sm:25,eh:16,em:40,name:'in it 347: interactive computing systems' });
+  } else if (day===2||day===4) {
+    blocks.push({ sh:9,sm:35,eh:10,em:50,name:day===2?'in it 340: data science and machine learning':'in it 340: data science and machine learning' });
+    blocks.push({ sh:11,sm:10,eh:12,em:25,name:'in it 460: advanced cybersecurity' });
+    blocks.push({ sh:14,sm:20,eh:15,em:35,name:'in it 311: operating systems administration' });
+  } else if (day===3) {
+    blocks.push({ sh:9,sm:35,eh:10,em:50,name:'in it 313: community projects' });
+    blocks.push({ sh:13,sm:50,eh:15,em:5,name:'in it-480: cloud computing & iac' });
+    blocks.push({ sh:15,sm:25,eh:16,em:40,name:'in it 347: interactive computing systems' });
+    blocks.push({ sh:17,sm:0,eh:18,em:0,name:'in it 444: capstone design' });
+    blocks.push({ sh:18,sm:0,eh:19,em:0,name:'at the madison tech society meeting' });
+  } else if (day===5) {
+    blocks.push({ sh:8,sm:0,eh:14,em:0,name:'volunteering at rockingham county public schools' });
+    blocks.push({ sh:15,sm:30,eh:17,em:0,name:'in a bsi cto + r&d updates meeting' });
+  }
+  for (var i=0; i<blocks.length; i++) {
+    var b = blocks[i];
+    if (between(b.sh,b.sm,b.eh,b.em)) {
+      var next = null;
+      for (var j=i+1; j<blocks.length; j++) { if (blocks[j].sh*60+blocks[j].sm > t) { next=blocks[j]; break; } }
+      var s = 'right now he\'s '+b.name+' (until '+fmt(b.eh,b.em)+').';
+      if (next) s += '\n\nafter that he\'s got '+next.name+' at '+fmt(next.sh,next.sm)+'.';
+      return s;
+    }
+  }
+  var next = null;
+  for (var i=0; i<blocks.length; i++) { if (blocks[i].sh*60+blocks[i].sm > t) { next=blocks[i]; break; } }
+  if (!next) return 'looks like he\'s done for the day — probably free for the rest of the evening.';
+  if (t < 5*60+45) return 'it\'s early '+days[day]+' morning — he\'s probably still asleep. gym starts at 5:45am.';
+  return 'no classes right now on '+days[day]+'. next up: '+next.name+' at '+fmt(next.sh,next.sm)+'.';
+}
+
 function deliverAutoIntro() {
   showChat();
   setStreaming(true); stopRequested = false;
@@ -555,7 +607,7 @@ function deliverAutoIntro() {
     var div = document.createElement('div'); div.className = 'msg msg-bot';
     div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
     msgs.appendChild(div);
-    var text = "hey jolene 💛\n\ni made this for you because i get super busy sometimes, and i'm not always the best at showing everything i feel.\n\nso i put it all in one place. our story, the timeline, every note i've written you, our photos, what's coming next for us — it's all here, whenever you want it.\n\nuse the sidebar to explore. i love you so much.\n\n— will";
+    var text = "hey jolene.\n\ni made this for you because i get super busy sometimes, and i wanted you to always have a place with everything about us.\n\nour story, the timeline, every note i've written you, our photos, what's coming next — it's all in the sidebar whenever you want it.\n\ni love you so much.\n\n— will";
     streamHTML(div.querySelector('.msg-content'), md(text), function() {
       setStreaming(false); scrollToBottom();
     });
@@ -564,6 +616,7 @@ function deliverAutoIntro() {
 }
 function deliverAnswer(qaId) {
   var qa = QA[qaId];
+  var answer = typeof qa.answer === 'function' ? qa.answer() : qa.answer;
   var thinking = addThinkingIndicator();
   var delay = 500 + Math.random() * 300;
   setTimeout(function() {
@@ -573,7 +626,7 @@ function deliverAnswer(qaId) {
     div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
     msgs.appendChild(div);
     var contentEl = div.querySelector('.msg-content');
-    streamHTML(contentEl, md(qa.answer), function() {
+    streamHTML(contentEl, md(answer), function() {
       if (qaId === 'countdown' || qaId === 'visit_details') injectCountdownWidget(contentEl, []);
       setStreaming(false); scrollToBottom();
     });
