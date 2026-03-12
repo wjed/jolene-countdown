@@ -105,6 +105,8 @@ body {
   letter-spacing: 0.06em; text-transform: uppercase;
   padding: 4px 8px 6px;
 }
+.sidebar-section { margin-top: 14px; }
+.sidebar-section:first-child { margin-top: 0; }
 .sidebar-nav { display: flex; flex-direction: column; gap: 1px; }
 .nav-btn {
   display: block; width: 100%; text-align: left;
@@ -349,7 +351,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 .next-visit-timer {
   font-size: 22px;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--text);
   letter-spacing: .02em;
   font-variant-numeric: tabular-nums;
 }
@@ -387,7 +389,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 .cd-num {
   font-size: 28px;
   font-weight: 700;
-  color: var(--accent);
+  color: var(--text);
   font-variant-numeric: tabular-nums;
   line-height: 1;
 }

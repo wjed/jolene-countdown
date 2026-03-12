@@ -36,18 +36,56 @@
       </button>
     </div>
     <div class="sidebar-body">
-      <div class="sidebar-label">Topics</div>
-      <nav class="sidebar-nav">
-        <button class="nav-btn" data-qa="about">About Us</button>
-        <button class="nav-btn" data-qa="met">How We Met</button>
-        <button class="nav-btn" data-qa="timeline">Our Timeline</button>
-        <button class="nav-btn" data-qa="notes">Notes from Will</button>
-        <button class="nav-btn" data-qa="distance">Long Distance</button>
-        <button class="nav-btn" data-qa="future">What's Next</button>
-        <button class="nav-btn" data-qa="photos">Our Photos</button>
-        <button class="nav-btn" data-qa="fun">Fun Facts</button>
-        <button class="nav-btn" data-qa="countdown">Next Visit</button>
-      </nav>
+      <div class="sidebar-section">
+        <div class="sidebar-label">About Us</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="about">Who are Will and Jolene?</button>
+          <button class="nav-btn" data-qa="met">How did they meet?</button>
+          <button class="nav-btn" data-qa="official">When did they become official?</button>
+          <button class="nav-btn" data-qa="how_long">How long have they known each other?</button>
+          <button class="nav-btn" data-qa="distance">How far apart are they?</button>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Timeline</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="timeline">Full timeline</button>
+          <button class="nav-btn" data-qa="firstdate">What was their first real date?</button>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Notes from Will</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="notes">All notes</button>
+          <button class="nav-btn" data-qa="note_recent">Most recent note</button>
+          <button class="nav-btn" data-qa="note_vday">Valentine's day note</button>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">What's Next</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="future">What's next for them?</button>
+          <button class="nav-btn" data-qa="palantir">Will's job after graduation</button>
+          <button class="nav-btn" data-qa="graduate_will">When does Will graduate?</button>
+          <button class="nav-btn" data-qa="graduate_jolene">When does Jolene graduate?</button>
+          <button class="nav-btn" data-qa="future_words">What did Will say about the future?</button>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Next Visit</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="countdown">When's the next visit?</button>
+          <button class="nav-btn" data-qa="visit_details">What's happening on the visit?</button>
+        </nav>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Photos & More</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="photos">Our photos</button>
+          <button class="nav-btn" data-qa="fun">Fun facts</button>
+          <button class="nav-btn" data-qa="sweet">Say something sweet</button>
+        </nav>
+      </div>
     </div>
     <div class="sidebar-footer">
       <span class="sidebar-tagline">est. january 17, 2026</span>
@@ -122,60 +160,7 @@
     <!-- Messages -->
     <div class="messages" id="messages"></div>
 
-    <!-- Question picker -->
     <div class="input-area">
-      <div class="qpicker" id="qpicker">
-        <div class="qpicker-section">
-          <span class="qpicker-label">about us</span>
-          <div class="qpicker-row">
-            <button class="qchip" data-qa="about">who are will and jolene?</button>
-            <button class="qchip" data-qa="met">how did they meet?</button>
-            <button class="qchip" data-qa="official">when did they become official?</button>
-            <button class="qchip" data-qa="how_long">how long have they known each other?</button>
-            <button class="qchip" data-qa="distance">how far apart are they?</button>
-          </div>
-        </div>
-        <div class="qpicker-section">
-          <span class="qpicker-label">timeline</span>
-          <div class="qpicker-row">
-            <button class="qchip" data-qa="timeline">full timeline</button>
-            <button class="qchip" data-qa="firstdate">what was their first real date?</button>
-          </div>
-        </div>
-        <div class="qpicker-section">
-          <span class="qpicker-label">notes from will</span>
-          <div class="qpicker-row">
-            <button class="qchip" data-qa="notes">all notes</button>
-            <button class="qchip" data-qa="note_recent">most recent note</button>
-            <button class="qchip" data-qa="note_vday">valentine's day note</button>
-          </div>
-        </div>
-        <div class="qpicker-section">
-          <span class="qpicker-label">what's next</span>
-          <div class="qpicker-row">
-            <button class="qchip" data-qa="future">what's next for them?</button>
-            <button class="qchip" data-qa="palantir">will's job after graduation</button>
-            <button class="qchip" data-qa="graduate_will">when does will graduate?</button>
-            <button class="qchip" data-qa="graduate_jolene">when does jolene graduate?</button>
-            <button class="qchip" data-qa="future_words">what did will say about the future?</button>
-          </div>
-        </div>
-        <div class="qpicker-section">
-          <span class="qpicker-label">next visit</span>
-          <div class="qpicker-row">
-            <button class="qchip" data-qa="countdown">when's the next visit?</button>
-            <button class="qchip" data-qa="visit_details">what's happening on the visit?</button>
-          </div>
-        </div>
-        <div class="qpicker-section">
-          <span class="qpicker-label">photos & more</span>
-          <div class="qpicker-row">
-            <button class="qchip" data-qa="photos">our photos</button>
-            <button class="qchip" data-qa="fun">fun facts</button>
-            <button class="qchip" data-qa="sweet">say something sweet</button>
-          </div>
-        </div>
-      </div>
       <p class="disclaimer">made by will, for jolene</p>
     </div>
   </div>
