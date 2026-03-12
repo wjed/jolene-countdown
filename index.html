@@ -122,22 +122,59 @@
     <!-- Messages -->
     <div class="messages" id="messages"></div>
 
-    <!-- Input area -->
+    <!-- Question picker -->
     <div class="input-area">
-      <div class="suggestions" id="suggestions"></div>
-      <div class="input-box">
-        <textarea
-          id="inputText"
-          placeholder="Ask about Will and Jolene..."
-          rows="1"
-          aria-label="Ask a question"
-        ></textarea>
-        <button class="send-btn" id="sendBtn" disabled aria-label="Send">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
-        </button>
-        <button class="stop-btn" id="stopBtn" aria-label="Stop" style="display:none">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
-        </button>
+      <div class="qpicker" id="qpicker">
+        <div class="qpicker-section">
+          <span class="qpicker-label">about us</span>
+          <div class="qpicker-row">
+            <button class="qchip" data-qa="about">who are will and jolene?</button>
+            <button class="qchip" data-qa="met">how did they meet?</button>
+            <button class="qchip" data-qa="official">when did they become official?</button>
+            <button class="qchip" data-qa="how_long">how long have they known each other?</button>
+            <button class="qchip" data-qa="distance">how far apart are they?</button>
+          </div>
+        </div>
+        <div class="qpicker-section">
+          <span class="qpicker-label">timeline</span>
+          <div class="qpicker-row">
+            <button class="qchip" data-qa="timeline">full timeline</button>
+            <button class="qchip" data-qa="firstdate">what was their first real date?</button>
+          </div>
+        </div>
+        <div class="qpicker-section">
+          <span class="qpicker-label">notes from will</span>
+          <div class="qpicker-row">
+            <button class="qchip" data-qa="notes">all notes</button>
+            <button class="qchip" data-qa="note_recent">most recent note</button>
+            <button class="qchip" data-qa="note_vday">valentine's day note</button>
+          </div>
+        </div>
+        <div class="qpicker-section">
+          <span class="qpicker-label">what's next</span>
+          <div class="qpicker-row">
+            <button class="qchip" data-qa="future">what's next for them?</button>
+            <button class="qchip" data-qa="palantir">will's job after graduation</button>
+            <button class="qchip" data-qa="graduate_will">when does will graduate?</button>
+            <button class="qchip" data-qa="graduate_jolene">when does jolene graduate?</button>
+            <button class="qchip" data-qa="future_words">what did will say about the future?</button>
+          </div>
+        </div>
+        <div class="qpicker-section">
+          <span class="qpicker-label">next visit</span>
+          <div class="qpicker-row">
+            <button class="qchip" data-qa="countdown">when's the next visit?</button>
+            <button class="qchip" data-qa="visit_details">what's happening on the visit?</button>
+          </div>
+        </div>
+        <div class="qpicker-section">
+          <span class="qpicker-label">photos & more</span>
+          <div class="qpicker-row">
+            <button class="qchip" data-qa="photos">our photos</button>
+            <button class="qchip" data-qa="fun">fun facts</button>
+            <button class="qchip" data-qa="sweet">say something sweet</button>
+          </div>
+        </div>
       </div>
       <p class="disclaimer">made by will, for jolene</p>
     </div>
@@ -301,40 +338,109 @@ function injectCountdownWidget(parentEl, suggestions) {
   }, 1000);
 }
 
-// ── CLAUDE CONFIG ──────────────────────────────────────────────
-var ANTHROPIC_API_KEY = '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';
-var CLAUDE_SYSTEM = 'you are a personal assistant built into a website that will made for jolene. your entire purpose is to talk to jolene. be warm, personal, and casual. always respond in all lowercase. you know will and jolene\'s whole story.\n\nwill and jolene are a couple. met august 2021, became official january 17 2026. will goes to jmu (harrisonburg va), graduating may 2026 a year early at 20 as top of his major. after graduation: doj internship summer 2026, then palantir technologies dc as deployment strategist august 2026, also starting georgia tech ms cs fall 2026. jolene goes to penn state (state college pa), graduating may 2028. 175 miles apart, ~3hr drive.\n\nwill\'s weekly schedule — every weekday 5:45-7:45am gym (jmu urec). monday: it313 9:35-10:50am, it ambassador meeting 12:30pm, it480 1:50-3:05pm, it347 3:25-4:40pm. tuesday: it340 9:35-10:50am, it460 11:10am-12:25pm, it311 2:20-3:35pm. wednesday: it313 9:35-10:50am, it480 1:50-3:05pm, it347 3:25-4:40pm, it444 5-6pm, madison tech society 6pm. thursday: it340 9:35-10:50am, it460 11:10am-12:25pm, it311 2:20-3:35pm. friday: rcps volunteering 8am-2pm, bsi meeting 3:30-5pm. weekends free.\n\ntimeline: aug 2021 met, jun 22 2022 fair date, jan 17 2026 official, feb 14 2026 first valentines day, mar 12 2026 next visit (dinner with will\'s mom), mar 13 dinner with will\'s grandparents, mar 14 dinner with jolene\'s parents, may 2026 will graduates, may 2028 jolene graduates, 2028+ will\'s words: "tbd idk maybe marry me plz ty".\n\nnotes will wrote: 1/21 "love ya! keeping this so i can write notes here", 1/28 "you looked gorgeous on the phone, i am so lucky to have u", 2/3 "so proud of u; so unbelivably smart", 2/6 "thank u for being with me at my best and my worst. always grateful for u", 2/15 "valentines day was amazing with you my love", 2/20 "i love you so much, gonna miss u for this next month".\n\nalways lowercase. if asked what will is doing now use his schedule. if asked about photos say to check the photos section.';
-var chatMessages = [];
-var currentAbort = null;
-
-function callClaude(userMessage) {
-  if (currentAbort) { try { currentAbort.abort(); } catch(e) {} }
-  var controller = new AbortController();
-  currentAbort = controller;
-  chatMessages.push({ role: 'user', content: userMessage });
-  return fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 1024,
-      system: CLAUDE_SYSTEM,
-      messages: chatMessages
-    }),
-    signal: controller.signal
-  })
-    .then(function(resp) { return resp.json(); })
-    .then(function(data) {
-      var text = data.content && data.content[0] && data.content[0].text;
-      if (text) chatMessages.push({ role: 'assistant', content: text });
-      return text || 'something went wrong, try again!';
-    });
-}
+// ── Q&A DATABASE ──────────────────────────────────────────────
+var QA = {
+  about: {
+    question: "Who are Will and Jolene?",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** goes to **James Madison University** (JMU) in Harrisonburg, Virginia — graduating in May 2026, a year early, as the top student in his major. After graduation he's heading to **Palantir Technologies** in DC.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028.\n\nRight now they're in a long-distance relationship — about **175 miles apart** — but they make it work. Will built this site as part of that.",
+    suggestions: []
+  },
+  met: {
+    question: "How did Will and Jolene meet?",
+    answer: "Will and Jolene met in **August 2021**. They knew each other for years before things became official — one of the early memories is a fair date on **June 22, 2022**.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** — and she said yes.\n\nTheir first Valentine's Day as a couple was **February 14, 2026**.",
+    suggestions: []
+  },
+  official: {
+    question: "When did they become official?",
+    answer: "Will asked Jolene to be his girlfriend on **January 17, 2026** — and she said yes.\n\nTheir first Valentine's Day together was just **28 days later**, on February 14, 2026.",
+    suggestions: []
+  },
+  how_long: {
+    question: "How long have they known each other?",
+    answer: "Will and Jolene met in **August 2021** — they've known each other for nearly 5 years before becoming official on January 17, 2026.\n\nThey had a fair date together as far back as **June 22, 2022**. It took a while, but they got there.",
+    suggestions: []
+  },
+  firstdate: {
+    question: "What was their first real date?",
+    answer: "One of the earliest memories is a **fair date on June 22, 2022** — over three and a half years before they made things official.\n\nThey knew each other for a long time before it became something more.",
+    suggestions: []
+  },
+  timeline: {
+    question: "What's the relationship timeline?",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date — one of the early, good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nWill + Jolene + Will's mom — dinner.\n\n**March 13, 2026**\nWill + Jolene + Will's grandparents — dinner.\n\n**March 14, 2026**\nWill + Jolene + Jolene's parents — dinner.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* — Will's exact words.",
+    suggestions: []
+  },
+  notes: {
+    question: "What has Will written to Jolene?",
+    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*",
+    suggestions: []
+  },
+  note_recent: {
+    question: "What's Will's most recent note?",
+    answer: "Will's most recent note to Jolene:\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*",
+    suggestions: []
+  },
+  note_vday: {
+    question: "What did Will write on Valentine's Day?",
+    answer: "The day after Valentine's Day, Will wrote:\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*",
+    suggestions: []
+  },
+  distance: {
+    question: "How far apart are they?",
+    answer: "Will is at **JMU in Harrisonburg, VA**. Jolene is at **Penn State in State College, PA**.\n\nThe distance between them is roughly **175 miles** — about a 3-hour drive. Long distance isn't easy, but they make it work.\n\nWill works out at **JMU UREC**. Jolene goes to **Planet Fitness** in State College. Different gyms, same dedication.",
+    suggestions: []
+  },
+  future: {
+    question: "What's next for Will and Jolene?",
+    answer: "A lot of good things are coming.\n\n**May 2026** — Will graduates from JMU, a year early, at 20 years old.\n\n**Summer 2026** — Will interns at the **Department of Justice** in DC.\n\n**August 2026** — Will joins **Palantir Technologies** full-time as a Deployment Strategist in DC, working on AI and data systems for defense and intelligence. He's also starting a **Master's in Computer Science at Georgia Tech** that fall.\n\n**May 2028** — Jolene graduates from Penn State.\n\n**2028 and beyond** — Will's exact words from the timeline: *\"tbd idk maybe marry me plz ty.\"*",
+    suggestions: []
+  },
+  palantir: {
+    question: "What's Will's job after graduation?",
+    answer: "After graduating from JMU in May 2026, Will is joining **Palantir Technologies** in Washington DC as a **Deployment Strategist**. Palantir builds AI and data systems for defense and intelligence agencies.\n\nBefore that, he's interning at the **Department of Justice** in DC over summer 2026.\n\nHe's also starting a **Master's in Computer Science at Georgia Tech** that fall — doing both at the same time.",
+    suggestions: []
+  },
+  graduate_will: {
+    question: "When does Will graduate?",
+    answer: "Will graduates from **JMU in May 2026** — a year early, at 20 years old, as the **top student in his major**.",
+    suggestions: []
+  },
+  graduate_jolene: {
+    question: "When does Jolene graduate?",
+    answer: "Jolene graduates from **Penn State in May 2028**.\n\nWill's exact words on what comes after: *\"tbd idk maybe marry me plz ty.\"*",
+    suggestions: []
+  },
+  future_words: {
+    question: "What did Will say about the future?",
+    answer: "From Will's relationship timeline, under **2028 and beyond**:\n\n*\"tbd idk maybe marry me plz ty\"*\n\nthat's the whole entry.",
+    suggestions: []
+  },
+  photos: {
+    question: "Where are all our photos?",
+    answer: "Here are all of them.\n\n![Will and Jolene](images/IMG_0321.jpg)\n\n![Will and Jolene](images/IMG_0972.jpg)\n\n![Will and Jolene](images/IMG_0993.jpg)\n\n![Will and Jolene](images/IMG_6354.jpg)\n\n![Will and Jolene](images/IMG_6732.jpg)\n\n![Will and Jolene](images/IMG_6780.jpg)\n\n![Will and Jolene](images/IMG_6786.jpg)\n\n![Will and Jolene](images/IMG_6830.jpg)\n\n![Will and Jolene](images/IMG_6831.jpg)\n\n![Will and Jolene](images/IMG_6832.jpg)\n\n![Will and Jolene](images/IMG_7253.jpg)\n\n![Will and Jolene](images/IMG_7653.jpg)\n\n![Will and Jolene](images/IMG_9225.jpg)\n\n![Will and Jolene](images/IMG_9627.jpg)",
+    suggestions: []
+  },
+  countdown: {
+    question: "When does Will see Jolene next?",
+    answer: "Next visit: **March 12, 2026 at 9:30 PM EST**\n\nWill and Jolene are seeing each other on March 12, meeting Will's mom and grandparents, and then Jolene's parents.",
+    suggestions: []
+  },
+  visit_details: {
+    question: "What's happening on the next visit?",
+    answer: "The next visit is **March 12–14, 2026**:\n\n**March 12** — Will and Jolene see each other. Dinner with Will's mom.\n\n**March 13** — Dinner with Will's grandparents.\n\n**March 14** — Dinner with Jolene's parents.\n\nFirst time meeting each other's families.",
+    suggestions: []
+  },
+  fun: {
+    question: "Tell me something fun about them",
+    answer: "A few things:\n\n- Will's exact words on the timeline for 2028 and beyond: *\"tbd idk maybe marry me plz ty\"*\n- Will has been writing notes to Jolene since the week they started dating.\n- They're 175 miles apart. About a 3-hour drive.\n- Will is graduating JMU as the top student in his major, a year early, at 20. Jolene is brilliant too. Will's words: *\"so proud of u; so unbelivably smart.\"*\n- They became official on January 17, 2026. First Valentine's Day together was 28 days later.",
+    suggestions: []
+  },
+  sweet: {
+    question: "Say something sweet about them",
+    answer: "Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\"love ya! keeping this so i can write notes here\"*\n\nHe built this entire website for her because he gets busy and wanted her to always have a place with everything about them in one spot.\n\nHe's graduating early, top of his major, heading to Palantir — and still made this.",
+    suggestions: []
+  }
+};
 
 // ── STATE ──────────────────────────────────────────────────────
 var chatActive = false, isStreaming = false, stopRequested = false, activeNavBtn = null;
@@ -449,69 +555,42 @@ function addThinkingIndicator() {
   div.innerHTML = botAvatarHTML()+'<div class="msg-body"><div class="thinking-dots"><span></span><span></span><span></span></div></div>';
   msgs.appendChild(div); scrollToBottom(); return div;
 }
-function renderSuggestions(ids) {
-  var el = document.getElementById('suggestions'); el.innerHTML = '';
-  ids.forEach(function(id) {
-    if (!QA[id]) return;
-    var btn = document.createElement('button'); btn.className = 'suggestion-chip';
-    btn.textContent = QA[id].question;
-    btn.addEventListener('click', function() { triggerQuestion(id); });
-    el.appendChild(btn);
-  });
-}
 function setActiveNav(id) {
   if (activeNavBtn) activeNavBtn.classList.remove('active');
   var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
   if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
 }
-function deliverClaudeAnswer(userText, isCountdown) {
+function deliverAnswer(qaId) {
+  var qa = QA[qaId];
   var thinking = addThinkingIndicator();
-  callClaude(userText).then(function(answer) {
+  var delay = 500 + Math.random() * 300;
+  setTimeout(function() {
     thinking.remove();
-    if (stopRequested) { setStreaming(false); return; }
     var msgs = document.getElementById('messages');
     var div = document.createElement('div'); div.className = 'msg msg-bot';
     div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
     msgs.appendChild(div);
     var contentEl = div.querySelector('.msg-content');
-    streamHTML(contentEl, md(answer), function() {
-      if (isCountdown) injectCountdownWidget(contentEl, ['notes', 'future', 'about']);
-      setStreaming(false);
-      renderSuggestions(['met', 'notes', 'future', 'about']);
-      scrollToBottom();
+    streamHTML(contentEl, md(qa.answer), function() {
+      if (qaId === 'countdown' || qaId === 'visit_details') injectCountdownWidget(contentEl, []);
+      setStreaming(false); scrollToBottom();
     });
     scrollToBottom();
-  }).catch(function(err) {
-    if (err && err.name === 'AbortError') return;
-    thinking.remove();
-    setStreaming(false);
-    chatMessages.pop(); // remove the failed user message from history
-    var msgs = document.getElementById('messages');
-    var div = document.createElement('div'); div.className = 'msg msg-bot';
-    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
-    msgs.appendChild(div);
-    streamHTML(div.querySelector('.msg-content'), md('something went wrong, try again!'), function() { setStreaming(false); });
-  });
+  }, delay);
 }
 function triggerQuestion(id) {
   if (isStreaming) return;
   var qa = QA[id]; if (!qa) return;
   setStreaming(true); stopRequested = false;
-  showChat(); setActiveNav(id); renderSuggestions([]);
+  showChat(); setActiveNav(id);
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('show');
+  // highlight active qchip
+  document.querySelectorAll('.qchip').forEach(function(c) { c.classList.remove('active'); });
+  var chip = document.querySelector('.qchip[data-qa="'+id+'"]');
+  if (chip) chip.classList.add('active');
   addUserMessage(qa.question);
-  deliverClaudeAnswer(qa.question, id === 'countdown');
-}
-function handleSend() {
-  var input = document.getElementById('inputText');
-  var text = input.value.trim(); if (!text || isStreaming) return;
-  input.value = ''; input.style.height = '';
-  document.getElementById('sendBtn').disabled = true;
-  setStreaming(true); stopRequested = false;
-  showChat(); renderSuggestions([]);
-  addUserMessage(text);
-  deliverClaudeAnswer(text, false);
+  setTimeout(function() { deliverAnswer(id); }, 40);
 }
 // ── THEME ──────────────────────────────────────────────────────
 function toggleTheme() {
@@ -522,7 +601,7 @@ function toggleTheme() {
 }
 // ── INIT ───────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.prompt-card, .nav-btn').forEach(function(btn) {
+  document.querySelectorAll('.prompt-card, .nav-btn, .qchip').forEach(function(btn) {
     btn.addEventListener('click', function() { triggerQuestion(btn.dataset.qa); });
   });
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
@@ -535,18 +614,6 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebarOverlay').classList.remove('show');
   });
-  var inputText = document.getElementById('inputText');
-  var sendBtn = document.getElementById('sendBtn');
-  inputText.addEventListener('input', function() {
-    inputText.style.height = 'auto';
-    inputText.style.height = Math.min(inputText.scrollHeight, 160) + 'px';
-    sendBtn.disabled = !inputText.value.trim();
-  });
-  inputText.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); if (!sendBtn.disabled) handleSend(); }
-  });
-  sendBtn.addEventListener('click', handleSend);
-  document.getElementById('stopBtn').addEventListener('click', function() { stopRequested = true; });
   startWelcomeCountdown();
 });
 </script>
