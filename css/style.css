@@ -115,6 +115,7 @@ body {
   font-family: var(--font); font-size: 13.5px; font-weight: 450;
   cursor: pointer; transition: background 0.12s, color 0.12s;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  touch-action: manipulation;
 }
 .nav-btn:hover { background: var(--sidebar-hover); color: var(--text); }
 .nav-btn.active { background: var(--sidebar-active); color: var(--text); font-weight: 500; }
@@ -196,7 +197,7 @@ body {
   border-radius: var(--radius-md); padding: 14px 16px;
   cursor: pointer; text-align: left;
   transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
-  font-family: var(--font);
+  font-family: var(--font); touch-action: manipulation;
 }
 .prompt-card:hover {
   background: var(--card-hover); border-color: var(--accent); box-shadow: var(--shadow-sm);
@@ -309,18 +310,20 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .sidebar-overlay { display: block; pointer-events: none; }
   .sidebar-overlay.show { pointer-events: auto; }
   .mobile-hdr { display: flex; }
-  .icon-btn { width: 40px; height: 40px; }
+  .icon-btn { width: 44px; height: 44px; }
   .welcome { padding: 24px 16px; align-items: flex-start; }
   .welcome-inner { text-align: left; }
   .couple-avatar { margin: 0 0 16px 0; }
   .welcome-h1 { font-size: 24px; }
   .welcome-desc { margin-left: 0; margin-right: 0; }
   .prompt-grid { grid-template-columns: 1fr; }
-  .messages { padding: 16px 14px 8px; }
+  .messages { padding: 60px 14px 8px; }
   .msg-bubble { max-width: 92%; }
   .input-area { padding: 0 12px calc(14px + env(safe-area-inset-bottom)); }
   .qchip { font-size: 12px; padding: 6px 12px; }
   figure.chat-img { max-width: 100%; }
+  .nav-btn { padding: 10px 10px; min-height: 44px; white-space: normal; }
+  .msg-content { font-size: 15px; line-height: 1.7; }
 }
 @media (max-width: 420px) {
   .welcome-h1 { font-size: 22px; }
