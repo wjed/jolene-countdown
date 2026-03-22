@@ -224,7 +224,7 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nWill and Jolene, dinner with Will's mom.\n\n**March 13, 2026**\nDinner with Will's grandparents.\n\n**March 14, 2026**\nDinner with Jolene's parents.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's parents.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nNext visit.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
     suggestions: ["notes", "future", "about"]
   },
   notes: {
@@ -249,7 +249,7 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: "Next visit: **March 12, 2026 at 9:30 PM EST**\n\nWill and Jolene are seeing each other on March 12, meeting Will's mom and grandparents, and then Jolene's parents.",
+    answer: "Next visit: **March 27, 2026**\n\nWill and Jolene are seeing each other on March 27.",
     suggestions: ["notes", "timeline", "future"]
   },
   fun: {
@@ -260,7 +260,7 @@ var QA = {
 };
 
 // ── COUNTDOWN ─────────────────────────────────────────────────
-var NEXT_VISIT = new Date('2026-03-13T01:30:00Z'); // Mar 12 9:30 PM EDT (UTC-4)
+var NEXT_VISIT = new Date('2026-03-27T16:00:00Z'); // Mar 27 noon EDT (UTC-4)
 function getCountdownParts() {
   var diff = NEXT_VISIT - Date.now();
   if (diff <= 0) return null;
@@ -293,11 +293,11 @@ function injectCountdownWidget(parentEl, suggestions) {
   widget.className = 'countdown-widget';
   var p = getCountdownParts();
   if (!p) {
-    widget.innerHTML = '<div class="cd-date">March 12, 2026 at 9:30 PM EST</div><div class="cd-passed">see you soon &#9825;</div>';
+    widget.innerHTML = '<div class="cd-date">March 27, 2026</div><div class="cd-passed">see you soon &#9825;</div>';
     parentEl.appendChild(widget); return;
   }
   widget.innerHTML =
-    '<div class="cd-date">March 12, 2026 at 9:30 PM EST</div>'+
+    '<div class="cd-date">March 27, 2026</div>'+
     '<div class="countdown-grid">'+
       '<div class="cd-unit"><span class="cd-num" id="cw-d">'+p.d+'</span><span class="cd-label">days</span></div>'+
       '<div class="cd-unit"><span class="cd-num" id="cw-h">'+pad(p.h)+'</span><span class="cd-label">hours</span></div>'+
@@ -309,7 +309,7 @@ function injectCountdownWidget(parentEl, suggestions) {
     var q = getCountdownParts();
     if (!q) {
       clearInterval(iv);
-      widget.innerHTML = '<div class="cd-date">March 12, 2026 at 9:30 PM EST</div><div class="cd-passed">see you soon &#9825;</div>';
+      widget.innerHTML = '<div class="cd-date">March 27, 2026</div><div class="cd-passed">see you soon &#9825;</div>';
       return;
     }
     var dEl=document.getElementById('cw-d'), hEl=document.getElementById('cw-h'),
@@ -351,7 +351,7 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nWill and Jolene, dinner with Will's mom.\n\n**March 13, 2026**\nDinner with Will's grandparents.\n\n**March 14, 2026**\nDinner with Jolene's parents.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's parents.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nNext visit.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
     suggestions: []
   },
   notes: {
@@ -406,12 +406,12 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: "Next visit: **March 12, 2026 at 9:30 PM EST**\n\nWill and Jolene are seeing each other on March 12, meeting Will's mom and grandparents, and then Jolene's parents.",
+    answer: "Next visit: **March 27, 2026**\n\nWill and Jolene are seeing each other on March 27.",
     suggestions: []
   },
   visit_details: {
     question: "What's happening on the next visit?",
-    answer: "The next visit is **March 12 through 14, 2026**:\n\n**March 12:** Will and Jolene see each other. Dinner with Will's mom.\n\n**March 13:** Dinner with Will's grandparents.\n\n**March 14:** Dinner with Jolene's parents.\n\nFirst time meeting each other's families.",
+    answer: "The last visit was **March 12 through 14, 2026**:\n\n**March 12:** Will and Jolene see each other. Jolene meets Will's parents.\n\n**March 14:** Will meets Jolene's parents.\n\nFirst time meeting each other's families.\n\nNext visit: **March 27, 2026**.",
     suggestions: []
   },
   fun: {
