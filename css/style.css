@@ -3,24 +3,24 @@
    ============================================================ */
 /* ── VARIABLES ──────────────────────────────────────────────── */
 :root {
-  --bg:            #faf9f7;
-  --sidebar-bg:    #f0ede8;
-  --sidebar-hover: #e5e1da;
-  --sidebar-active:#ddd8cf;
-  --border:        #ddd8cf;
-  --text:          #1a1917;
-  --text-2:        #6b6760;
-  --text-3:        #9c9891;
-  --accent:        #2d9e5f;
-  --accent-hover:  #258c52;
-  --accent-faint:  #edf7f2;
-  --user-bg:       #eceae4;
+  --bg:            #fef6f9;
+  --sidebar-bg:    #f9eef3;
+  --sidebar-hover: #f3e4ed;
+  --sidebar-active:#eddae7;
+  --border:        #e8d5e0;
+  --text:          #3d2b35;
+  --text-2:        #7a6270;
+  --text-3:        #b09daa;
+  --accent:        #d4829a;
+  --accent-hover:  #c46f88;
+  --accent-faint:  #fdf0f4;
+  --user-bg:       #f3e8ee;
   --input-bg:      #ffffff;
-  --input-border:  #d5d1c8;
-  --card-hover:    #f5f2ec;
-  --shadow-sm:     0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
-  --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.06);
-  --shadow-focus:  0 0 0 2px rgba(45,158,95,.35);
+  --input-border:  #e4d2dc;
+  --card-hover:    #faf0f5;
+  --shadow-sm:     0 1px 3px rgba(180,120,150,.1), 0 1px 2px rgba(180,120,150,.06);
+  --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(180,120,150,.08);
+  --shadow-focus:  0 0 0 2px rgba(212,130,154,.35);
   --radius-sm:     6px;
   --radius-md:     12px;
   --radius-lg:     18px;
@@ -28,24 +28,24 @@
   --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 [data-theme="dark"] {
-  --bg:            #111111;
-  --sidebar-bg:    #191919;
-  --sidebar-hover: #222222;
-  --sidebar-active:#2a2a2a;
-  --border:        #2e2e2e;
-  --text:          #e8e8e8;
-  --text-2:        #999999;
-  --text-3:        #555555;
-  --accent:        #5dd88a;
-  --accent-hover:  #70e09a;
-  --accent-faint:  #1a2e1f;
-  --user-bg:       #202020;
-  --input-bg:      #1a1a1a;
-  --input-border:  #333333;
-  --card-hover:    #1e1e1e;
+  --bg:            #1a1520;
+  --sidebar-bg:    #211a28;
+  --sidebar-hover: #2d2436;
+  --sidebar-active:#372e40;
+  --border:        #3d3348;
+  --text:          #f0e6ed;
+  --text-2:        #b8a4b2;
+  --text-3:        #6e5c68;
+  --accent:        #e8a4ba;
+  --accent-hover:  #f0b8ca;
+  --accent-faint:  #2a1f30;
+  --user-bg:       #271e2e;
+  --input-bg:      #201828;
+  --input-border:  #3d3348;
+  --card-hover:    #2a2032;
   --shadow-sm:     0 1px 3px rgba(0,0,0,.4);
   --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.3);
-  --shadow-focus:  0 0 0 2px rgba(93,216,138,.4);
+  --shadow-focus:  0 0 0 2px rgba(232,164,186,.4);
 }
 /* ── RESET ──────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -335,7 +335,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
-::selection { background: rgba(45,158,95,.2); color: var(--text); }
+::selection { background: rgba(212,130,154,.2); color: var(--text); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* ── COUNTDOWN ───────────────────────────────────────────────── */
 .next-visit {

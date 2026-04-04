@@ -150,7 +150,7 @@
           </button>
           <button class="prompt-card" data-qa="countdown">
             <div class="prompt-card-title">Next visit</div>
-            <div class="prompt-card-desc">Countdown to March 12</div>
+            <div class="prompt-card-desc">Countdown to April 17</div>
           </button>
         </div>
       </div>
@@ -224,17 +224,17 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's parents.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nNext visit.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nNext visit — Jolene comes to JMU.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
     suggestions: ["notes", "future", "about"]
   },
   notes: {
     question: "What has Will written to Jolene?",
-    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*",
+    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*",
     suggestions: ["timeline", "about", "future"]
   },
   distance: {
     question: "How far apart are they?",
-    answer: "Will is at **JMU in Harrisonburg, VA**. Jolene is at **Penn State in State College, PA**.\n\nThe distance between them is roughly **175 miles** — about a 3-hour drive. Long distance isn't easy, but they make it work.\n\nWill works out at **JMU UREC**. Jolene goes to **Planet Fitness** in State College. Different gyms, same dedication.",
+    answer: "Will is at **JMU in Harrisonburg, VA**. Jolene is at **Penn State in State College, PA**.\n\nThe distance between them is roughly **175 miles**, about a 3-hour drive. Long distance isn't easy, but they make it work.",
     suggestions: ["about", "timeline", "future"]
   },
   future: {
@@ -249,7 +249,7 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: "Next visit: **March 27, 2026**\n\nWill and Jolene are seeing each other on March 27.",
+    answer: "Next visit: **April 17, 2026**\n\nJolene is coming down to JMU. They're going to the farmers market and a car show.",
     suggestions: ["notes", "timeline", "future"]
   },
   fun: {
@@ -260,7 +260,7 @@ var QA = {
 };
 
 // ── COUNTDOWN ─────────────────────────────────────────────────
-var NEXT_VISIT = new Date('2026-03-27T16:00:00Z'); // Mar 27 noon EDT (UTC-4)
+var NEXT_VISIT = new Date('2026-04-17T16:00:00Z'); // Apr 17 noon EDT (UTC-4)
 function getCountdownParts() {
   var diff = NEXT_VISIT - Date.now();
   if (diff <= 0) return null;
@@ -293,11 +293,11 @@ function injectCountdownWidget(parentEl, suggestions) {
   widget.className = 'countdown-widget';
   var p = getCountdownParts();
   if (!p) {
-    widget.innerHTML = '<div class="cd-date">March 27, 2026</div><div class="cd-passed">see you soon &#9825;</div>';
+    widget.innerHTML = '<div class="cd-date">April 17, 2026</div><div class="cd-passed">see you soon &#9825;</div>';
     parentEl.appendChild(widget); return;
   }
   widget.innerHTML =
-    '<div class="cd-date">March 27, 2026</div>'+
+    '<div class="cd-date">April 17, 2026</div>'+
     '<div class="countdown-grid">'+
       '<div class="cd-unit"><span class="cd-num" id="cw-d">'+p.d+'</span><span class="cd-label">days</span></div>'+
       '<div class="cd-unit"><span class="cd-num" id="cw-h">'+pad(p.h)+'</span><span class="cd-label">hours</span></div>'+
@@ -309,7 +309,7 @@ function injectCountdownWidget(parentEl, suggestions) {
     var q = getCountdownParts();
     if (!q) {
       clearInterval(iv);
-      widget.innerHTML = '<div class="cd-date">March 27, 2026</div><div class="cd-passed">see you soon &#9825;</div>';
+      widget.innerHTML = '<div class="cd-date">April 17, 2026</div><div class="cd-passed">see you soon &#9825;</div>';
       return;
     }
     var dEl=document.getElementById('cw-d'), hEl=document.getElementById('cw-h'),
@@ -351,17 +351,17 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's parents.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nNext visit.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nNext visit — Jolene comes to JMU.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\n*\"tbd idk maybe marry me plz ty\"* (Will's exact words)",
     suggestions: []
   },
   notes: {
     question: "What has Will written to Jolene?",
-    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*",
+    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*",
     suggestions: []
   },
   note_recent: {
     question: "What's Will's most recent note?",
-    answer: "Will's most recent note to Jolene:\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*",
+    answer: "Will's most recent note to Jolene:\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*",
     suggestions: []
   },
   note_vday: {
@@ -406,12 +406,12 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: "Next visit: **March 27, 2026**\n\nWill and Jolene are seeing each other on March 27.",
+    answer: "Next visit: **April 17, 2026**\n\nJolene is coming down to JMU. They're going to the farmers market and a car show.",
     suggestions: []
   },
   visit_details: {
     question: "What's happening on the next visit?",
-    answer: "The last visit was **March 12 through 14, 2026**:\n\n**March 12:** Will and Jolene see each other. Jolene meets Will's parents.\n\n**March 14:** Will meets Jolene's parents.\n\nFirst time meeting each other's families.\n\nNext visit: **March 27, 2026**.",
+    answer: "The last visit was **March 27, 2026**.\n\nNext visit: **April 17, 2026** — Jolene is coming down to JMU. They're going to the farmers market and a car show.",
     suggestions: []
   },
   fun: {
@@ -421,7 +421,7 @@ var QA = {
   },
   sweet: {
     question: "Say something sweet about them",
-    answer: "Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\"love ya! keeping this so i can write notes here\"*\n\nHe built this entire website for her because he gets busy and wanted her to always have a place with everything about them in one spot.\n\nHe's graduating early, heading to Palantir, and still made this.",
+    answer: "Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\"love ya! keeping this so i can write notes here\"*\n\nHe built this entire website for her because he gets busy and wanted her to always have a place with everything about them in one spot.\n\nThat's the kind of person he is — no matter how busy things get, she's always on his mind.",
     suggestions: []
   },
   whatsup: {
