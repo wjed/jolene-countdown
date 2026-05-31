@@ -150,7 +150,7 @@
           </button>
           <button class="prompt-card" data-qa="countdown">
             <div class="prompt-card-title">Next visit</div>
-            <div class=”prompt-card-desc”>It's summer - they see each other all the time</div>
+            <div class="prompt-card-desc">It's summer - they see each other all the time</div>
           </button>
         </div>
       </div>
@@ -166,7 +166,7 @@
 </div>
 
 <script>
-// â”€â”€ BACKGROUND-SAFE TIMER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ BACKGROUND-SAFE TIMER â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var wTimeout;
 try {
   var _tw = new Worker(URL.createObjectURL(new Blob(
@@ -178,7 +178,7 @@ try {
   wTimeout = function(fn, delay) { var id=++_tid; _tcb[id]=fn; _tw.postMessage({id:id,d:delay}); };
 } catch(e) { wTimeout = function(fn, delay) { setTimeout(fn, delay); }; }
 
-// â”€â”€ INTRO ANIMATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ INTRO ANIMATION â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 (function() {
   var intro = document.getElementById('intro');
   var container = document.getElementById('intro-text');
@@ -210,22 +210,22 @@ try {
   nextLine();
 })();
 
-// â”€â”€ Q&A DATABASE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Q&A DATABASE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: “Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. This summer she's interning at **Star Family Medicine** in Fairfax, Virginia.\n\nIt's summer, so they're actually getting to spend real time together for once.”,
-    suggestions: [“met”, “distance”, “future”]
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. This summer she's interning at **Star Family Medicine** in Fairfax, Virginia.\n\nIt's summer, so they're actually getting to spend real time together for once.",
+    suggestions: ["met", "distance", "future"]
   },
   met: {
     question: "How did Will and Jolene meet?",
-    answer: “Will and Jolene met in **August 2021**. They knew each other for years before things became official, one of the early memories is a fair date on **June 22, 2022**.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.\n\nTheir first Valentine's Day as a couple was **February 14, 2026**.”,
-    suggestions: [“timeline”, “notes”, “about”]
+    answer: "Will and Jolene met in **August 2021**. They knew each other for years before things became official, one of the early memories is a fair date on **June 22, 2022**.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.\n\nTheir first Valentine's Day as a couple was **February 14, 2026**.",
+    suggestions: ["timeline", "notes", "about"]
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: “The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nJolene comes to JMU - farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.”,
-    suggestions: [“notes”, “future”, “about”]
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nJolene comes to JMU - farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
+    suggestions: ["notes", "future", "about"]
   },
   notes: {
     question: "What has Will written to Jolene?",
@@ -239,8 +239,8 @@ var QA = {
   },
   future: {
     question: "What's next for Will and Jolene?",
-    answer: “Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC, and they're seeing each other all the time.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.”,
-    suggestions: [“timeline”, “about”, “notes”]
+    answer: "Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC, and they're seeing each other all the time.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.",
+    suggestions: ["timeline", "about", "notes"]
   },
   photos: {
     question: "Where are all our photos?",
@@ -249,8 +249,8 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: “well... they visit each other all the time now. it's summer. Jolene's been spending the night, popping up unannounced, the whole thing. hard to even keep track.”,
-    suggestions: [“notes”, “timeline”, “future”]
+    answer: "well... they visit each other all the time now. it's summer. Jolene's been spending the night, popping up unannounced, the whole thing. hard to even keep track.",
+    suggestions: ["notes", "timeline", "future"]
   },
   fun: {
     question: "Tell me something fun about them",
@@ -259,7 +259,7 @@ var QA = {
   }
 };
 
-// â”€â”€ COUNTDOWN â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ COUNTDOWN â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var NEXT_VISIT = new Date('2026-04-17T16:00:00Z'); // Apr 17 noon EDT (UTC-4)
 function getCountdownParts() {
   var diff = NEXT_VISIT - Date.now();
@@ -322,11 +322,11 @@ function injectCountdownWidget(parentEl, suggestions) {
   }, 1000);
 }
 
-// â”€â”€ Q&A DATABASE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ Q&A DATABASE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC, and this fall he starts at **Scale AI** and begins his **Master's at Georgia Tech** on August 10th.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with Centre LifeLink EMS, and does research in a machine learning lab studying anxiety and depression.\n\nIt's summer, so they're actually getting to spend real time together for once.”,
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC, and this fall he starts at **Scale AI** and begins his **Master's at Georgia Tech** on August 10th.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with Centre LifeLink EMS, and does research in a machine learning lab studying anxiety and depression.\n\nIt's summer, so they're actually getting to spend real time together for once.",
     suggestions: []
   },
   met: {
@@ -351,7 +351,7 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: “The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nJolene comes to JMU - farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the DOJ. Jolene interns at Star Family Medicine in Fairfax, VA. They actually get to see each other all the time.\n\n**August 10, 2026**\nWill starts his Master's at Georgia Tech and begins at Scale AI.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.”,
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nJolene comes to JMU - farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the DOJ. Jolene interns at Star Family Medicine in Fairfax, VA. They actually get to see each other all the time.\n\n**August 10, 2026**\nWill starts his Master's at Georgia Tech and begins at Scale AI.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
     suggestions: []
   },
   notes: {
@@ -376,12 +376,12 @@ var QA = {
   },
   future: {
     question: "What's next for Will and Jolene?",
-    answer: “Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC. Jolene is interning at **Star Family Medicine** in Fairfax, VA. They're seeing each other all the time this summer - she's been spending the night, showing up unannounced, the whole deal.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.”,
+    answer: "Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC. Jolene is interning at **Star Family Medicine** in Fairfax, VA. They're seeing each other all the time this summer - she's been spending the night, showing up unannounced, the whole deal.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.",
     suggestions: []
   },
   palantir: {
     question: "What's Will's job after graduation?",
-    answer: “Will graduated from JMU in May 2026 and is now interning at the **Department of Justice** in DC.\n\nThis fall he starts at **Scale AI** and begins a **Master's in Computer Science at Georgia Tech**, starting August 10th.”,
+    answer: "Will graduated from JMU in May 2026 and is now interning at the **Department of Justice** in DC.\n\nThis fall he starts at **Scale AI** and begins a **Master's in Computer Science at Georgia Tech**, starting August 10th.",
     suggestions: []
   },
   graduate_will: {
@@ -411,7 +411,7 @@ var QA = {
   },
   visit_details: {
     question: "What's happening on the next visit?",
-    answer: “well... they visit each other all the time. it's summer. Jolene's been spending the night, showing up whenever. could be a flying squirrel situation at any moment.”,
+    answer: "well... they visit each other all the time. it's summer. Jolene's been spending the night, showing up whenever. could be a flying squirrel situation at any moment.",
     suggestions: []
   },
   fun: {
@@ -421,7 +421,7 @@ var QA = {
   },
   sweet: {
     question: "Say something sweet about them",
-    answer: “Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\”love ya! keeping this so i can write notes here\”*\n\nHe built this entire website for her because he gets busy and wanted her to always have a place with everything about them in one spot.\n\nThat's the kind of person he is. No matter how busy things get, she's always on his mind.”,
+    answer: "Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\"love ya! keeping this so i can write notes here\"*\n\nHe built this entire website for her because he gets busy and wanted her to always have a place with everything about them in one spot.\n\nThat's the kind of person he is. No matter how busy things get, she's always on his mind.",
     suggestions: []
   },
   whatsup: {
@@ -431,7 +431,7 @@ var QA = {
   }
 };
 
-// â”€â”€ STATE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ STATE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var chatActive = false, isStreaming = false, stopRequested = false, activeNavBtn = null;
 
 function setStreaming(val) {
@@ -442,7 +442,7 @@ function setStreaming(val) {
   if (sendBtn) sendBtn.style.display = val ? 'none' : 'flex';
 }
 
-// â”€â”€ MARKDOWN PARSER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ MARKDOWN PARSER â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function md(text) {
   var out = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -476,7 +476,7 @@ function md(text) {
   return final.join('\n');
 }
 
-// â”€â”€ STREAMING ANIMATION â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ STREAMING ANIMATION â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function streamHTML(element, htmlContent, onDone) {
   var CHAR_DELAY = 8, CURSOR_HTML = '<span class="cursor"></span>';
   var temp = document.createElement('div'); temp.innerHTML = htmlContent;
@@ -522,7 +522,7 @@ function streamHTML(element, htmlContent, onDone) {
   nextBlock();
 }
 
-// â”€â”€ CHAT LOGIC â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ CHAT LOGIC â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function showChat() {
   if (!chatActive) { chatActive = true; document.getElementById('mainArea').classList.add('chat-mode'); }
 }
@@ -549,7 +549,7 @@ function setActiveNav(id) {
   var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
   if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
 }
-// â”€â”€ WILL'S SCHEDULE â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ WILL'S SCHEDULE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function getWillNow() {
   var now = new Date();
   var day = now.getDay(), h = now.getHours(), m = now.getMinutes();
@@ -645,14 +645,14 @@ function triggerQuestion(id) {
   addUserMessage(qa.question);
   setTimeout(function() { deliverAnswer(id); }, 40);
 }
-// â”€â”€ THEME â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ THEME â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function toggleTheme() {
   var cur = document.documentElement.getAttribute('data-theme');
   var next = cur === 'dark' ? 'light' : 'dark';
   document.documentElement.setAttribute('data-theme', next);
   localStorage.setItem('theme', next);
 }
-// â”€â”€ INIT â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€ INIT â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.prompt-card, .nav-btn, .qchip').forEach(function(btn) {
     btn.addEventListener('click', function() { triggerQuestion(btn.dataset.qa); });
