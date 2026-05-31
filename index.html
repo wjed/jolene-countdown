@@ -150,7 +150,7 @@
           </button>
           <button class="prompt-card" data-qa="countdown">
             <div class="prompt-card-title">Next visit</div>
-            <div class="prompt-card-desc">Countdown to April 17</div>
+            <div class="prompt-card-desc">It's summer — they see each other all the time</div>
           </button>
         </div>
       </div>
@@ -214,7 +214,7 @@ try {
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** goes to **James Madison University** (JMU) in Harrisonburg, Virginia, graduating in May 2026.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028.\n\nRight now they're in a long-distance relationship — about **175 miles apart** — but they make it work.",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028.\n\nIt's summer — so they're actually getting to spend real time together for once.",
     suggestions: ["met", "distance", "future"]
   },
   met: {
@@ -239,7 +239,7 @@ var QA = {
   },
   future: {
     question: "What's next for Will and Jolene?",
-    answer: "A lot of good things are coming.\n\n**May 2026:** Will graduates from JMU.\n\n**Summer 2026:** Will interns at the **Department of Justice** in DC.\n\n**Fall 2026:** Will starts at **Palantir Technologies** in DC and begins a **Master's at Georgia Tech**.\n\n**May 2028:** Jolene graduates from Penn State.",
+    answer: "Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC — and they're seeing each other all the time.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.",
     suggestions: ["timeline", "about", "notes"]
   },
   photos: {
@@ -249,7 +249,7 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: "Next visit: **April 17, 2026**\n\nJolene is coming down to JMU. They're going to the farmers market and a car show.",
+    answer: "It's summer — they see each other all the time now. Hard to even keep track. Jolene's been spending the night, popping up unannounced... it's a good problem to have.",
     suggestions: ["notes", "timeline", "future"]
   },
   fun: {
@@ -326,7 +326,7 @@ function injectCountdownWidget(parentEl, suggestions) {
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** goes to **James Madison University** (JMU) in Harrisonburg, Virginia, graduating in May 2026.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with Centre LifeLink EMS, and does research in a machine learning lab studying anxiety and depression.\n\nRight now they're in a long-distance relationship, about **175 miles apart**, but they make it work.",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC, and this fall he starts at **Scale AI** and begins his **Master's at Georgia Tech** on August 10th.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with Centre LifeLink EMS, and does research in a machine learning lab studying anxiety and depression.\n\nIt's summer — so they're actually getting to spend real time together for once.",
     suggestions: []
   },
   met: {
@@ -351,17 +351,17 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nNext visit — Jolene comes to JMU.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**April 17, 2026**\nJolene comes to JMU — farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the DOJ. They actually get to see each other all the time.\n\n**August 10, 2026**\nWill starts his Master's at Georgia Tech and begins at Scale AI.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
     suggestions: []
   },
   notes: {
     question: "What has Will written to Jolene?",
-    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*",
+    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*\n\n**5/31/2026**\n*\"thinking of you while you're gone, excited to see the movies with you :)\"*",
     suggestions: []
   },
   note_recent: {
     question: "What's Will's most recent note?",
-    answer: "Will's most recent note to Jolene:\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*",
+    answer: "Will's most recent note to Jolene:\n\n**5/31/2026**\n*\"thinking of you while you're gone, excited to see the movies with you :)\"*",
     suggestions: []
   },
   note_vday: {
@@ -376,17 +376,17 @@ var QA = {
   },
   future: {
     question: "What's next for Will and Jolene?",
-    answer: "A lot of good things are coming.\n\n**May 2026:** Will graduates from JMU.\n\n**Summer 2026:** Will interns at the **Department of Justice** in DC.\n\n**Fall 2026:** Will starts at **Palantir Technologies** in DC and begins a **Master's at Georgia Tech**.\n\n**May 2028:** Jolene graduates from Penn State.",
+    answer: "Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC. He and Jolene are actually getting to see each other all the time this summer — she's been spending the night, showing up unannounced, the whole deal.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.",
     suggestions: []
   },
   palantir: {
     question: "What's Will's job after graduation?",
-    answer: "After graduating from JMU in May 2026, Will is starting at **Palantir Technologies** in DC as a Deployment Strategist.\n\nBefore that, he's interning at the **Department of Justice** over summer 2026.\n\nHe's also starting a **Master's in Computer Science at Georgia Tech** that fall.",
+    answer: "Will graduated from JMU in May 2026 and is now interning at the **Department of Justice** in DC.\n\nThis fall he starts at **Scale AI** and begins a **Master's in Computer Science at Georgia Tech** — August 10th.",
     suggestions: []
   },
   graduate_will: {
     question: "When does Will graduate?",
-    answer: "Will graduates from **JMU in May 2026**.",
+    answer: "Will graduated from **JMU in May 2026**. He's done!",
     suggestions: []
   },
   graduate_jolene: {
@@ -411,7 +411,7 @@ var QA = {
   },
   visit_details: {
     question: "What's happening on the next visit?",
-    answer: "The last visit was **March 27, 2026**.\n\nNext visit: **April 17, 2026** — Jolene is coming down to JMU. They're going to the farmers market and a car show.",
+    answer: "It's summer so there's no real \"next visit\" to track — they're together all the time. Jolene's been spending the night, showing up whenever. Could be a flying squirrel situation at any moment.",
     suggestions: []
   },
   fun: {
