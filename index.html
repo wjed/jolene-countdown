@@ -118,10 +118,7 @@
         <p class="welcome-tagline">together since january 17, 2026 &middot; jmu &amp; penn state</p>
         <p class="welcome-desc">how we met, our story, notes, photos, what's next.</p>
         <div class="next-visit" id="nextVisitWelcome">
-          <span class="next-visit-label">next visit in</span>
-          <div class="next-visit-timer">
-            <span id="nv-d">--</span><span class="nv-sep">d</span><span id="nv-h">--</span><span class="nv-sep">h</span><span id="nv-m">--</span><span class="nv-sep">m</span><span id="nv-s">--</span><span class="nv-sep">s</span>
-          </div>
+          <span class="next-visit-passed">together this summer &#9825;</span>
         </div>
         <div class="prompt-grid">
           <button class="prompt-card" data-qa="about">
@@ -406,7 +403,7 @@ var QA = {
   },
   countdown: {
     question: "When does Will see Jolene next?",
-    answer: "Next visit: **April 17, 2026**\n\nJolene is coming down to JMU. They're going to the farmers market and a car show.",
+    answer: "it's summer and they're both in Northern Virginia - no next visit to count down to, they're already together.",
     suggestions: []
   },
   visit_details: {
@@ -615,7 +612,7 @@ function deliverAnswer(qaId) {
     msgs.appendChild(div);
     var contentEl = div.querySelector('.msg-content');
     streamHTML(contentEl, md(answer), function() {
-      if (qaId === 'countdown' || qaId === 'visit_details') injectCountdownWidget(contentEl, []);
+      // countdown widget disabled - they're together for the summer
       setStreaming(false); scrollToBottom();
     });
     scrollToBottom();
