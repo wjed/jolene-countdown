@@ -557,26 +557,19 @@ function getWillNow() {
   function between(sh, sm, eh, em) { return t >= sh*60+sm && t < eh*60+em; }
   function fmt(sh, sm) { var a = sh<12?'am':'pm', h12=sh%12||12; return sm===0?h12+a:h12+':'+(sm<10?'0'+sm:sm)+a; }
   var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-  if (day === 0 || day === 6) return 'it\'s '+days[day]+', no classes or commitments. he\'s probably free.';
-  var blocks = [{ sh:5,sm:45,eh:7,em:45,name:'at the gym (jmu urec)' }];
+  if (day === 0 || day === 6) return 'it\'s '+days[day]+', no work. he\'s probably free.';
+  // weekday blocks (mon-fri)
+  var blocks = [
+    { sh:4,sm:30,eh:5,em:30,name:'waking up' },
+    { sh:5,sm:30,eh:7,em:0,name:'at the gym (ashburn rec center)' },
+    { sh:7,sm:0,eh:8,em:0,name:'getting ready and commuting to work' },
+    { sh:8,sm:0,eh:17,em:0,name:'at work - DOJ internship in Ashburn' },
+    { sh:17,sm:0,eh:18,em:0,name:'commuting home from work' }
+  ];
   if (day===1) {
-    blocks.push({ sh:9,sm:35,eh:10,em:50,name:'in it 313: community projects' });
-    blocks.push({ sh:12,sm:30,eh:13,em:15,name:'at the it ambassador meeting' });
-    blocks.push({ sh:13,sm:50,eh:15,em:5,name:'in it-480: cloud computing & iac' });
-    blocks.push({ sh:15,sm:25,eh:16,em:40,name:'in it 347: interactive computing systems' });
-  } else if (day===2||day===4) {
-    blocks.push({ sh:9,sm:35,eh:10,em:50,name:day===2?'in it 340: data science and machine learning':'in it 340: data science and machine learning' });
-    blocks.push({ sh:11,sm:10,eh:12,em:25,name:'in it 460: advanced cybersecurity' });
-    blocks.push({ sh:14,sm:20,eh:15,em:35,name:'in it 311: operating systems administration' });
-  } else if (day===3) {
-    blocks.push({ sh:9,sm:35,eh:10,em:50,name:'in it 313: community projects' });
-    blocks.push({ sh:13,sm:50,eh:15,em:5,name:'in it-480: cloud computing & iac' });
-    blocks.push({ sh:15,sm:25,eh:16,em:40,name:'in it 347: interactive computing systems' });
-    blocks.push({ sh:17,sm:0,eh:18,em:0,name:'in it 444: capstone design' });
-    blocks.push({ sh:18,sm:0,eh:19,em:0,name:'at the madison tech society meeting' });
-  } else if (day===5) {
-    blocks.push({ sh:8,sm:0,eh:14,em:0,name:'volunteering at rockingham county public schools' });
-    blocks.push({ sh:15,sm:30,eh:17,em:0,name:'in a bsi cto + r&d updates meeting' });
+    blocks.push({ sh:18,sm:0,eh:19,em:0,name:'at a capstone meeting (full team)' });
+  } else if (day===2) {
+    blocks.push({ sh:18,sm:0,eh:19,em:0,name:'at a capstone meeting (team a)' });
   }
   for (var i=0; i<blocks.length; i++) {
     var b = blocks[i];
@@ -584,15 +577,12 @@ function getWillNow() {
       var next = null;
       for (var j=i+1; j<blocks.length; j++) { if (blocks[j].sh*60+blocks[j].sm > t) { next=blocks[j]; break; } }
       var s = 'right now he\'s '+b.name+' (until '+fmt(b.eh,b.em)+').';
-      if (next) s += '\n\nafter that he\'s got '+next.name+' at '+fmt(next.sh,next.sm)+'.';
+      if (next) s += '\n\nafter that: '+next.name+' at '+fmt(next.sh,next.sm)+'.';
       return s;
     }
   }
-  var next = null;
-  for (var i=0; i<blocks.length; i++) { if (blocks[i].sh*60+blocks[i].sm > t) { next=blocks[i]; break; } }
-  if (!next) return 'looks like he\'s done for the day, probably free for the rest of the evening.';
-  if (t < 5*60+45) return 'it\'s early '+days[day]+' morning, he\'s probably still asleep. gym starts at 5:45am.';
-  return 'no classes right now on '+days[day]+'. next up: '+next.name+' at '+fmt(next.sh,next.sm)+'.';
+  if (t < 4*60+30) return 'it\'s the middle of the night - he\'s asleep. alarm goes off at 4:30am.';
+  return 'he\'s done for the day, probably free for the evening.';
 }
 
 function deliverAutoIntro() {
