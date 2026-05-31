@@ -592,7 +592,7 @@ function deliverAutoIntro() {
     var div = document.createElement('div'); div.className = 'msg msg-bot';
     div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
     msgs.appendChild(div);
-    var text = "hey jolene.\n\ni made this for you because i get super busy sometimes, and i wanted you to always have a place with everything about us.\n\nour story, the timeline, every note i've written you, our photos, what's coming next. it's all in the sidebar whenever you want it.\n\ni love you so much.\n\nwill";
+    var text = "hi my love.\n\ni work on this whenever i miss you and stuff.\n\ni love you.\n\nWill";
     streamHTML(div.querySelector('.msg-content'), md(text), function() {
       setStreaming(false); scrollToBottom();
     });
