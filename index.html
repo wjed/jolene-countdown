@@ -78,6 +78,13 @@
         </nav>
       </div>
       <div class="sidebar-section">
+        <div class="sidebar-label">Birthday</div>
+        <nav class="sidebar-nav">
+          <button class="nav-btn" data-qa="birthday">When's Jolene's birthday?</button>
+          <button class="nav-btn" data-qa="birthday_age">How old is she turning?</button>
+        </nav>
+      </div>
+      <div class="sidebar-section">
         <div class="sidebar-label">Photos & More</div>
         <nav class="sidebar-nav">
           <button class="nav-btn" data-qa="photos">Our photos</button>
@@ -152,6 +159,10 @@
           <button class="prompt-card" data-qa="countdown">
             <div class="prompt-card-title">Next visit</div>
             <div class="prompt-card-desc">It's summer - they see each other all the time</div>
+          </button>
+          <button class="prompt-card" data-qa="birthday">
+            <div class="prompt-card-title">Jolene's birthday</div>
+            <div class="prompt-card-desc">September 24 - she's turning 20</div>
           </button>
         </div>
       </div>
@@ -323,6 +334,79 @@ function injectCountdownWidget(parentEl, suggestions) {
   }, 1000);
 }
 
+// â”€â”€ BIRTHDAY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// A birthday comes back every year, so this works out the next one rather than
+// hardcoding a date that expires. Local midnight, because her birthday starts
+// when it starts where she is.
+var JOLENE_BORN_YEAR = 2006, BDAY_MONTH = 8, BDAY_DAY = 24; // month is 0-indexed: 8 = September
+function getBirthday() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var start = new Date(year, BDAY_MONTH, BDAY_DAY, 0, 0, 0, 0);
+  var end = new Date(year, BDAY_MONTH, BDAY_DAY + 1, 0, 0, 0, 0);
+  if (now >= end) {
+    year += 1;
+    start = new Date(year, BDAY_MONTH, BDAY_DAY, 0, 0, 0, 0);
+    end = new Date(year, BDAY_MONTH, BDAY_DAY + 1, 0, 0, 0, 0);
+  }
+  var age = year - JOLENE_BORN_YEAR;
+  if (now >= start && now < end) return { today: true, age: age, year: year };
+  var s = Math.floor((start - now) / 1000);
+  var d = Math.floor(s / 86400); s -= d * 86400;
+  var h = Math.floor(s / 3600); s -= h * 3600;
+  var m = Math.floor(s / 60); s -= m * 60;
+  return { today: false, age: age, year: year, d: d, h: h, m: m, s: s };
+}
+var BDAY_UNITS = [
+  { key: 'd', label: 'days',    tone: 'rust'  },
+  { key: 'h', label: 'hours',   tone: 'gold'  },
+  { key: 'm', label: 'minutes', tone: 'olive' },
+  { key: 's', label: 'seconds', tone: 'wine'  }
+];
+function birthdayPartyHTML(b) {
+  return '<div class="bd-party">happy birthday jolene &#9825;</div>'+
+         '<div class="bd-party-sub">'+b.age+' today</div>';
+}
+function birthdayGridHTML(b) {
+  var cells = BDAY_UNITS.map(function(u) {
+    var v = u.key === 'd' ? b[u.key] : pad(b[u.key]);
+    return '<div class="bd-unit bd-'+u.tone+'">'+
+             '<span class="bd-num" id="bd-'+u.key+'">'+v+'</span>'+
+             '<span class="bd-label">'+u.label+'</span>'+
+           '</div>';
+  }).join('');
+  return '<div class="bd-grid">'+cells+'</div>';
+}
+function injectBirthdayWidget(parentEl) {
+  var b = getBirthday();
+  var widget = document.createElement('div');
+  widget.className = 'birthday-widget';
+  var confetti = '<div class="bd-confetti" aria-hidden="true">'+
+    '<span class="bd-rust"></span><span class="bd-gold"></span><span class="bd-olive"></span>'+
+    '<span class="bd-wine"></span><span class="bd-plum"></span><span class="bd-gold"></span>'+
+    '<span class="bd-rust"></span><span class="bd-olive"></span><span class="bd-wine"></span>'+
+    '</div>';
+  var head = '<div class="bd-head"><span class="bd-date">September 24, '+b.year+'</span>'+
+             '<span class="bd-badge">turning '+b.age+'</span></div>';
+  widget.innerHTML = confetti + head + (b.today ? birthdayPartyHTML(b) : birthdayGridHTML(b));
+  parentEl.appendChild(widget);
+  if (b.today) return;
+  var iv = setInterval(function() {
+    if (!widget.isConnected) { clearInterval(iv); return; }
+    var q = getBirthday();
+    if (q.today) {
+      clearInterval(iv);
+      widget.innerHTML = confetti + head + birthdayPartyHTML(q);
+      return;
+    }
+    BDAY_UNITS.forEach(function(u) {
+      var el = document.getElementById('bd-'+u.key);
+      if (el) el.textContent = u.key === 'd' ? q[u.key] : pad(q[u.key]);
+    });
+    scrollToBottom();
+  }, 1000);
+}
+
 // â"€â"€ Q&A DATABASE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var QA = {
   about: {
@@ -412,7 +496,17 @@ var QA = {
   },
   visit_details: {
     question: "What's happening on the next visit?",
-    answer: "Next visit: **September 24, 2026**.",
+    answer: "Next visit: **September 24, 2026** - which is also Jolene's birthday.",
+    suggestions: []
+  },
+  birthday: {
+    question: "When is Jolene's birthday?",
+    answer: "Jolene's birthday is **September 24**.\n\nShe turns **20** in 2026 - and the next visit lands on the same day, so Will gets to be there for it.",
+    suggestions: []
+  },
+  birthday_age: {
+    question: "How old is Jolene turning?",
+    answer: "She turns **20** on **September 24, 2026**.",
     suggestions: []
   },
   fun: {
@@ -617,6 +711,7 @@ function deliverAnswer(qaId) {
     var contentEl = div.querySelector('.msg-content');
     streamHTML(contentEl, md(answer), function() {
       if (qaId === 'countdown' || qaId === 'visit_details') injectCountdownWidget(contentEl, []);
+      if (qaId === 'birthday' || qaId === 'birthday_age') injectBirthdayWidget(contentEl);
       setStreaming(false); scrollToBottom();
     });
     scrollToBottom();
