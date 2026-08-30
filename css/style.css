@@ -271,7 +271,9 @@ body.sheet-open { overflow: hidden; }
 [data-theme="light"] .moon-icon { display: none; }
 [data-theme="dark"]  .sun-icon  { display: none; }
 /* ── BENTO GRID ─────────────────────────────────────────────────── */
-.bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+/* Explicit row height. Without it the photo's natural portrait aspect ratio
+   sets the row size and every neighbouring tile stretches to match it. */
+.bento { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(148px, auto); gap: 14px; }
 .tile {
   position: relative;
   display: flex; flex-direction: column; gap: 9px;
@@ -300,7 +302,7 @@ button.tile:active { transform: translateY(0); }
 .t-bday  .tile-label { color: var(--tone-2); }
 .tile-foot { font-size: 12px; color: var(--text-3); margin-top: auto; }
 .t-visit { grid-column: span 2; }
-.t-photo { grid-column: span 2; grid-row: span 2; padding: 0; overflow: hidden; min-height: 280px; }
+.t-photo { grid-column: span 2; grid-row: span 2; padding: 0; overflow: hidden; min-height: 300px; }
 .t-note  { grid-column: span 2; }
 .t-now   { grid-column: span 2; }
 .t-bday  { grid-column: span 2; }
@@ -319,11 +321,18 @@ button.tile:active { transform: translateY(0); }
 }
 .cd-passed { font-family: 'Lora', Georgia, serif; font-size: 22px; color: var(--tone-1); }
 /* photo tile */
+/* Taken out of flow so the image fills the tile the grid gives it rather than
+   dictating its own height. Biased upward because faces sit high in most
+   of these, and the collection is a mix of portrait and landscape. */
+/* Two stacked layers that crossfade. A single fading image leaves the tile
+   blank for the length of the fade, which reads as a flicker every rotation. */
 .t-photo img {
-  width: 100%; height: 100%; object-fit: cover; display: block;
-  transition: opacity .4s ease;
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover; object-position: center 32%;
+  display: block;
+  opacity: 0; transition: opacity .6s ease;
 }
-.t-photo img.fading { opacity: 0; }
+.t-photo img.shown { opacity: 1; }
 .photo-cap {
   position: absolute; left: 14px; bottom: 14px;
   background: var(--bg); color: var(--text-2);
@@ -356,6 +365,10 @@ button.tile:active { transform: translateY(0); }
 .link-title { font-family: 'Lora', Georgia, serif; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.2; }
 .link-desc { font-size: 12.5px; line-height: 1.4; color: var(--text-3); }
 /* ── SHEET ──────────────────────────────────────────────────────── */
+/* The [hidden] attribute only sets display:none at user-agent weight, so the
+   display rules below would override it and leave the panel permanently open.
+   These put it back. Keep them above the rules that set display. */
+.sheet[hidden], .sheet-scrim[hidden] { display: none; }
 .sheet-scrim { position: fixed; inset: 0; background: var(--overlay); z-index: 600; }
 .sheet {
   position: fixed; z-index: 601;

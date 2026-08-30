@@ -66,7 +66,8 @@
 
     <!-- PHOTO -->
     <button class="tile t-photo" data-sheet="photos" aria-label="Open all photos">
-      <img id="photoImg" alt="Will and Jolene" loading="lazy">
+      <img id="photoImg" alt="Will and Jolene">
+      <img id="photoImgB" alt="" aria-hidden="true">
       <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
     </button>
 
@@ -602,18 +603,25 @@ function renderNowTile() {
 
 function renderPhotoTile() {
   var photos = photoList();
-  var img = document.getElementById('photoImg');
+  var a = document.getElementById('photoImg'), b = document.getElementById('photoImgB');
   document.getElementById('photoCount').textContent = photos.length;
-  if (!photos.length || !img) return;
+  if (!photos.length || !a || !b) return;
   var i = Math.floor(Math.random() * photos.length);
-  img.src = photos[i];
+  var front = a, back = b;
+  front.src = photos[i];
+  front.classList.add('shown');
   setInterval(function() {
     i = (i + 1) % photos.length;
-    img.classList.add('fading');
-    wTimeout(function() {
-      img.src = photos[i];
-      img.classList.remove('fading');
-    }, 420);
+    // Decode first, then fade. Swapping src on a visible layer would flash the
+    // empty tile while the next file loads.
+    var pre = new Image();
+    pre.onload = function() {
+      back.src = pre.src;
+      back.classList.add('shown');
+      front.classList.remove('shown');
+      var t = front; front = back; back = t;
+    };
+    pre.src = photos[i];
   }, 7000);
 }
 
