@@ -2,154 +2,90 @@
    WILL + JOLENE — THE MANTEL
    ============================================================ */
 /* ── VARIABLES ──────────────────────────────────────────────── */
-/* Light: parchment, burnt sienna, harvest gold — a bright October afternoon. */
+/* Embers and woodsmoke. One theme only - autumn reads best dark. */
 :root {
-  --bg:            #fdf7ed;
-  --sidebar-bg:    #f9f0e1;
-  --sidebar-hover: #f3e6d1;
-  --sidebar-active:#ead7ba;
-  --border:        #e0cba8;
-  --text:          #32241a;
-  --text-2:        #6d5642;
-  --text-3:        #7a6249;
-  --accent:        #ac4a1d;
-  --accent-hover:  #8d3a14;
-  --accent-faint:  #fbeee3;
-  --user-bg:       #f6e3cc;
-  --input-bg:      #fffdf8;
-  --input-border:  #e0cba8;
-  --card-hover:    #faf1e3;
-  --on-accent:     #fffaf4;
-  --fall-rust:     #b04a1a;
-  --fall-wine:     #8f3242;
-  --fall-olive:    #5f6d2e;
-  --fall-gold:     #8a6510;
-  --fall-plum:     #6a3560;
+  --bg: #17110c;
+  --sidebar-bg: #1e160f;
+  --sidebar-hover: #2a1f15;
+  --sidebar-active: #38291b;
+  --border: #40301f;
+  --text: #f4e8da;
+  --text-2: #c4a888;
+  --text-3: #a4886b;
+  --accent: #e58150;
+  --accent-hover: #f29d70;
+  --accent-faint: #2a1a10;
+  --user-bg: #2b2015;
+  --input-bg: #1e160f;
+  --input-border: #40301f;
+  --card-hover: #261c12;
+  --on-accent: #2a1408;
+  --fall-rust: #e2854e;
+  --fall-wine: #dd8090;
+  --fall-olive: #a9ba63;
+  --fall-gold: #eccb62;
+  --fall-plum: #c78fbe;
   /* Accent slots. Components use these, never the palette names directly, so a
      different palette (see party mode) can take over without renaming anything.
-     These alias --fall-* which [data-theme="dark"] redefines, so one set of
-     aliases covers both themes. */
+     These alias the --fall-* palette below. */
   --tone-1: var(--fall-rust);
   --tone-2: var(--fall-wine);
   --tone-3: var(--fall-olive);
   --tone-4: var(--fall-gold);
   --tone-5: var(--fall-plum);
-  --overlay:       rgba(58,38,20,.45);
-  --selection:     rgba(172,74,29,.22);
-  --shadow-sm:     0 1px 3px rgba(120,85,50,.12), 0 1px 2px rgba(120,85,50,.07);
-  --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(120,85,50,.09);
-  --shadow-focus:  0 0 0 2px rgba(172,74,29,.35);
-  --shadow-drawer: 4px 0 20px rgba(94,64,34,.22);
+  --overlay: rgba(0,0,0,.6);
+  --selection: rgba(229,129,80,.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.5);
+  --shadow-input: 0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.4);
+  --shadow-focus: 0 0 0 2px rgba(229,129,80,.45);
+  --shadow-drawer: 4px 0 20px rgba(0,0,0,.5);
   --radius-sm:     6px;
   --radius-md:     12px;
   --radius-lg:     18px;
   --sidebar-w:     240px;
   --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
-/* Dark: embers and woodsmoke — the same palette after sundown. */
-[data-theme="dark"] {
-  --bg:            #17110c;
-  --sidebar-bg:    #1e160f;
-  --sidebar-hover: #2a1f15;
-  --sidebar-active:#38291b;
-  --border:        #40301f;
-  --text:          #f4e8da;
-  --text-2:        #c4a888;
-  --text-3:        #a4886b;
-  --accent:        #e58150;
-  --accent-hover:  #f29d70;
-  --accent-faint:  #2a1a10;
-  --user-bg:       #2b2015;
-  --input-bg:      #1e160f;
-  --input-border:  #40301f;
-  --card-hover:    #261c12;
-  --on-accent:     #2a1408;
-  --fall-rust:     #e2854e;
-  --fall-wine:     #dd8090;
-  --fall-olive:    #a9ba63;
-  --fall-gold:     #eccb62;
-  --fall-plum:     #c78fbe;
-  --overlay:       rgba(0,0,0,.6);
-  --selection:     rgba(229,129,80,.3);
-  --shadow-sm:     0 1px 3px rgba(0,0,0,.5);
-  --shadow-input:  0 0 0 1px var(--input-border), 0 2px 8px rgba(0,0,0,.4);
-  --shadow-focus:  0 0 0 2px rgba(229,129,80,.45);
-  --shadow-drawer: 4px 0 20px rgba(0,0,0,.5);
-}
 /* ── BIRTHDAY (PARTY) MODE ──────────────────────────────────────
    Set data-party="on" on <html> and the whole site switches palette. Only
    tokens are overridden, so every component follows without its own rule.
-   Layered under [data-theme] so light/dark still works while partying. */
+   Everything else follows automatically. */
 [data-party="on"] {
-  --bg:            #fdf5fa;
-  --sidebar-bg:    #faecf5;
-  --sidebar-hover: #f5dfee;
-  --sidebar-active:#eecce4;
-  --border:        #e9cade;
-  --text:          #2f1b2a;
-  --text-2:        #6a4761;
-  --text-3:        #7b5672;
-  --accent:        #c01a5e;
-  --accent-hover:  #9b1149;
-  --accent-faint:  #fdecf4;
-  --user-bg:       #f9dbeb;
-  --input-bg:      #fffcfe;
-  --input-border:  #e9cade;
-  --card-hover:    #fdf0f7;
-  --on-accent:     #fffaf4;
-  --party-pink:    #c01a5e;
-  --party-violet:  #6b34ad;
-  --party-teal:    #00736a;
-  --party-gold:    #8f6503;
-  --party-orange:  #b34410;
+  --bg: #16101a;
+  --sidebar-bg: #1d1524;
+  --sidebar-hover: #291e32;
+  --sidebar-active: #38293f;
+  --border: #40304a;
+  --text: #f6e9f2;
+  --text-2: #cba6c4;
+  --text-3: #ab8ba6;
+  --accent: #ff6fa8;
+  --accent-hover: #ff92bf;
+  --accent-faint: #2a1220;
+  --user-bg: #2b1f2e;
+  --input-bg: #1d1524;
+  --input-border: #40304a;
+  --card-hover: #251a2c;
+  --on-accent: #2a0a18;
+  --party-pink: #ff6fa8;
+  --party-violet: #b48bf5;
+  --party-teal: #4fd6c4;
+  --party-gold: #f2c94c;
+  --party-orange: #ff9a5c;
   --tone-1: var(--party-pink);
   --tone-2: var(--party-violet);
   --tone-3: var(--party-teal);
   --tone-4: var(--party-gold);
   --tone-5: var(--party-orange);
   /* pale washes of each tone, for tinted tiles */
-  --tint-1: #fde4ee;
-  --tint-2: #ece2fa;
-  --tint-3: #d9f2ef;
-  --tint-4: #fdf4dd;
-  --tint-5: #fce5d8;
-  --overlay:       rgba(48,16,38,.45);
-  --selection:     rgba(192,26,94,.22);
-  --shadow-sm:     0 1px 3px rgba(120,40,90,.12), 0 1px 2px rgba(120,40,90,.07);
-  --shadow-focus:  0 0 0 2px rgba(192,26,94,.35);
-  --shadow-drawer: 4px 0 20px rgba(90,30,70,.22);
-}
-[data-party="on"][data-theme="dark"] {
-  --bg:            #16101a;
-  --sidebar-bg:    #1d1524;
-  --sidebar-hover: #291e32;
-  --sidebar-active:#38293f;
-  --border:        #40304a;
-  --text:          #f6e9f2;
-  --text-2:        #cba6c4;
-  --text-3:        #ab8ba6;
-  --accent:        #ff6fa8;
-  --accent-hover:  #ff92bf;
-  --accent-faint:  #2a1220;
-  --user-bg:       #2b1f2e;
-  --input-bg:      #1d1524;
-  --input-border:  #40304a;
-  --card-hover:    #251a2c;
-  --on-accent:     #2a0a18;
-  --party-pink:    #ff6fa8;
-  --party-violet:  #b48bf5;
-  --party-teal:    #4fd6c4;
-  --party-gold:    #f2c94c;
-  --party-orange:  #ff9a5c;
   --tint-1: #3a1526;
   --tint-2: #251a3d;
   --tint-3: #12302e;
   --tint-4: #33280d;
   --tint-5: #3a2013;
-  --overlay:       rgba(0,0,0,.6);
-  --selection:     rgba(255,111,168,.3);
-  --shadow-sm:     0 1px 3px rgba(0,0,0,.5);
-  --shadow-focus:  0 0 0 2px rgba(255,111,168,.45);
+  --overlay: rgba(0,0,0,.6);
+  --selection: rgba(255,111,168,.3);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.5);
+  --shadow-focus: 0 0 0 2px rgba(255,111,168,.45);
   --shadow-drawer: 4px 0 20px rgba(0,0,0,.5);
 }
 /* ── BIRTHDAY (PARTY) DECORATION ─────────────────────────────────
@@ -268,8 +204,6 @@ body.sheet-open { overflow: hidden; }
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 .icon-btn:hover { background: var(--card-hover); color: var(--text); border-color: var(--tone-4); }
-[data-theme="light"] .moon-icon { display: none; }
-[data-theme="dark"]  .sun-icon  { display: none; }
 /* ── BENTO GRID ─────────────────────────────────────────────────── */
 /* Explicit row height. Without it the photo's natural portrait aspect ratio
    sets the row size and every neighbouring tile stretches to match it. */
@@ -308,9 +242,11 @@ button.tile:active { transform: translateY(0); }
 .t-bday  { grid-column: span 2; }
 /* Own row, own even split - so adding a link tile never has to divide into the
    parent column count. */
+/* Five tiles only ever split evenly at five-across or one-across. Auto-fit
+   landed on 4+1, which reads like a mistake; 3+2 reads deliberate. */
 .tile-links {
   grid-column: 1 / -1;
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
+  display: grid; grid-template-columns: repeat(3, 1fr);
   gap: 14px;
 }
 .t-link  { min-height: 122px; justify-content: flex-end; gap: 4px; }
@@ -559,6 +495,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .t-note  { grid-column: span 4; }
   .t-now   { grid-column: span 4; }
   .t-bday  { grid-column: span 4; }
+  .tile-links { grid-template-columns: repeat(5, 1fr); gap: 16px; }
   .mark-title { font-size: 34px; }
   .cdcell b { font-size: 38px; }
   .note-quote { font-size: 19px; }
@@ -572,6 +509,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .page { padding: 0 14px calc(24px + env(safe-area-inset-bottom)); }
   .mantel-hdr { padding: 24px 0 16px; }
   .bento { grid-template-columns: 1fr; gap: 12px; }
+  .tile-links { grid-template-columns: 1fr; gap: 12px; }
   .t-visit, .t-photo, .t-note, .t-now, .t-bday, .t-link { grid-column: span 1; }
   .t-photo { min-height: 260px; }
   .t-link { min-height: 96px; }
