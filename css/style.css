@@ -506,6 +506,22 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 ::selection { background: var(--selection); color: var(--text); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 /* ── RESPONSIVE ─────────────────────────────────────────────────── */
+/* Wide desktop. A 1060px cap is a reading width - right for prose, wrong for a
+   board of tiles, which just left big empty gutters. Going to 12 columns lets
+   the tiles rearrange three-across instead of only getting wider. */
+@media (min-width: 1200px) {
+  .page { max-width: 1600px; }
+  .bento { grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(170px, auto); gap: 16px; }
+  .t-visit { grid-column: span 4; }
+  .t-photo { grid-column: span 4; grid-row: span 2; }
+  .t-note  { grid-column: span 4; }
+  .t-now   { grid-column: span 4; }
+  .t-bday  { grid-column: span 4; }
+  .t-link  { grid-column: span 3; }
+  .mark-title { font-size: 34px; }
+  .cdcell b { font-size: 38px; }
+  .note-quote { font-size: 19px; }
+}
 @media (max-width: 900px) {
   .bento { grid-template-columns: repeat(2, 1fr); }
   .t-photo { grid-row: span 1; min-height: 220px; }
