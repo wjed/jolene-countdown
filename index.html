@@ -91,7 +91,14 @@
       <span class="tile-foot" id="bdayFoot"></span>
     </button>
 
-    <!-- LINK TILES -->
+    <!-- LINK TILES. Wrapped so any number of them divides evenly across the
+         grid instead of having to match the column count. -->
+    <div class="tile-links">
+    <button class="tile t-link" data-sheet="her">
+      <span class="link-kicker">he pays attention</span>
+      <span class="link-title">About Jolene</span>
+      <span class="link-desc" id="herFact">the small things</span>
+    </button>
     <button class="tile t-link" data-sheet="story">
       <span class="link-kicker">read</span>
       <span class="link-title">Our story</span>
@@ -112,6 +119,7 @@
       <span class="link-title">Something sweet</span>
       <span class="link-desc">why this exists</span>
     </button>
+    </div>
 
   </main>
 
@@ -269,7 +277,7 @@ function setPartyMode(on) {
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** in May 2026. He works full time as a **Technical Program Manager at Scale AI**, and he's working through an online **Master's in Computer Science at Georgia Tech** alongside the job.\n\n**Jolene** is a **junior at Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with **Centre LifeLink EMS**, and is deep in **MCAT prep**.\n\nIt's fall, so they're both heads-down - Will at work, Jolene at school - and back to doing the long distance thing.",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** in May 2026. He works full time as a **Technical Program Manager at Scale AI**, and he's working through an online **Master's in Computer Science at Georgia Tech** alongside the job.\n\n**Jolene** is a **junior at Penn State** in State College, Pennsylvania, studying **integrated science** on the pre-med track and graduating in May 2028. She works as an EMT with **Centre LifeLink EMS** and at **St. James**, and is deep in **MCAT prep**.\n\nIt's fall, so they're both heads-down - Will at work, Jolene at school - and back to doing the long distance thing.",
     suggestions: []
   },
   met: {
@@ -483,6 +491,71 @@ function noteList() {
   return out;
 }
 
+// ── ABOUT JOLENE ─────────────────────────────────────────────────
+// Things Will knows. Kept as data rather than prose so the tile can pull a
+// single line out of it without a second copy going stale.
+var JOLENE = {
+  name: 'Jolene Carolynn VanderHeyden',
+  groups: [
+    ['The basics', [
+      ['Birthday', 'September 24'],
+      ['Anniversary', 'January 17'],
+      ['Sister', 'Ellie'],
+      ['Roommates', 'Elsie and Sophie']
+    ]],
+    ['School and work', [
+      ['Major', 'Integrated science, on the pre-med track'],
+      ['Work', 'EMT with Centre LifeLink EMS, and St. James'],
+      ['Graduating', 'May 2028']
+    ]],
+    ['Favorites', [
+      ['Animal', 'Moose'],
+      ['Color', 'A dark green'],
+      ['Flavor', 'Pistachio'],
+      ['Music', 'The 1975, and Taylor Swift obviously'],
+      ['Perfume', 'Cheirosa 48 hair and body mist'],
+      ['Guitar', 'Named Betty, after the Taylor Swift song']
+    ]]
+  ],
+  gym: [
+    'Shoulders, triceps, chest',
+    'Glutes and hamstrings',
+    'Back and biceps',
+    'Glutes, hamstrings, quads',
+    'Sometimes an active rest day - an hour of easy cardio'
+  ]
+};
+// One-liners for the tile, so it shows something different each visit.
+var JOLENE_LINES = [
+  'her guitar is named betty',
+  'favorite animal: the moose',
+  'favorite flavor: pistachio',
+  'the 1975, and taylor swift obviously',
+  'the color is a dark green',
+  'cheirosa 48, every time',
+  'ellie is her sister',
+  'elsie and sophie are the roommates',
+  'integrated science, pre-med',
+  'five day split, and she keeps it'
+];
+function joleneSheetHTML() {
+  var html = '<p class="fact-name">' + JOLENE.name + '</p>';
+  JOLENE.groups.forEach(function(group) {
+    html += '<h3 class="sheet-h">' + group[0] + '</h3><ul class="fact-list">';
+    group[1].forEach(function(row) {
+      html += '<li class="fact-row"><span class="fact-key">' + row[0] + '</span>' +
+              '<span class="fact-val">' + row[1] + '</span></li>';
+    });
+    html += '</ul>';
+  });
+  html += '<h3 class="sheet-h">The gym split</h3><ol class="split-list">';
+  JOLENE.gym.forEach(function(day, i) {
+    html += '<li class="split-item"><span class="split-num t' + (1 + i % 5) + '">' + (i + 1) + '</span>' +
+            '<span class="split-text">' + day + '</span></li>';
+  });
+  return html + '</ol>';
+}
+
 // ── SHEETS ───────────────────────────────────────────────────────
 // Each sheet is a set of titled sections pulled from QA. Headings are written
 // here rather than reusing QA questions, which were phrased for a chatbot.
@@ -505,13 +578,15 @@ var SHEETS = {
     ['In his words', 'future_words']
   ]},
   sweet: { title: 'Something sweet', sections: [['', 'sweet']] },
-  photos: { title: 'Photos', photos: true }
+  photos: { title: 'Photos', photos: true },
+  her: { title: 'About Jolene', jolene: true }
 };
 
 var lastFocused = null;
 
 function sheetHTML(key) {
   var cfg = SHEETS[key];
+  if (cfg.jolene) return joleneSheetHTML();
   if (cfg.photos) {
     return '<div class="photo-grid">' + photoList().map(function(src) {
       return '<figure class="pg-item"><img src="'+src+'" alt="Will and Jolene" loading="lazy" '+
@@ -625,6 +700,11 @@ function renderPhotoTile() {
   }, 7000);
 }
 
+function renderHerTile() {
+  var el = document.getElementById('herFact');
+  if (el) el.textContent = JOLENE_LINES[Math.floor(Math.random() * JOLENE_LINES.length)];
+}
+
 // ── FALLING LEAVES ───────────────────────────────────────────────
 // Same idea as the birthday confetti, but slower and in the fall tones. Runs
 // whenever birthday mode is off.
@@ -654,6 +734,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderNoteTile();
   renderNowTile();
   renderPhotoTile();
+  renderHerTile();
   buildLeaves();
 
   document.querySelectorAll('[data-sheet]').forEach(function(el) {

@@ -306,7 +306,14 @@ button.tile:active { transform: translateY(0); }
 .t-note  { grid-column: span 2; }
 .t-now   { grid-column: span 2; }
 .t-bday  { grid-column: span 2; }
-.t-link  { grid-column: span 1; min-height: 122px; justify-content: flex-end; gap: 4px; }
+/* Own row, own even split - so adding a link tile never has to divide into the
+   parent column count. */
+.tile-links {
+  grid-column: 1 / -1;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(184px, 1fr));
+  gap: 14px;
+}
+.t-link  { min-height: 122px; justify-content: flex-end; gap: 4px; }
 /* countdown row */
 .cdrow { display: flex; gap: 20px; align-items: flex-start; }
 .cdcell { display: flex; flex-direction: column; gap: 3px; }
@@ -412,6 +419,41 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 .pg-item { border-radius: 10px; overflow: hidden; background: var(--sidebar-bg); }
 .pg-item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+/* fact list inside the About Jolene sheet */
+.fact-name {
+  font-family: 'Lora', Georgia, serif; font-size: 21px; font-weight: 600;
+  color: var(--text); line-height: 1.25; margin-bottom: 2px;
+}
+.fact-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+.fact-row {
+  display: flex; gap: 14px; align-items: baseline;
+  padding: 9px 0; border-bottom: 1px solid var(--border);
+}
+.fact-row:last-child { border-bottom: none; }
+.fact-key {
+  flex: 0 0 108px; font-size: 10.5px; font-weight: 600;
+  letter-spacing: .07em; text-transform: uppercase; color: var(--text-3);
+}
+.fact-val { flex: 1; font-family: 'Lora', Georgia, serif; font-size: 15.5px; color: var(--text); line-height: 1.45; }
+/* gym split */
+.split-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.split-item { display: flex; gap: 12px; align-items: center; }
+.split-num {
+  flex: 0 0 26px; height: 26px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1.5px solid currentColor;
+  font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.split-num.t1 { color: var(--tone-1); }
+.split-num.t2 { color: var(--tone-2); }
+.split-num.t3 { color: var(--tone-3); }
+.split-num.t4 { color: var(--tone-4); }
+.split-num.t5 { color: var(--tone-5); }
+.split-text { font-family: 'Lora', Georgia, serif; font-size: 15.5px; color: var(--text); line-height: 1.4; }
+@media (max-width: 560px) {
+  .fact-row { flex-direction: column; gap: 3px; padding: 8px 0; }
+  .fact-key { flex: none; }
+}
 /* note list inside the notes sheet */
 .note-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
 .note-item { border-left: 3px solid var(--tone-5); padding-left: 13px; }
@@ -517,7 +559,6 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .t-note  { grid-column: span 4; }
   .t-now   { grid-column: span 4; }
   .t-bday  { grid-column: span 4; }
-  .t-link  { grid-column: span 3; }
   .mark-title { font-size: 34px; }
   .cdcell b { font-size: 38px; }
   .note-quote { font-size: 19px; }
