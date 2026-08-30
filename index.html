@@ -80,6 +80,7 @@
       <span class="tile-label">Her birthday</span>
       <div class="bday-body" id="bdayBody"></div>
       <span class="tile-foot" id="bdayFoot"></span>
+      <span class="sr-only">Turns on birthday mode</span>
     </button>
 
     <!-- TOGETHER -->
@@ -90,6 +91,7 @@
         <span class="tog-unit">days</span>
         <span class="tog-next" id="togNext"></span>
       </div>
+      <div class="tog-track" aria-hidden="true"><span class="tog-fill" id="togFill"></span></div>
     </section>
 
     <!-- LINK TILES. Wrapped so any number of them divides evenly across the
@@ -454,9 +456,13 @@ function getAnniversary() {
   var end  = new Date(y, ANNIV_MONTH, ANNIV_DAY + 1);
   var today = now >= next && now < end;
   if (now >= end) { y += 1; next = new Date(y, ANNIV_MONTH, ANNIV_DAY); }
+  // how far through the current year they are, for the progress bar
+  var prev = new Date(y - 1, ANNIV_MONTH, ANNIV_DAY);
+  var progress = Math.max(0, Math.min(1, (now - prev) / (next - prev)));
   return {
     days: days, today: today, years: y - ANNIV_YEAR,
-    until: Math.round((next - startOfDay) / 86400000), year: y
+    until: Math.round((next - startOfDay) / 86400000), year: y,
+    progress: progress
   };
 }
 
@@ -678,6 +684,8 @@ function renderTogetherTile() {
     next.textContent = a.today
       ? label + ' today'
       : label + ' on january 17 · ' + (a.until === 1 ? 'tomorrow' : a.until + ' days away');
+    var fill = document.getElementById('togFill');
+    if (fill) fill.style.width = (a.progress * 100).toFixed(1) + '%';
   }
   tick();
   setInterval(tick, 60000);
