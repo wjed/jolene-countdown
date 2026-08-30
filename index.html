@@ -23,174 +23,114 @@
   <span id="intro-text"></span>
 </div>
 
-<div class="app">
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-top">
-      <div class="brand">
-        <div class="brand-icon">&#9825;</div>
-        <span class="brand-name">will + jolene</span>
-      </div>
-      <button class="icon-btn theme-toggle" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
-        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </div>
-    <div class="sidebar-body">
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-1" aria-expanded="true" aria-controls="secnav-1">About Us<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-1" aria-labelledby="seclbl-1">
-          <button class="nav-btn" data-qa="about">Who are Will and Jolene?</button>
-          <button class="nav-btn" data-qa="met">How did they meet?</button>
-          <button class="nav-btn" data-qa="official">When did they become official?</button>
-          <button class="nav-btn" data-qa="how_long">How long have they known each other?</button>
-          <button class="nav-btn" data-qa="distance">How far apart are they?</button>
-        </nav>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-2" aria-expanded="true" aria-controls="secnav-2">Timeline<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-2" aria-labelledby="seclbl-2">
-          <button class="nav-btn" data-qa="timeline">Full timeline</button>
-          <button class="nav-btn" data-qa="firstdate">What was their first real date?</button>
-        </nav>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-3" aria-expanded="true" aria-controls="secnav-3">Notes from Will<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-3" aria-labelledby="seclbl-3">
-          <button class="nav-btn" data-qa="notes">All notes</button>
-          <button class="nav-btn" data-qa="note_recent">Most recent note</button>
-          <button class="nav-btn" data-qa="note_vday">Valentine's day note</button>
-        </nav>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-4" aria-expanded="true" aria-controls="secnav-4">What's Next<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-4" aria-labelledby="seclbl-4">
-          <button class="nav-btn" data-qa="future">What's next for them?</button>
-          <button class="nav-btn" data-qa="graduate_jolene">When does Jolene graduate?</button>
-          <button class="nav-btn" data-qa="future_words">What did Will say about the future?</button>
-        </nav>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-5" aria-expanded="true" aria-controls="secnav-5">Next Visit<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-5" aria-labelledby="seclbl-5">
-          <button class="nav-btn" data-qa="countdown">When's the next visit?</button>
-          <button class="nav-btn" data-qa="visit_details">What's happening on the visit?</button>
-        </nav>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-6" aria-expanded="true" aria-controls="secnav-6">Birthday<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-6" aria-labelledby="seclbl-6">
-          <button class="nav-btn" data-qa="birthday">When's Jolene's birthday?</button>
-          <button class="nav-btn" data-qa="birthday_age">How old is she turning?</button>
-        </nav>
-      </div>
-      <div class="sidebar-section">
-        <button class="sidebar-label" id="seclbl-7" aria-expanded="true" aria-controls="secnav-7">Photos & More<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
-        <nav class="sidebar-nav" id="secnav-7" aria-labelledby="seclbl-7">
-          <button class="nav-btn" data-qa="photos">Our photos</button>
-          <button class="nav-btn" data-qa="sweet">Say something sweet</button>
-          <button class="nav-btn" data-qa="whatsup">What is Will up to right now?</button>
-        </nav>
-      </div>
-    </div>
-    <div class="sidebar-footer">
-      <span class="sidebar-tagline">est. january 17, 2026</span>
-    </div>
-  </aside>
+<!-- Ambient layers. All decorative, all pointer-events:none. -->
+<div class="leaf-layer" id="leafLayer" aria-hidden="true"></div>
+<div class="balloon-layer" id="balloonLayer" aria-hidden="true"></div>
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
-  <!-- Mobile overlay -->
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<div class="page">
 
-  <!-- Falling confetti and rising balloons, birthday mode only -->
-  <div class="balloon-layer" id="balloonLayer" aria-hidden="true"></div>
-  <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
-
-  <!-- MAIN -->
-  <div class="main chat-mode" id="mainArea">
-    <!-- Mobile header -->
-    <header class="mobile-hdr">
-      <button class="icon-btn" id="mobileSidebarBtn" aria-label="Open sidebar">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-      <span class="mobile-title">will + jolene</span>
-      <button class="icon-btn theme-toggle" id="mobileThemeBtn" aria-label="Toggle theme">
-        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
-    </header>
-
-    <!-- Birthday mode bar -->
-    <div class="party-bar" id="partyBar">
-      <span class="party-bar-text">
-        <span class="party-bar-dots" aria-hidden="true"><span class="bd-t1"></span><span class="bd-t4"></span><span class="bd-t3"></span><span class="bd-t2"></span></span>
-        birthday mode
-      </span>
-      <button class="party-bar-off" id="partyOffBtn">turn off</button>
-    </div>
-
-    <!-- Welcome screen -->
-    <div class="welcome" id="welcome">
-      <div class="welcome-inner">
-        <div class="couple-avatar">
-          <img src="images/IMG_6354.jpg" alt="Will and Jolene" onerror="this.style.display='none';this.parentElement.classList.add('avatar-fallback')">
-        </div>
-        <h1 class="welcome-h1">will + jolene</h1>
-        <p class="welcome-tagline">together since january 17, 2026 &middot; jmu &amp; penn state</p>
-        <p class="welcome-desc">how we met, our story, notes, photos, what's next.</p>
-        <div class="next-visit" id="nextVisitWelcome">
-          <span class="next-visit-label">next visit in</span>
-          <div class="next-visit-timer">
-            <span id="nv-d">--</span><span class="nv-sep">d</span><span id="nv-h">--</span><span class="nv-sep">h</span><span id="nv-m">--</span><span class="nv-sep">m</span><span id="nv-s">--</span><span class="nv-sep">s</span>
-          </div>
-        </div>
-        <div class="prompt-grid">
-          <button class="prompt-card" data-qa="about">
-            <div class="prompt-card-title">Who are Will and Jolene?</div>
-            <div class="prompt-card-desc">The basics about us</div>
-          </button>
-          <button class="prompt-card" data-qa="met">
-            <div class="prompt-card-title">How did they meet?</div>
-            <div class="prompt-card-desc">The beginning of the story</div>
-          </button>
-          <button class="prompt-card" data-qa="timeline">
-            <div class="prompt-card-title">Our timeline</div>
-            <div class="prompt-card-desc">From 2021 to now and beyond</div>
-          </button>
-          <button class="prompt-card" data-qa="notes">
-            <div class="prompt-card-title">Notes from Will</div>
-            <div class="prompt-card-desc">Things Will wrote for Jolene</div>
-          </button>
-          <button class="prompt-card" data-qa="distance">
-            <div class="prompt-card-title">Long distance</div>
-            <div class="prompt-card-desc">Northern Virginia and Penn State, ~190 miles</div>
-          </button>
-          <button class="prompt-card" data-qa="future">
-            <div class="prompt-card-title">What's next</div>
-            <div class="prompt-card-desc">Work, school, and no rush</div>
-          </button>
-          <button class="prompt-card" data-qa="countdown">
-            <div class="prompt-card-title">Next visit</div>
-            <div class="prompt-card-desc">September 25 - counting down</div>
-          </button>
-          <button class="prompt-card" data-qa="birthday">
-            <div class="prompt-card-title">Jolene's birthday</div>
-            <div class="prompt-card-desc">September 24 - she's turning 20</div>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Messages -->
-    <div class="messages" id="messages"></div>
-
-    <div class="input-area">
-      <p class="disclaimer">made by will, for jolene</p>
-    </div>
+  <!-- Birthday mode bar -->
+  <div class="party-bar" id="partyBar">
+    <span class="party-bar-text">
+      <span class="party-bar-dots" aria-hidden="true"><span class="bd-t1"></span><span class="bd-t4"></span><span class="bd-t3"></span><span class="bd-t2"></span></span>
+      birthday mode
+    </span>
+    <button class="party-bar-off" id="partyOffBtn">turn off</button>
   </div>
+
+  <header class="mantel-hdr">
+    <div class="mark">
+      <span class="mark-title">will + jolene</span>
+      <span class="mark-sub">est. january 17, 2026 &middot; autumn</span>
+    </div>
+    <button class="icon-btn theme-toggle" id="themeBtn" title="Toggle theme" aria-label="Toggle theme">
+      <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
+  </header>
+
+  <main class="bento">
+
+    <!-- NEXT VISIT -->
+    <section class="tile t-visit">
+      <span class="tile-label">Next visit</span>
+      <div class="cdrow" id="visitCd">
+        <span class="cdcell"><b id="v-d">--</b><i>days</i></span>
+        <span class="cdcell"><b id="v-h">--</b><i>hrs</i></span>
+        <span class="cdcell"><b id="v-m">--</b><i>min</i></span>
+        <span class="cdcell"><b id="v-s">--</b><i>sec</i></span>
+      </div>
+      <span class="tile-foot" id="visitDate"></span>
+    </section>
+
+    <!-- PHOTO -->
+    <button class="tile t-photo" data-sheet="photos" aria-label="Open all photos">
+      <img id="photoImg" alt="Will and Jolene" loading="lazy">
+      <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
+    </button>
+
+    <!-- LATEST NOTE -->
+    <button class="tile t-note" data-sheet="notes">
+      <span class="tile-label">Latest note from Will</span>
+      <p class="note-quote" id="noteQuote"></p>
+      <span class="tile-foot" id="noteDate"></span>
+    </button>
+
+    <!-- WILL RIGHT NOW -->
+    <section class="tile t-now">
+      <span class="tile-label">Will right now</span>
+      <p class="now-text" id="nowText"></p>
+    </section>
+
+    <!-- BIRTHDAY -->
+    <button class="tile t-bday" id="bdayTile">
+      <span class="tile-label">Her birthday</span>
+      <div class="bday-body" id="bdayBody"></div>
+      <span class="tile-foot" id="bdayFoot"></span>
+    </button>
+
+    <!-- LINK TILES -->
+    <button class="tile t-link" data-sheet="story">
+      <span class="link-kicker">read</span>
+      <span class="link-title">Our story</span>
+      <span class="link-desc">how it started, and the distance</span>
+    </button>
+    <button class="tile t-link" data-sheet="timeline">
+      <span class="link-kicker">walk</span>
+      <span class="link-title">Timeline</span>
+      <span class="link-desc">2021 to 2028</span>
+    </button>
+    <button class="tile t-link" data-sheet="next">
+      <span class="link-kicker">ahead</span>
+      <span class="link-title">What's next</span>
+      <span class="link-desc">no rush</span>
+    </button>
+    <button class="tile t-link" data-sheet="sweet">
+      <span class="link-kicker">from will</span>
+      <span class="link-title">Something sweet</span>
+      <span class="link-desc">why this exists</span>
+    </button>
+
+  </main>
+
+  <footer class="mantel-foot">made by will, for jolene</footer>
 </div>
 
+<!-- SHEET -->
+<div class="sheet-scrim" id="sheetScrim" hidden></div>
+<section class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" hidden>
+  <header class="sheet-hdr">
+    <h2 class="sheet-title" id="sheetTitle"></h2>
+    <button class="icon-btn sheet-close" id="sheetClose" aria-label="Close">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
+  <div class="sheet-body" id="sheetBody"></div>
+</section>
+
+
 <script>
-// â"€â"€ BACKGROUND-SAFE TIMER â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var wTimeout;
 try {
   var _tw = new Worker(URL.createObjectURL(new Blob(
@@ -216,7 +156,7 @@ try {
   function nextLine() {
     if (lineIdx >= lines.length) {
       if (activeEl) activeEl.classList.add('done');
-      wTimeout(function() { intro.classList.add('fade-out'); wTimeout(function() { intro.remove(); deliverAutoIntro(); }, 800); }, 700);
+      wTimeout(function() { intro.classList.add('fade-out'); wTimeout(function() { intro.remove(); }, 800); }, 700);
       return;
     }
     if (activeEl) activeEl.classList.add('done');
@@ -234,7 +174,8 @@ try {
   nextLine();
 })();
 
-// â"€â"€ COUNTDOWN â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+// ── COUNTDOWN ─────────────────────────────────────────────────────
+
 var NEXT_VISIT = new Date('2026-09-25T16:00:00Z'); // Sep 25 noon EDT (UTC-4)
 var NEXT_VISIT_LABEL = 'September 25, 2026';
 function getCountdownParts() {
@@ -247,61 +188,9 @@ function getCountdownParts() {
   return { d: d, h: h, m: m, s: s };
 }
 function pad(n) { return n < 10 ? '0'+n : ''+n; }
-function startWelcomeCountdown() {
-  var el = document.getElementById('nextVisitWelcome');
-  if (!el) return;
-  function tick() {
-    var p = getCountdownParts();
-    if (!p) {
-      el.innerHTML = '<span class="next-visit-passed">see you soon &#9825;</span>';
-      return;
-    }
-    document.getElementById('nv-d').textContent = p.d;
-    document.getElementById('nv-h').textContent = pad(p.h);
-    document.getElementById('nv-m').textContent = pad(p.m);
-    document.getElementById('nv-s').textContent = pad(p.s);
-  }
-  tick();
-  setInterval(tick, 1000);
-}
-function injectCountdownWidget(parentEl, suggestions) {
-  var widget = document.createElement('div');
-  widget.className = 'countdown-widget';
-  var p = getCountdownParts();
-  if (!p) {
-    widget.innerHTML = '<div class="cd-date">'+NEXT_VISIT_LABEL+'</div><div class="cd-passed">see you soon &#9825;</div>';
-    parentEl.appendChild(widget); return;
-  }
-  widget.innerHTML =
-    '<div class="cd-date">'+NEXT_VISIT_LABEL+'</div>'+
-    '<div class="countdown-grid">'+
-      '<div class="cd-unit"><span class="cd-num" id="cw-d">'+p.d+'</span><span class="cd-label">days</span></div>'+
-      '<div class="cd-unit"><span class="cd-num" id="cw-h">'+pad(p.h)+'</span><span class="cd-label">hours</span></div>'+
-      '<div class="cd-unit"><span class="cd-num" id="cw-m">'+pad(p.m)+'</span><span class="cd-label">minutes</span></div>'+
-      '<div class="cd-unit"><span class="cd-num" id="cw-s">'+pad(p.s)+'</span><span class="cd-label">seconds</span></div>'+
-    '</div>';
-  parentEl.appendChild(widget);
-  var iv = setInterval(function() {
-    var q = getCountdownParts();
-    if (!q) {
-      clearInterval(iv);
-      widget.innerHTML = '<div class="cd-date">'+NEXT_VISIT_LABEL+'</div><div class="cd-passed">see you soon &#9825;</div>';
-      return;
-    }
-    var dEl=document.getElementById('cw-d'), hEl=document.getElementById('cw-h'),
-        mEl=document.getElementById('cw-m'), sEl=document.getElementById('cw-s');
-    if (dEl) dEl.textContent = q.d;
-    if (hEl) hEl.textContent = pad(q.h);
-    if (mEl) mEl.textContent = pad(q.m);
-    if (sEl) sEl.textContent = pad(q.s);
-    scrollToBottom();
-  }, 1000);
-}
 
-// â”€â”€ BIRTHDAY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// A birthday comes back every year, so this works out the next one rather than
-// hardcoding a date that expires. Local midnight, because her birthday starts
-// when it starts where she is.
+// ── BIRTHDAY ──────────────────────────────────────────────────────
+
 var JOLENE_BORN_YEAR = 2006, BDAY_MONTH = 8, BDAY_DAY = 24; // month is 0-indexed: 8 = September
 function getBirthday() {
   var now = new Date();
@@ -321,31 +210,6 @@ function getBirthday() {
   var m = Math.floor(s / 60); s -= m * 60;
   return { today: false, age: age, year: year, d: d, h: h, m: m, s: s };
 }
-// Tones are palette slots, not fixed colors - they follow whichever palette is
-// active (fall by default, party in birthday mode).
-var BDAY_UNITS = [
-  { key: 'd', label: 'days',    tone: 't1' },
-  { key: 'h', label: 'hours',   tone: 't2' },
-  { key: 'm', label: 'minutes', tone: 't3' },
-  { key: 's', label: 'seconds', tone: 't4' }
-];
-function birthdayPartyHTML(b) {
-  return '<div class="bd-party">happy birthday jolene &#9825;</div>'+
-         '<div class="bd-party-sub">'+b.age+' today</div>';
-}
-function birthdayGridHTML(b) {
-  var cells = BDAY_UNITS.map(function(u) {
-    var v = u.key === 'd' ? b[u.key] : pad(b[u.key]);
-    return '<div class="bd-unit bd-'+u.tone+'">'+
-             '<span class="bd-num" id="bd-'+u.key+'">'+v+'</span>'+
-             '<span class="bd-label">'+u.label+'</span>'+
-           '</div>';
-  }).join('');
-  return '<div class="bd-grid">'+cells+'</div>';
-}
-// Birthday mode: flips the whole site to the party palette. Deliberately not
-// persisted - asking the birthday question is what turns it on, so a reload
-// should come back normal.
 var CONFETTI_COUNT = 44, BALLOON_COUNT = 7;
 var CONFETTI_SHAPES = ['', 'c-circle', 'c-ribbon'];
 function buildConfetti() {
@@ -398,37 +262,9 @@ function setPartyMode(on) {
   }
   syncThemeColor();
 }
-function injectBirthdayWidget(parentEl) {
-  var b = getBirthday();
-  var widget = document.createElement('div');
-  widget.className = 'birthday-widget';
-  var confetti = '<div class="bd-confetti" aria-hidden="true">'+
-    '<span class="bd-t1"></span><span class="bd-t4"></span><span class="bd-t3"></span>'+
-    '<span class="bd-t2"></span><span class="bd-t5"></span><span class="bd-t4"></span>'+
-    '<span class="bd-t1"></span><span class="bd-t3"></span><span class="bd-t2"></span>'+
-    '</div>';
-  var head = '<div class="bd-head"><span class="bd-date">September 24, '+b.year+'</span>'+
-             '<span class="bd-badge">turning '+b.age+'</span></div>';
-  widget.innerHTML = confetti + head + (b.today ? birthdayPartyHTML(b) : birthdayGridHTML(b));
-  parentEl.appendChild(widget);
-  if (b.today) return;
-  var iv = setInterval(function() {
-    if (!widget.isConnected) { clearInterval(iv); return; }
-    var q = getBirthday();
-    if (q.today) {
-      clearInterval(iv);
-      widget.innerHTML = confetti + head + birthdayPartyHTML(q);
-      return;
-    }
-    BDAY_UNITS.forEach(function(u) {
-      var el = document.getElementById('bd-'+u.key);
-      if (el) el.textContent = u.key === 'd' ? q[u.key] : pad(q[u.key]);
-    });
-    scrollToBottom();
-  }, 1000);
-}
 
-// â"€â"€ Q&A DATABASE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+// ── CONTENT ───────────────────────────────────────────────────────
+
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
@@ -542,18 +378,8 @@ var QA = {
   }
 };
 
-// â"€â"€ STATE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
-var chatActive = false, isStreaming = false, stopRequested = false, activeNavBtn = null;
+// ── MARKDOWN ──────────────────────────────────────────────────────
 
-function setStreaming(val) {
-  isStreaming = val;
-  var stopBtn = document.getElementById('stopBtn');
-  var sendBtn = document.getElementById('sendBtn');
-  if (stopBtn) stopBtn.style.display = val ? 'flex' : 'none';
-  if (sendBtn) sendBtn.style.display = val ? 'none' : 'flex';
-}
-
-// â"€â"€ MARKDOWN PARSER â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function md(text) {
   var out = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -587,80 +413,8 @@ function md(text) {
   return final.join('\n');
 }
 
-// â"€â"€ STREAMING ANIMATION â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
-function streamHTML(element, htmlContent, onDone) {
-  var CHAR_DELAY = 8, CURSOR_HTML = '<span class="cursor"></span>';
-  var temp = document.createElement('div'); temp.innerHTML = htmlContent;
-  var blocks = Array.from(temp.children);
-  element.innerHTML = '';
-  var blockIdx = 0;
-  function nextBlock() {
-    if (blockIdx >= blocks.length) { onDone && onDone(); return; }
-    var src = blocks[blockIdx++], tag = src.tagName.toLowerCase();
-    if (tag === 'hr' || tag === 'figure') { element.appendChild(src.cloneNode(true)); scrollToBottom(); nextBlock(); return; }
-    if (tag === 'ul' || tag === 'ol') {
-      var listEl = document.createElement(tag);
-      if (src.className) listEl.className = src.className;
-      element.appendChild(listEl);
-      var liSrcs = Array.from(src.children), liIdx = 0;
-      function nextLi() {
-        if (liIdx >= liSrcs.length) { nextBlock(); return; }
-        var liEl = document.createElement('li'); listEl.appendChild(liEl);
-        typeTokens(liEl, liSrcs[liIdx++].innerHTML, nextLi);
-      }
-      nextLi(); return;
-    }
-    var el = document.createElement(tag);
-    if (src.className) el.className = src.className;
-    element.appendChild(el); typeTokens(el, src.innerHTML, nextBlock);
-  }
-  function tokenize(html) {
-    var tokens = [], re = /(<[^>]+>)|([^<])/g, m;
-    while ((m = re.exec(html)) !== null) tokens.push({ type: m[1] ? 'tag' : 'char', value: m[0] });
-    return tokens;
-  }
-  function typeTokens(el, html, onComplete) {
-    var tokens = tokenize(html), i = 0, built = '';
-    function step() {
-      if (stopRequested) { el.innerHTML = html; onComplete(); return; }
-      if (i >= tokens.length) { el.innerHTML = html; scrollToBottom(); onComplete(); return; }
-      var tok = tokens[i++]; built += tok.value; el.innerHTML = built + CURSOR_HTML;
-      if (tok.type === 'char') { if (i % 8 === 0) scrollToBottom(); wTimeout(step, CHAR_DELAY); }
-      else { wTimeout(step, 0); }
-    }
-    step();
-  }
-  nextBlock();
-}
+// ── WILL'S SCHEDULE ───────────────────────────────────────────────
 
-// â"€â"€ CHAT LOGIC â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
-function showChat() {
-  if (!chatActive) { chatActive = true; document.getElementById('mainArea').classList.add('chat-mode'); }
-}
-function scrollToBottom() {
-  var msgs = document.getElementById('messages'); msgs.scrollTop = msgs.scrollHeight;
-}
-function addUserMessage(text) {
-  var msgs = document.getElementById('messages');
-  var div = document.createElement('div'); div.className = 'msg msg-user';
-  div.innerHTML = '<div class="msg-bubble">'+text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';
-  msgs.appendChild(div); scrollToBottom();
-}
-function botAvatarHTML() {
-  return '<div class="bot-avatar"><img src="images/IMG_6732.jpg" alt="will + jolene" onerror="this.style.display=\'none\';this.parentElement.classList.add(\'avatar-fallback\')"></div>';
-}
-function addThinkingIndicator() {
-  var msgs = document.getElementById('messages');
-  var div = document.createElement('div'); div.className = 'msg msg-bot'; div.id = 'thinking';
-  div.innerHTML = botAvatarHTML()+'<div class="msg-body"><div class="thinking-dots"><span></span><span></span><span></span></div></div>';
-  msgs.appendChild(div); scrollToBottom(); return div;
-}
-function setActiveNav(id) {
-  if (activeNavBtn) activeNavBtn.classList.remove('active');
-  var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
-  if (btn) { btn.classList.add('active'); activeNavBtn = btn; }
-}
-// â"€â"€ WILL'S SCHEDULE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 function getWillNow() {
   var now = new Date();
   var day = now.getDay(), h = now.getHours(), m = now.getMinutes();
@@ -696,117 +450,8 @@ function getWillNow() {
   return 'he\'s done commuting for the day. probably catching up on master\'s work, or finally sitting down.';
 }
 
-function deliverAutoIntro() {
-  showChat();
-  setStreaming(true); stopRequested = false;
-  var thinking = addThinkingIndicator();
-  setTimeout(function() {
-    thinking.remove();
-    var msgs = document.getElementById('messages');
-    var div = document.createElement('div'); div.className = 'msg msg-bot';
-    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
-    msgs.appendChild(div);
-    var text = "Hi my love.\n\nI keep adding to this whenever I think about you, which is a lot.\n\nEverything about us is in here. I love you so much.\n\nWill";
-    streamHTML(div.querySelector('.msg-content'), md(text), function() {
-      setStreaming(false); scrollToBottom();
-    });
-    scrollToBottom();
-  }, 600);
-}
-function deliverAnswer(qaId) {
-  var qa = QA[qaId];
-  var answer = typeof qa.answer === 'function' ? qa.answer() : qa.answer;
-  var thinking = addThinkingIndicator();
-  var delay = 500 + Math.random() * 300;
-  setTimeout(function() {
-    thinking.remove();
-    var msgs = document.getElementById('messages');
-    var div = document.createElement('div'); div.className = 'msg msg-bot';
-    div.innerHTML = botAvatarHTML()+'<div class="msg-body msg-content"></div>';
-    msgs.appendChild(div);
-    var contentEl = div.querySelector('.msg-content');
-    streamHTML(contentEl, md(answer), function() {
-      if (qaId === 'countdown' || qaId === 'visit_details') injectCountdownWidget(contentEl, []);
-      if (qaId === 'birthday' || qaId === 'birthday_age') {
-        setPartyMode(true);
-        injectBirthdayWidget(contentEl);
-      }
-      setStreaming(false); scrollToBottom();
-    });
-    scrollToBottom();
-  }, delay);
-}
-function triggerQuestion(id) {
-  if (isStreaming) return;
-  var qa = QA[id]; if (!qa) return;
-  setStreaming(true); stopRequested = false;
-  showChat(); setActiveNav(id); revealSectionFor(id);
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('show');
-  // highlight active qchip
-  document.querySelectorAll('.qchip').forEach(function(c) { c.classList.remove('active'); });
-  var chip = document.querySelector('.qchip[data-qa="'+id+'"]');
-  if (chip) chip.classList.add('active');
-  addUserMessage(qa.question);
-  setTimeout(function() { deliverAnswer(id); }, 40);
-}
-// â”€â”€ SIDEBAR SECTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-// 21 questions in one column was a wall of text. Each group collapses, and
-// which ones are open is remembered.
-var SECTIONS_KEY = 'openSections';
-function sectionEls() {
-  return Array.prototype.slice.call(document.querySelectorAll('.sidebar-section'));
-}
-function readOpenSections() {
-  try {
-    var raw = localStorage.getItem(SECTIONS_KEY);
-    if (raw) {
-      var parsed = JSON.parse(raw);
-      if (Object.prototype.toString.call(parsed) === '[object Array]') return parsed;
-    }
-  } catch (e) {}
-  return null;
-}
-function saveOpenSections() {
-  var open = [];
-  sectionEls().forEach(function(sec, i) {
-    if (!sec.classList.contains('collapsed')) open.push(i);
-  });
-  try { localStorage.setItem(SECTIONS_KEY, JSON.stringify(open)); } catch (e) {}
-}
-function setSectionOpen(sec, open) {
-  sec.classList.toggle('collapsed', !open);
-  var btn = sec.querySelector('.sidebar-label');
-  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-}
-function initSections() {
-  var stored = readOpenSections();
-  sectionEls().forEach(function(sec, i) {
-    // No stored preference: open the first group only, collapse the rest.
-    var open = stored ? stored.indexOf(i) !== -1 : i === 0;
-    setSectionOpen(sec, open);
-    var btn = sec.querySelector('.sidebar-label');
-    if (!btn) return;
-    btn.addEventListener('click', function() {
-      setSectionOpen(sec, sec.classList.contains('collapsed'));
-      saveOpenSections();
-    });
-  });
-}
-// Keep the group holding the active question open, so answers reached from a
-// welcome card or a collapsed group still show their place in the nav.
-function revealSectionFor(id) {
-  var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
-  if (!btn) return;
-  var sec = btn.closest('.sidebar-section');
-  if (sec && sec.classList.contains('collapsed')) {
-    setSectionOpen(sec, true);
-    saveOpenSections();
-  }
-}
-// â”€â”€ THEME â”€â”€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
-// Keeps the mobile browser chrome matching the page background. Reads --bg so
-// the palette stays defined in one place (css/style.css).
+// ── THEME ─────────────────────────────────────────────────────────
+
 function syncThemeColor() {
   var meta = document.getElementById('themeColor');
   if (!meta) return;
@@ -820,27 +465,205 @@ function toggleTheme() {
   localStorage.setItem('theme', next);
   syncThemeColor();
 }
-// â"€â"€ INIT â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+
+// ── CONTENT DERIVED FROM QA ──────────────────────────────────────
+// QA stays the single source of truth for wording. The tiles and sheets read
+// out of it rather than keeping a second copy that could drift.
+var NEXT_VISIT_DATE_LABEL = NEXT_VISIT_LABEL;
+
+function photoList() {
+  var out = [], re = /!\[[^\]]*\]\(([^)]+)\)/g, m;
+  while ((m = re.exec(QA.photos.answer)) !== null) out.push(m[1]);
+  return out;
+}
+function noteList() {
+  var out = [], re = /\*\*(\d+\/\d+\/\d{4})\*\*\n\*"([^"]+)"\*/g, m;
+  while ((m = re.exec(QA.notes.answer)) !== null) out.push({ date: m[1], text: m[2] });
+  return out;
+}
+
+// ── SHEETS ───────────────────────────────────────────────────────
+// Each sheet is a set of titled sections pulled from QA. Headings are written
+// here rather than reusing QA questions, which were phrased for a chatbot.
+var SHEETS = {
+  story: { title: 'Our story', sections: [
+    ['Who they are', 'about'],
+    ['How they met', 'met'],
+    ['Making it official', 'official'],
+    ['How long it took', 'how_long'],
+    ['The distance', 'distance']
+  ]},
+  timeline: { title: 'Timeline', sections: [
+    ['The whole thing, in order', 'timeline'],
+    ['The first real date', 'firstdate']
+  ]},
+  notes: { title: 'Notes from Will', notes: true },
+  next: { title: "What's next", sections: [
+    ['Right now', 'future'],
+    ['Graduation', 'graduate_jolene'],
+    ['In his words', 'future_words']
+  ]},
+  sweet: { title: 'Something sweet', sections: [['', 'sweet']] },
+  photos: { title: 'Photos', photos: true }
+};
+
+var lastFocused = null;
+
+function sheetHTML(key) {
+  var cfg = SHEETS[key];
+  if (cfg.photos) {
+    return '<div class="photo-grid">' + photoList().map(function(src) {
+      return '<figure class="pg-item"><img src="'+src+'" alt="Will and Jolene" loading="lazy" '+
+             'onerror="this.parentElement.style.display=\'none\'"></figure>';
+    }).join('') + '</div>';
+  }
+  if (cfg.notes) {
+    return '<ol class="note-list">' + noteList().map(function(n) {
+      return '<li class="note-item"><time class="note-item-date">'+n.date+'</time>'+
+             '<p class="note-item-text">'+n.text.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</p></li>';
+    }).join('') + '</ol>';
+  }
+  return cfg.sections.map(function(pair) {
+    var head = pair[0] ? '<h3 class="sheet-h">'+pair[0]+'</h3>' : '';
+    var qa = QA[pair[1]];
+    var body = typeof qa.answer === 'function' ? qa.answer() : qa.answer;
+    return head + '<div class="sheet-prose">' + md(body) + '</div>';
+  }).join('');
+}
+
+function openSheet(key) {
+  var cfg = SHEETS[key];
+  if (!cfg) return;
+  lastFocused = document.activeElement;
+  document.getElementById('sheetTitle').textContent = cfg.title;
+  document.getElementById('sheetBody').innerHTML = sheetHTML(key);
+  document.getElementById('sheetBody').scrollTop = 0;
+  var sheet = document.getElementById('sheet'), scrim = document.getElementById('sheetScrim');
+  scrim.hidden = false; sheet.hidden = false;
+  document.body.classList.add('sheet-open');
+  document.getElementById('sheetClose').focus();
+}
+function closeSheet() {
+  document.getElementById('sheet').hidden = true;
+  document.getElementById('sheetScrim').hidden = true;
+  document.body.classList.remove('sheet-open');
+  if (lastFocused && lastFocused.focus) lastFocused.focus();
+}
+
+// ── TILES ────────────────────────────────────────────────────────
+function renderVisitTile() {
+  document.getElementById('visitDate').textContent = NEXT_VISIT_DATE_LABEL;
+  function tick() {
+    var p = getCountdownParts();
+    var row = document.getElementById('visitCd');
+    if (!p) { row.innerHTML = '<span class="cd-passed">see you soon &#9825;</span>'; return; }
+    var d = document.getElementById('v-d'); if (!d) return;
+    d.textContent = p.d;
+    document.getElementById('v-h').textContent = pad(p.h);
+    document.getElementById('v-m').textContent = pad(p.m);
+    document.getElementById('v-s').textContent = pad(p.s);
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+function renderBdayTile() {
+  function tick() {
+    var b = getBirthday();
+    var body = document.getElementById('bdayBody');
+    var foot = document.getElementById('bdayFoot');
+    if (b.today) {
+      body.innerHTML = '<span class="bday-today">happy birthday jolene &#9825;</span>';
+      foot.textContent = b.age + ' today';
+      return;
+    }
+    body.innerHTML =
+      '<span class="bday-big">'+b.d+'</span><span class="bday-unit">days</span>' +
+      '<span class="bday-small">'+pad(b.h)+':'+pad(b.m)+':'+pad(b.s)+'</span>';
+    foot.textContent = 'september 24 · turning ' + b.age;
+  }
+  tick(); setInterval(tick, 1000);
+}
+
+function renderNoteTile() {
+  var notes = noteList();
+  if (!notes.length) return;
+  var latest = notes[notes.length - 1];
+  document.getElementById('noteQuote').textContent = '“' + latest.text + '”';
+  document.getElementById('noteDate').textContent = latest.date;
+}
+
+function renderNowTile() {
+  function tick() {
+    var el = document.getElementById('nowText');
+    if (el) el.textContent = getWillNow().split('\n')[0];
+  }
+  tick(); setInterval(tick, 60000);
+}
+
+function renderPhotoTile() {
+  var photos = photoList();
+  var img = document.getElementById('photoImg');
+  document.getElementById('photoCount').textContent = photos.length;
+  if (!photos.length || !img) return;
+  var i = Math.floor(Math.random() * photos.length);
+  img.src = photos[i];
+  setInterval(function() {
+    i = (i + 1) % photos.length;
+    img.classList.add('fading');
+    wTimeout(function() {
+      img.src = photos[i];
+      img.classList.remove('fading');
+    }, 420);
+  }, 7000);
+}
+
+// ── FALLING LEAVES ───────────────────────────────────────────────
+// Same idea as the birthday confetti, but slower and in the fall tones. Runs
+// whenever birthday mode is off.
+var LEAF_COUNT = 14;
+function buildLeaves() {
+  var layer = document.getElementById('leafLayer');
+  if (!layer || layer.childElementCount) return;
+  var html = '';
+  for (var i = 0; i < LEAF_COUNT; i++) {
+    var tone = 'var(--tone-' + (1 + (i % 5)) + ')';
+    var left = Math.round((i / LEAF_COUNT) * 100 + (Math.random() * 6 - 3));
+    var dur = (14 + Math.random() * 12).toFixed(2);
+    var delay = (Math.random() * 22).toFixed(2);
+    var w = 9 + Math.round(Math.random() * 7);
+    html += '<i style="left:' + Math.max(0, Math.min(98, left)) + '%;' +
+            'width:' + w + 'px;height:' + Math.round(w * 0.8) + 'px;' +
+            'background:' + tone + ';' +
+            'animation-duration:' + dur + 's;animation-delay:-' + delay + 's"></i>';
+  }
+  layer.innerHTML = html;
+}
+
+// ── INIT ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.prompt-card, .nav-btn, .qchip').forEach(function(btn) {
-    btn.addEventListener('click', function() { triggerQuestion(btn.dataset.qa); });
+  renderVisitTile();
+  renderBdayTile();
+  renderNoteTile();
+  renderNowTile();
+  renderPhotoTile();
+  buildLeaves();
+
+  document.querySelectorAll('[data-sheet]').forEach(function(el) {
+    el.addEventListener('click', function() { openSheet(el.dataset.sheet); });
+  });
+  document.getElementById('bdayTile').addEventListener('click', function() {
+    setPartyMode(true);
+  });
+  document.getElementById('sheetClose').addEventListener('click', closeSheet);
+  document.getElementById('sheetScrim').addEventListener('click', closeSheet);
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !document.getElementById('sheet').hidden) closeSheet();
   });
   document.getElementById('partyOffBtn').addEventListener('click', function() { setPartyMode(false); });
   document.getElementById('themeBtn').addEventListener('click', toggleTheme);
-  document.getElementById('mobileThemeBtn').addEventListener('click', toggleTheme);
-  document.getElementById('mobileSidebarBtn').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.add('open');
-    document.getElementById('sidebarOverlay').classList.add('show');
-  });
-  document.getElementById('sidebarOverlay').addEventListener('click', function() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').classList.remove('show');
-  });
-  initSections();
+
   syncThemeColor();
-  startWelcomeCountdown();
 });
 </script>
 </body>
 </html>
-
