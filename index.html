@@ -82,6 +82,16 @@
       <span class="tile-foot" id="bdayFoot"></span>
     </button>
 
+    <!-- TOGETHER -->
+    <section class="tile t-together">
+      <span class="tile-label">Together</span>
+      <div class="tog-body">
+        <span class="tog-big" id="togDays">--</span>
+        <span class="tog-unit">days</span>
+        <span class="tog-next" id="togNext"></span>
+      </div>
+    </section>
+
     <!-- LINK TILES. Wrapped so any number of them divides evenly across the
          grid instead of having to match the column count. -->
     <div class="tile-links">
@@ -268,12 +278,12 @@ function setPartyMode(on) {
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** in May 2026. He works full time as a **Technical Program Manager at Scale AI**, and he's working through an online **Master's in Computer Science at Georgia Tech** alongside the job.\n\n**Jolene** is a **junior at Penn State** in State College, Pennsylvania, studying **integrated science** on the pre-med track and graduating in May 2028. She works as an EMT with **Centre LifeLink EMS** and at **St. James**, and is deep in **MCAT prep**.\n\nIt's fall, so they're both heads-down - Will at work, Jolene at school - and back to doing the long distance thing.",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** in May 2026. He works full time as a **Technical Program Manager at Scale AI**, and he's working through an online **Master's in Computer Science at Georgia Tech**, specializing in artificial intelligence, alongside the job.\n\n**Jolene** is a **junior at Penn State** in State College, Pennsylvania, studying **integrated science** on the pre-med track and graduating in May 2028. She works as an EMT with **Centre LifeLink EMS** and at **St. James**, and is deep in **MCAT prep**.\n\nIt's fall, so they're both heads-down - Will at work, Jolene at school - and back to doing the long distance thing.",
     suggestions: []
   },
   met: {
     question: "How did Will and Jolene meet?",
-    answer: "Will and Jolene met in **Algebra 2**. Will sat in the corner, and Jolene was the cute girl next to him who was outrageously obsessed with Taylor Swift. They made Spotify playlists together and she made fun of his shark shirt.\n\nThis was back in **August 2021**. They knew each other for years before things became official, with a fair date on **June 22, 2022** being one of the early good memories.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.",
+    answer: "Will and Jolene met in **Algebra 2** in **August 2021**. Will sat in the corner, and Jolene was the cute girl next to him who was outrageously obsessed with Taylor Swift. They made Spotify playlists together and she made fun of his shark shirt.\n\nThey stayed friends for years after that. There was a fair date in **June 2022**, but nothing came of it yet.\n\nWhat changed things was **winter 2025**. They went ice skating with Jenna, a mutual friend from that same algebra class, and reconnected. Not long after, they went to **DC** on their own. That went well.\n\nWill asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.",
     suggestions: []
   },
   official: {
@@ -283,32 +293,22 @@ var QA = {
   },
   how_long: {
     question: "How long have they known each other?",
-    answer: "Will and Jolene met in **August 2021** and have known each other for nearly 5 years before becoming official on January 17, 2026.\n\nThey had a fair date together as far back as **June 22, 2022**.",
+    answer: "They met in **August 2021** and were friends for four and a half years before becoming official on **January 17, 2026**.\n\nThe reconnection was ice skating in winter 2025. Everything moved fairly quickly after that.",
     suggestions: []
   },
   firstdate: {
     question: "What was their first real date?",
-    answer: "One of the earliest memories is a **fair date on June 22, 2022**, over three and a half years before they made things official.",
+    answer: "There are two answers.\n\nThe **fair, June 22, 2022** came first, years before anything was official.\n\nThe one that actually started this was **DC**, just the two of them, not long after they reconnected ice skating in winter 2025.",
     suggestions: []
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met in Algebra 2.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the DOJ. Jolene interns at Star Family Medicine in Fairfax, VA. They actually get to see each other all the time.\n\n**August 10, 2026**\nWill starts at Scale AI and begins his Master's at Georgia Tech.\n\n**September 24, 2026**\nJolene turns 20.\n\n**September 25, 2026**\nJolene comes to visit - farmers market and a car show.\n\n**May 2028**\nJolene graduates from Penn State.",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met in Algebra 2.\n\n**June 22, 2022**\nFair date. They stay friends after it.\n\n**Winter 2025**\nIce skating with Jenna, a mutual friend from that algebra class. They reconnect.\n\n**Not long after**\nA day in DC, just the two of them. It goes well.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**Spring 2026**\nLong distance while Jolene finishes the semester.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the FBI. Jolene does a medical assistant internship at Star Family Medicine in Fairfax, VA. They are in the same place for once and see each other constantly.\n\n**August 10, 2026**\nWill starts at Scale AI and begins his Master's at Georgia Tech.\n\n**Fall 2026**\nJolene goes back to Penn State. Long distance again.\n\n**September 24, 2026**\nJolene turns 20.\n\n**September 25, 2026**\nJolene comes to visit - farmers market and a car show.\n\n**May 2028**\nJolene graduates from Penn State.",
     suggestions: []
   },
   notes: {
     question: "What has Will written to Jolene?",
-    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*\n\n**5/31/2026**\n*\"thinking of you while you're gone, excited to see the movies with you :)\"*\n\n**8/23/2026**\n*\"love u wanted to update the site\"*",
-    suggestions: []
-  },
-  note_recent: {
-    question: "What's Will's most recent note?",
-    answer: "Will's most recent note to Jolene:\n\n**8/23/2026**\n*\"love u wanted to update the site\"*",
-    suggestions: []
-  },
-  note_vday: {
-    question: "What did Will write on Valentine's Day?",
-    answer: "The day after Valentine's Day, Will wrote:\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*",
+    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*\n\n**5/31/2026**\n*\"thinking of you while you're gone, excited to see the movies with you :)\"*\n\n**8/23/2026**\n*\"love u wanted to update the site\"*\n\n**8/30/2026**\n*\"love you. did a little bit of a redo for the fall, and wanted to switch out of the chatbot vibe. just because why not?\"*",
     suggestions: []
   },
   distance: {
@@ -318,17 +318,7 @@ var QA = {
   },
   future: {
     question: "What's next for Will and Jolene?",
-    answer: "Nothing dramatic. They're both just doing their thing right now.\n\n**Will** is working full time at Scale AI and chipping away at the Georgia Tech master's on the side.\n\n**Jolene** is a junior at Penn State - pre-med, EMT shifts, and a lot of MCAT prep.\n\n**May 2028:** Jolene graduates.\n\nAfter that they'll figure it out as it comes. No rush.",
-    suggestions: []
-  },
-  palantir: {
-    question: "What's Will's job after graduation?",
-    answer: "Will graduated from JMU in May 2026 and works full time as a **Technical Program Manager at Scale AI**.\n\nHe's also working through an online **Master's in Computer Science at Georgia Tech** alongside the job.",
-    suggestions: []
-  },
-  graduate_will: {
-    question: "When does Will graduate?",
-    answer: "Will graduated from **JMU in May 2026**. He's done!",
+    answer: "Will keeps working, Jolene keeps at school. Mostly what's ahead is a list of when they get to see each other.\n\n**September 24** - her birthday.\n**September 25** - she comes down.\n**October** - a visit.\n**November** - Thanksgiving.\n**December** - winter break, so a longer one.\n**January 17** - one year.\n**February** - Valentine's day.\n**March** - once.\n**April** - once.\n**May 2027** - the school year ends and she's back for the summer.",
     suggestions: []
   },
   graduate_jolene: {
@@ -336,44 +326,14 @@ var QA = {
     answer: "Jolene graduates from **Penn State in May 2028**.",
     suggestions: []
   },
-  future_words: {
-    question: "What did Will say about the future?",
-    answer: "Nothing is mapped out. Jolene finishes at Penn State in 2028 and they go from there.",
-    suggestions: []
-  },
   photos: {
     question: "Where are all our photos?",
     answer: "Here are all of them.\n\n![Will and Jolene](images/DSC01769.jpg)\n\n![Will and Jolene](images/IMG_0036.jpg)\n\n![Will and Jolene](images/IMG_0086.jpg)\n\n![Will and Jolene](images/IMG_0204.jpg)\n\n![Will and Jolene](images/IMG_0207.jpg)\n\n![Will and Jolene](images/IMG_0282.jpg)\n\n![Will and Jolene](images/IMG_0321.jpg)\n\n![Will and Jolene](images/IMG_0333.jpg)\n\n![Will and Jolene](images/IMG_0362.jpg)\n\n![Will and Jolene](images/IMG_0379.jpg)\n\n![Will and Jolene](images/IMG_0471.jpg)\n\n![Will and Jolene](images/IMG_0616.jpg)\n\n![Will and Jolene](images/IMG_0918.jpg)\n\n![Will and Jolene](images/IMG_0932.jpg)\n\n![Will and Jolene](images/IMG_0971.jpg)\n\n![Will and Jolene](images/IMG_0972.jpg)\n\n![Will and Jolene](images/IMG_0977.jpg)\n\n![Will and Jolene](images/IMG_0985.jpg)\n\n![Will and Jolene](images/IMG_0993.jpg)\n\n![Will and Jolene](images/IMG_1038.jpg)\n\n![Will and Jolene](images/IMG_1049.jpg)\n\n![Will and Jolene](images/IMG_1057.jpg)\n\n![Will and Jolene](images/IMG_1078.jpg)\n\n![Will and Jolene](images/IMG_1237.jpg)\n\n![Will and Jolene](images/IMG_1337.jpg)\n\n![Will and Jolene](images/IMG_1447.jpg)\n\n![Will and Jolene](images/IMG_1665.jpg)\n\n![Will and Jolene](images/IMG_1805.jpg)\n\n![Will and Jolene](images/IMG_1934.jpg)\n\n![Will and Jolene](images/IMG_2192.jpg)\n\n![Will and Jolene](images/IMG_2206.jpg)\n\n![Will and Jolene](images/IMG_2225.jpg)\n\n![Will and Jolene](images/IMG_2228.jpg)\n\n![Will and Jolene](images/IMG_2275.jpg)\n\n![Will and Jolene](images/IMG_2277.jpg)\n\n![Will and Jolene](images/IMG_2387.jpg)\n\n![Will and Jolene](images/IMG_2397.jpg)\n\n![Will and Jolene](images/IMG_2458.jpg)\n\n![Will and Jolene](images/IMG_2481.jpg)\n\n![Will and Jolene](images/IMG_2692.jpg)\n\n![Will and Jolene](images/IMG_2764.jpg)\n\n![Will and Jolene](images/IMG_5064.jpg)\n\n![Will and Jolene](images/IMG_5206.jpg)\n\n![Will and Jolene](images/IMG_5218.jpg)\n\n![Will and Jolene](images/IMG_5219.jpg)\n\n![Will and Jolene](images/IMG_6309.jpg)\n\n![Will and Jolene](images/IMG_6339.jpg)\n\n![Will and Jolene](images/IMG_6348.jpg)\n\n![Will and Jolene](images/IMG_6353.jpg)\n\n![Will and Jolene](images/IMG_6354.jpg)\n\n![Will and Jolene](images/IMG_6730.jpg)\n\n![Will and Jolene](images/IMG_6732.jpg)\n\n![Will and Jolene](images/IMG_6780.jpg)\n\n![Will and Jolene](images/IMG_6786.jpg)\n\n![Will and Jolene](images/IMG_6830.jpg)\n\n![Will and Jolene](images/IMG_6831.jpg)\n\n![Will and Jolene](images/IMG_6832.jpg)\n\n![Will and Jolene](images/IMG_7203.jpg)\n\n![Will and Jolene](images/IMG_7211.jpg)\n\n![Will and Jolene](images/IMG_7253.jpg)\n\n![Will and Jolene](images/IMG_7601.jpg)\n\n![Will and Jolene](images/IMG_7653.jpg)\n\n![Will and Jolene](images/IMG_8395.jpg)\n\n![Will and Jolene](images/IMG_8403.jpg)\n\n![Will and Jolene](images/IMG_8434.jpg)\n\n![Will and Jolene](images/IMG_8445.jpg)\n\n![Will and Jolene](images/IMG_8448.jpg)\n\n![Will and Jolene](images/IMG_8472.jpg)\n\n![Will and Jolene](images/IMG_8502.jpg)\n\n![Will and Jolene](images/IMG_8830.jpg)\n\n![Will and Jolene](images/IMG_8840.jpg)\n\n![Will and Jolene](images/IMG_8850.jpg)\n\n![Will and Jolene](images/IMG_8859.jpg)\n\n![Will and Jolene](images/IMG_8860.jpg)\n\n![Will and Jolene](images/IMG_8889.jpg)\n\n![Will and Jolene](images/IMG_9223.jpg)\n\n![Will and Jolene](images/IMG_9225.jpg)\n\n![Will and Jolene](images/IMG_9491.jpg)\n\n![Will and Jolene](images/JW_6Months.jpg)\n\n![Will and Jolene](images/JW_Photobooth.jpg)\n\n![Will and Jolene](images/JW_WillAtPSU.jpg)",
     suggestions: []
   },
-  countdown: {
-    question: "When does Will see Jolene next?",
-    answer: "Next visit: **September 25, 2026** - counting down.",
-    suggestions: []
-  },
-  visit_details: {
-    question: "What's happening on the next visit?",
-    answer: "Next visit: **September 25, 2026** - the day after Jolene's birthday.",
-    suggestions: []
-  },
-  birthday: {
-    question: "When is Jolene's birthday?",
-    answer: "Jolene's birthday is **September 24**.\n\nShe turns **20** in 2026, and Will sees her the next day.",
-    suggestions: []
-  },
-  birthday_age: {
-    question: "How old is Jolene turning?",
-    answer: "She turns **20** on **September 24, 2026**.",
-    suggestions: []
-  },
   sweet: {
     question: "Say something sweet about them",
     answer: "Will has been writing notes to Jolene since the first week they started dating. The very first one, written four days in:\n\n*\"love ya! keeping this so i can write notes here\"*\n\nHe built this site because he gets busy, and wanted everything about them in one place she could check whenever.",
-    suggestions: []
-  },
-  whatsup: {
-    question: "What is Will up to right now?",
-    answer: function() { return getWillNow(); },
     suggestions: []
   }
 };
@@ -424,14 +384,17 @@ function getWillNow() {
   var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
   // weekends go to the master's coursework
   if (day === 0 || day === 6) {
-    return 'it\'s '+days[day]+', so no scale ai - he\'s working on his online master\'s in computer science.';
+    return 'it\'s '+days[day]+', so no scale ai - he\'s on coursework for the georgia tech master\'s.';
   }
-  // weekday blocks (mon-fri): commute, work 8-6, commute
+  // Weekday blocks covering all 24 hours. Sleep wraps past midnight, so it sits
+  // outside this list and is handled after it.
   var blocks = [
+    { sh:4,sm:0,eh:6,em:0,name:'at the gym, then getting ready' },
     { sh:6,sm:0,eh:8,em:0,name:'commuting to work' },
     { sh:8,sm:0,eh:18,em:0,name:'at work - scale ai',
-      note:'the job is demanding, so work takes up basically the whole day.' },
-    { sh:18,sm:0,eh:20,em:0,name:'commuting home' }
+      note:'ten hours of it, so this is most of the day.' },
+    { sh:18,sm:0,eh:20,em:0,name:'commuting home' },
+    { sh:20,sm:0,eh:21,em:0,name:'having dinner and watching something' }
   ];
   for (var i=0; i<blocks.length; i++) {
     var b = blocks[i];
@@ -443,11 +406,12 @@ function getWillNow() {
       var s = 'right now he\'s '+b.name+' (until '+fmt(b.eh,b.em)+').';
       if (b.note) s += '\n\n'+b.note;
       if (next) s += '\n\nafter that: '+next.name+' at '+fmt(next.sh,next.sm)+'.';
+      else s += '\n\nafter that: asleep at 9pm.';
       return s;
     }
   }
-  if (t < 6*60) return 'it\'s the middle of the night - he\'s asleep.';
-  return 'he\'s done commuting for the day. probably catching up on master\'s work, or finally sitting down.';
+  // 9pm through 4am
+  return 'he\'s asleep. the alarm goes off at 4am for the gym.';
 }
 
 // ── THEME ─────────────────────────────────────────────────────────
@@ -474,6 +438,26 @@ function noteList() {
   var out = [], re = /\*\*(\d+\/\d+\/\d{4})\*\*\n\*"([^"]+)"\*/g, m;
   while ((m = re.exec(QA.notes.answer)) !== null) out.push({ date: m[1], text: m[2] });
   return out;
+}
+
+// ── ANNIVERSARY ──────────────────────────────────────────────────
+// Days together, and how long until the next January 17. Like the birthday
+// this recurs, so the year is worked out rather than hardcoded.
+var ANNIV_YEAR = 2026, ANNIV_MONTH = 0, ANNIV_DAY = 17; // month 0 = January
+function getAnniversary() {
+  var now = new Date();
+  var startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  var began = new Date(ANNIV_YEAR, ANNIV_MONTH, ANNIV_DAY);
+  var days = Math.round((startOfDay - began) / 86400000);
+  var y = now.getFullYear();
+  var next = new Date(y, ANNIV_MONTH, ANNIV_DAY);
+  var end  = new Date(y, ANNIV_MONTH, ANNIV_DAY + 1);
+  var today = now >= next && now < end;
+  if (now >= end) { y += 1; next = new Date(y, ANNIV_MONTH, ANNIV_DAY); }
+  return {
+    days: days, today: today, years: y - ANNIV_YEAR,
+    until: Math.round((next - startOfDay) / 86400000), year: y
+  };
 }
 
 // ── ABOUT JOLENE ─────────────────────────────────────────────────
@@ -558,9 +542,8 @@ var SHEETS = {
   ]},
   notes: { title: 'Notes from Will', notes: true },
   next: { title: "What's next", sections: [
-    ['Right now', 'future'],
-    ['Graduation', 'graduate_jolene'],
-    ['After that', 'future_words']
+    ['', 'future'],
+    ['Graduation', 'graduate_jolene']
   ]},
   sweet: { title: 'Why this exists', sections: [['', 'sweet']] },
   photos: { title: 'Photos', photos: true },
@@ -685,6 +668,21 @@ function renderPhotoTile() {
   }, 7000);
 }
 
+function renderTogetherTile() {
+  function tick() {
+    var a = getAnniversary();
+    var big = document.getElementById('togDays'), next = document.getElementById('togNext');
+    if (!big) return;
+    big.textContent = a.days.toLocaleString();
+    var label = a.years === 1 ? 'one year' : a.years + ' years';
+    next.textContent = a.today
+      ? label + ' today'
+      : label + ' on january 17 · ' + (a.until === 1 ? 'tomorrow' : a.until + ' days away');
+  }
+  tick();
+  setInterval(tick, 60000);
+}
+
 function renderHerTile() {
   var el = document.getElementById('herFact');
   if (el) el.textContent = JOLENE_LINES[Math.floor(Math.random() * JOLENE_LINES.length)];
@@ -719,6 +717,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderNoteTile();
   renderNowTile();
   renderPhotoTile();
+  renderTogetherTile();
   renderHerTile();
   buildLeaves();
 

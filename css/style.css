@@ -289,6 +289,19 @@ button.tile:active { transform: translateY(0); }
 }
 /* right-now tile */
 .now-text { font-size: 14.5px; line-height: 1.55; color: var(--text-2); }
+/* together tile - full width, its own row */
+/* Full width and short on content, so centre it rather than letting it sit at
+   the top of a row sized for the taller tiles. */
+.t-together { grid-column: 1 / -1; justify-content: center; gap: 11px; }
+.tog-body { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
+.tog-big {
+  font-family: 'Lora', Georgia, serif;
+  font-size: 34px; font-weight: 600; line-height: 1;
+  font-variant-numeric: tabular-nums; color: var(--tone-4);
+}
+.tog-unit { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+.tog-next { margin-left: auto; font-size: 13px; color: var(--text-3); }
+.t-together .tile-label { color: var(--tone-4); }
 /* birthday tile */
 .bday-body { display: flex; align-items: baseline; gap: 9px; }
 .bday-big {
