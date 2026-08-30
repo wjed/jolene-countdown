@@ -38,8 +38,8 @@
     </div>
     <div class="sidebar-body">
       <div class="sidebar-section">
-        <div class="sidebar-label">About Us</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-1" aria-expanded="true" aria-controls="secnav-1">About Us<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-1" aria-labelledby="seclbl-1">
           <button class="nav-btn" data-qa="about">Who are Will and Jolene?</button>
           <button class="nav-btn" data-qa="met">How did they meet?</button>
           <button class="nav-btn" data-qa="official">When did they become official?</button>
@@ -48,45 +48,45 @@
         </nav>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Timeline</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-2" aria-expanded="true" aria-controls="secnav-2">Timeline<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-2" aria-labelledby="seclbl-2">
           <button class="nav-btn" data-qa="timeline">Full timeline</button>
           <button class="nav-btn" data-qa="firstdate">What was their first real date?</button>
         </nav>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Notes from Will</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-3" aria-expanded="true" aria-controls="secnav-3">Notes from Will<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-3" aria-labelledby="seclbl-3">
           <button class="nav-btn" data-qa="notes">All notes</button>
           <button class="nav-btn" data-qa="note_recent">Most recent note</button>
           <button class="nav-btn" data-qa="note_vday">Valentine's day note</button>
         </nav>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">What's Next</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-4" aria-expanded="true" aria-controls="secnav-4">What's Next<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-4" aria-labelledby="seclbl-4">
           <button class="nav-btn" data-qa="future">What's next for them?</button>
           <button class="nav-btn" data-qa="graduate_jolene">When does Jolene graduate?</button>
           <button class="nav-btn" data-qa="future_words">What did Will say about the future?</button>
         </nav>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Next Visit</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-5" aria-expanded="true" aria-controls="secnav-5">Next Visit<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-5" aria-labelledby="seclbl-5">
           <button class="nav-btn" data-qa="countdown">When's the next visit?</button>
           <button class="nav-btn" data-qa="visit_details">What's happening on the visit?</button>
         </nav>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Birthday</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-6" aria-expanded="true" aria-controls="secnav-6">Birthday<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-6" aria-labelledby="seclbl-6">
           <button class="nav-btn" data-qa="birthday">When's Jolene's birthday?</button>
           <button class="nav-btn" data-qa="birthday_age">How old is she turning?</button>
         </nav>
       </div>
       <div class="sidebar-section">
-        <div class="sidebar-label">Photos & More</div>
-        <nav class="sidebar-nav">
+        <button class="sidebar-label" id="seclbl-7" aria-expanded="true" aria-controls="secnav-7">Photos & More<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <nav class="sidebar-nav" id="secnav-7" aria-labelledby="seclbl-7">
           <button class="nav-btn" data-qa="photos">Our photos</button>
           <button class="nav-btn" data-qa="fun">Fun facts</button>
           <button class="nav-btn" data-qa="sweet">Say something sweet</button>
@@ -102,7 +102,8 @@
   <!-- Mobile overlay -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- Falling confetti, birthday mode only -->
+  <!-- Falling confetti and rising balloons, birthday mode only -->
+  <div class="balloon-layer" id="balloonLayer" aria-hidden="true"></div>
   <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
   <!-- MAIN -->
@@ -395,20 +396,44 @@ function birthdayGridHTML(b) {
 // Birthday mode: flips the whole site to the party palette. Deliberately not
 // persisted - asking the birthday question is what turns it on, so a reload
 // should come back normal.
-var CONFETTI_COUNT = 26;
+var CONFETTI_COUNT = 44, BALLOON_COUNT = 7;
+var CONFETTI_SHAPES = ['', 'c-circle', 'c-ribbon'];
 function buildConfetti() {
   var layer = document.getElementById('confettiLayer');
   if (!layer || layer.childElementCount) return;
   var html = '';
   for (var i = 0; i < CONFETTI_COUNT; i++) {
     var tone = 'bd-t' + (1 + (i % 5));
+    var shape = CONFETTI_SHAPES[i % CONFETTI_SHAPES.length];
     var left = Math.round((i / CONFETTI_COUNT) * 100 + (Math.random() * 4 - 2));
-    var dur = (5 + Math.random() * 4).toFixed(2);
-    var delay = (Math.random() * 6).toFixed(2);
-    var w = 6 + Math.round(Math.random() * 4);
-    html += '<i class="'+tone+'" style="left:'+Math.max(0, Math.min(99, left))+'%;'+
-            'width:'+w+'px;height:'+(w+4)+'px;'+
+    var dur = (4.5 + Math.random() * 5).toFixed(2);
+    var delay = (Math.random() * 9).toFixed(2);
+    var w = 6 + Math.round(Math.random() * 6);
+    html += '<i class="'+tone+(shape ? ' '+shape : '')+'" style="left:'+
+            Math.max(0, Math.min(99, left))+'%;'+
+            'width:'+w+'px;height:'+(w+5)+'px;'+
             'animation-duration:'+dur+'s;animation-delay:-'+delay+'s"></i>';
+  }
+  layer.innerHTML = html;
+}
+function buildBalloons() {
+  var layer = document.getElementById('balloonLayer');
+  if (!layer || layer.childElementCount) return;
+  var html = '';
+  for (var i = 0; i < BALLOON_COUNT; i++) {
+    // Size varies via width/height, not transform - the rise animation owns
+    // transform and would overwrite an inline scale. Colour is set inline as a
+    // var() on both background and color so the string matches the balloon and
+    // both still follow whichever palette is active.
+    var tone = 'var(--tone-' + (1 + (i % 5)) + ')';
+    var left = Math.round(6 + (i / BALLOON_COUNT) * 88);
+    var dur = (13 + Math.random() * 9).toFixed(2);
+    var delay = (Math.random() * 14).toFixed(2);
+    var w = 22 + Math.round(Math.random() * 16);
+    html += '<b style="left:'+left+'%;'+
+            'width:'+w+'px;height:'+Math.round(w * 1.27)+'px;'+
+            'background:'+tone+';color:'+tone+';'+
+            'animation-duration:'+dur+'s;animation-delay:-'+delay+'s"></b>';
   }
   layer.innerHTML = html;
 }
@@ -416,6 +441,7 @@ function setPartyMode(on) {
   var root = document.documentElement;
   if (on) {
     buildConfetti();
+    buildBalloons();
     root.setAttribute('data-party', 'on');
   } else {
     root.removeAttribute('data-party');
@@ -769,7 +795,7 @@ function triggerQuestion(id) {
   if (isStreaming) return;
   var qa = QA[id]; if (!qa) return;
   setStreaming(true); stopRequested = false;
-  showChat(); setActiveNav(id);
+  showChat(); setActiveNav(id); revealSectionFor(id);
   document.getElementById('sidebar').classList.remove('open');
   document.getElementById('sidebarOverlay').classList.remove('show');
   // highlight active qchip
@@ -779,7 +805,61 @@ function triggerQuestion(id) {
   addUserMessage(qa.question);
   setTimeout(function() { deliverAnswer(id); }, 40);
 }
-// â"€â"€ THEME â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
+// â”€â”€ SIDEBAR SECTIONS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// 21 questions in one column was a wall of text. Each group collapses, and
+// which ones are open is remembered.
+var SECTIONS_KEY = 'openSections';
+function sectionEls() {
+  return Array.prototype.slice.call(document.querySelectorAll('.sidebar-section'));
+}
+function readOpenSections() {
+  try {
+    var raw = localStorage.getItem(SECTIONS_KEY);
+    if (raw) {
+      var parsed = JSON.parse(raw);
+      if (Object.prototype.toString.call(parsed) === '[object Array]') return parsed;
+    }
+  } catch (e) {}
+  return null;
+}
+function saveOpenSections() {
+  var open = [];
+  sectionEls().forEach(function(sec, i) {
+    if (!sec.classList.contains('collapsed')) open.push(i);
+  });
+  try { localStorage.setItem(SECTIONS_KEY, JSON.stringify(open)); } catch (e) {}
+}
+function setSectionOpen(sec, open) {
+  sec.classList.toggle('collapsed', !open);
+  var btn = sec.querySelector('.sidebar-label');
+  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+function initSections() {
+  var stored = readOpenSections();
+  sectionEls().forEach(function(sec, i) {
+    // No stored preference: open the first group only, collapse the rest.
+    var open = stored ? stored.indexOf(i) !== -1 : i === 0;
+    setSectionOpen(sec, open);
+    var btn = sec.querySelector('.sidebar-label');
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      setSectionOpen(sec, sec.classList.contains('collapsed'));
+      saveOpenSections();
+    });
+  });
+}
+// Keep the group holding the active question open, so answers reached from a
+// welcome card or a collapsed group still show their place in the nav.
+function revealSectionFor(id) {
+  var btn = document.querySelector('.nav-btn[data-qa="'+id+'"]');
+  if (!btn) return;
+  var sec = btn.closest('.sidebar-section');
+  if (sec && sec.classList.contains('collapsed')) {
+    setSectionOpen(sec, true);
+    saveOpenSections();
+  }
+}
+// â”€â”€ THEME â”€â”€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 // Keeps the mobile browser chrome matching the page background. Reads --bg so
 // the palette stays defined in one place (css/style.css).
 function syncThemeColor() {
@@ -811,6 +891,7 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebarOverlay').classList.remove('show');
   });
+  initSections();
   syncThemeColor();
   startWelcomeCountdown();
 });
