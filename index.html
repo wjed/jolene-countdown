@@ -88,7 +88,6 @@
         <button class="sidebar-label" id="seclbl-7" aria-expanded="true" aria-controls="secnav-7">Photos & More<svg class="sec-chev" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
         <nav class="sidebar-nav" id="secnav-7" aria-labelledby="seclbl-7">
           <button class="nav-btn" data-qa="photos">Our photos</button>
-          <button class="nav-btn" data-qa="fun">Fun facts</button>
           <button class="nav-btn" data-qa="sweet">Say something sweet</button>
           <button class="nav-btn" data-qa="whatsup">What is Will up to right now?</button>
         </nav>
@@ -163,15 +162,15 @@
           </button>
           <button class="prompt-card" data-qa="distance">
             <div class="prompt-card-title">Long distance</div>
-            <div class="prompt-card-desc">JMU and Penn State, ~175 miles apart</div>
+            <div class="prompt-card-desc">Northern Virginia and Penn State, ~190 miles</div>
           </button>
           <button class="prompt-card" data-qa="future">
             <div class="prompt-card-title">What's next</div>
-            <div class="prompt-card-desc">Graduation, Palantir, and beyond</div>
+            <div class="prompt-card-desc">Work, school, and no rush</div>
           </button>
           <button class="prompt-card" data-qa="countdown">
             <div class="prompt-card-title">Next visit</div>
-            <div class="prompt-card-desc">It's summer - they see each other all the time</div>
+            <div class="prompt-card-desc">September 25 - counting down</div>
           </button>
           <button class="prompt-card" data-qa="birthday">
             <div class="prompt-card-title">Jolene's birthday</div>
@@ -234,55 +233,6 @@ try {
   }
   nextLine();
 })();
-
-// â"€â"€ Q&A DATABASE â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
-var QA = {
-  about: {
-    question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. This summer she's interning at **Star Family Medicine** in Fairfax, Virginia.\n\nIt's summer, so they're actually getting to spend real time together for once.",
-    suggestions: ["met", "distance", "future"]
-  },
-  met: {
-    question: "How did Will and Jolene meet?",
-    answer: "Will and Jolene met in **August 2021**. They knew each other for years before things became official, one of the early memories is a fair date on **June 22, 2022**.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.\n\nTheir first Valentine's Day as a couple was **February 14, 2026**.",
-    suggestions: ["timeline", "notes", "about"]
-  },
-  timeline: {
-    question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**September 25, 2026**\nJolene comes to JMU - farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
-    suggestions: ["notes", "future", "about"]
-  },
-  notes: {
-    question: "What has Will written to Jolene?",
-    answer: "Notes Will wrote to Jolene:\n\n**1/21/2026**\n*\"love ya! keeping this so i can write notes here\"*\n\n**1/28/2026**\n*\"you looked gorgeous on the phone, i am so lucky to have u\"*\n\n**2/3/2026**\n*\"so proud of u; so unbelivably smart\"*\n\n**2/6/2026**\n*\"thank u for being with me at my best and my worst. always grateful for u\"*\n\n**2/15/2026**\n*\"valentines day was amazing with you my love\"*\n\n**2/20/2026**\n*\"i love you so much, gonna miss u for this next month\"*\n\n**3/11/2026**\n*\"i miss you so much been working on this for the past few days but happy u can finally see it\"*\n\n**4/4/2026**\n*\"brought the website back up, love you so much :)\"*\n\n**5/31/2026**\n*\"thinking of you while you're gone, excited to see the movies with you :)\"*\n\n**8/23/2026**\n*\"love u wanted to update the site\"*",
-    suggestions: ["timeline", "about", "future"]
-  },
-  distance: {
-    question: "How far apart are they?",
-    answer: "Right now they're both in **Northern Virginia** for the summer - Will is in the DC/NOVA area for his DOJ internship, and Jolene is interning nearby at Star Family Medicine in Fairfax. So they're actually together.\n\nWhen the summer ends, Jolene heads back to **Penn State** in State College, PA - about a 4-hour drive from DC. Long distance, but they make it work.",
-    suggestions: ["about", "timeline", "future"]
-  },
-  future: {
-    question: "What's next for Will and Jolene?",
-    answer: "Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC, and they're seeing each other all the time.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.",
-    suggestions: ["timeline", "about", "notes"]
-  },
-  photos: {
-    question: "Where are all our photos?",
-    answer: "Here are all of them.\n\n![Will and Jolene](images/IMG_0207.jpg)\n\n![Will and Jolene](images/IMG_0321.jpg)\n\n![Will and Jolene](images/IMG_0333.jpg)\n\n![Will and Jolene](images/IMG_0972.jpg)\n\n![Will and Jolene](images/IMG_0977.jpg)\n\n![Will and Jolene](images/IMG_0993.jpg)\n\n![Will and Jolene](images/IMG_1078.jpg)\n\n![Will and Jolene](images/IMG_1237.jpg)\n\n![Will and Jolene](images/IMG_1805.jpg)\n\n![Will and Jolene](images/IMG_1934.jpg)\n\n![Will and Jolene](images/IMG_2225.jpg)\n\n![Will and Jolene](images/IMG_2458.jpg)\n\n![Will and Jolene](images/IMG_2692.jpg)\n\n![Will and Jolene](images/IMG_2763.jpg)\n\n![Will and Jolene](images/IMG_5206.jpg)\n\n![Will and Jolene](images/IMG_5218.jpg)\n\n![Will and Jolene](images/IMG_6354.jpg)\n\n![Will and Jolene](images/IMG_6732.jpg)\n\n![Will and Jolene](images/IMG_6780.jpg)\n\n![Will and Jolene](images/IMG_6786.jpg)\n\n![Will and Jolene](images/IMG_6830.jpg)\n\n![Will and Jolene](images/IMG_6831.jpg)\n\n![Will and Jolene](images/IMG_6832.jpg)\n\n![Will and Jolene](images/IMG_7253.jpg)\n\n![Will and Jolene](images/IMG_7653.jpg)\n\n![Will and Jolene](images/IMG_8395.jpg)\n\n![Will and Jolene](images/IMG_8403.jpg)\n\n![Will and Jolene](images/IMG_8434.jpg)\n\n![Will and Jolene](images/IMG_8445.jpg)\n\n![Will and Jolene](images/IMG_8448.jpg)\n\n![Will and Jolene](images/IMG_8502.jpg)\n\n![Will and Jolene](images/IMG_8850.jpg)\n\n![Will and Jolene](images/IMG_9225.jpg)\n\n![Will and Jolene](images/IMG_9627.jpg)\n\n![Will and Jolene](images/Untitled%20design.jpg)",
-    suggestions: ["about", "notes", "timeline"]
-  },
-  countdown: {
-    question: "When does Will see Jolene next?",
-    answer: "well... it's summer and they're both in Northern Virginia, so they see each other all the time. hard to even keep track.",
-    suggestions: ["notes", "timeline", "future"]
-  },
-  fun: {
-    question: "Tell me something fun about them",
-    answer: "A few things:\n\n- Notes have been written since the first week they started dating.\n- Right now they're both in Northern Virginia for the summer. When school's back in session, Jolene's at Penn State - about 4 hours from DC.\n- They became official on January 17, 2026. First Valentine's Day together was 28 days later.\n- One of the earliest notes: *\"so proud of u; so unbelivably smart.\"*",
-    suggestions: ["notes", "timeline", "about"]
-  }
-};
 
 // â"€â"€ COUNTDOWN â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 var NEXT_VISIT = new Date('2026-09-25T16:00:00Z'); // Sep 25 noon EDT (UTC-4)
@@ -482,17 +432,17 @@ function injectBirthdayWidget(parentEl) {
 var QA = {
   about: {
     question: "Who are Will and Jolene?",
-    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** (JMU) in May 2026. He's now interning at the **Department of Justice** in DC, and this fall he starts at **Scale AI** and begins his **Master's at Georgia Tech** on August 10th.\n\n**Jolene** attends **Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with Centre LifeLink EMS, and does research in a machine learning lab studying anxiety and depression.\n\nIt's summer, so they're actually getting to spend real time together for once.",
+    answer: "Will and Jolene are a couple who met in **August 2021** and became official on **January 17, 2026**.\n\n**Will** graduated from **James Madison University** in May 2026. He works full time as a **Technical Program Manager at Scale AI**, and he's working through an online **Master's in Computer Science at Georgia Tech** alongside the job.\n\n**Jolene** is a **junior at Penn State** in State College, Pennsylvania, graduating in May 2028. She's pre-med, works as an EMT with **Centre LifeLink EMS**, and is deep in **MCAT prep**.\n\nIt's fall, so they're both heads-down - Will at work, Jolene at school - and back to doing the long distance thing.",
     suggestions: []
   },
   met: {
     question: "How did Will and Jolene meet?",
-    answer: "Will and Jolene met in **Algebra 2**. Will sat in the corner, and Jolene was the cute girl next to him who was outrageously obsessed with Taylor Swift. They made Spotify playlists together and she made fun of his shark shirt.\n\nThis was back in **August 2021**. They knew each other for years before things became official, with a fair date on **June 22, 2022** being one of the early good memories.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.\n\nTheir first Valentine's Day as a couple was **February 14, 2026**.",
+    answer: "Will and Jolene met in **Algebra 2**. Will sat in the corner, and Jolene was the cute girl next to him who was outrageously obsessed with Taylor Swift. They made Spotify playlists together and she made fun of his shark shirt.\n\nThis was back in **August 2021**. They knew each other for years before things became official, with a fair date on **June 22, 2022** being one of the early good memories.\n\nAfter a long time getting to know each other, Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.",
     suggestions: []
   },
   official: {
     question: "When did they become official?",
-    answer: "Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.\n\nTheir first Valentine's Day together was just **28 days later**, on February 14, 2026.",
+    answer: "Will asked Jolene to be his girlfriend on **January 17, 2026** and she said yes.\n\nThey'd already known each other for nearly four and a half years by then.",
     suggestions: []
   },
   how_long: {
@@ -507,7 +457,7 @@ var QA = {
   },
   timeline: {
     question: "What's the relationship timeline?",
-    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**September 25, 2026**\nJolene comes to JMU - farmers market and a car show.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the DOJ. Jolene interns at Star Family Medicine in Fairfax, VA. They actually get to see each other all the time.\n\n**August 10, 2026**\nWill starts his Master's at Georgia Tech and begins at Scale AI.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
+    answer: "The story of Will and Jolene, in order:\n\n**August 2021**\nWill and Jolene met in Algebra 2.\n\n**June 22, 2022**\nFair date, one of the early good memories.\n\n**January 17, 2026**\nThey became official.\n\n**February 14, 2026**\nFirst Valentine's Day together.\n\n**March 12, 2026**\nJolene meets Will's mom and little sister.\n\n**March 14, 2026**\nWill meets Jolene's parents.\n\n**March 27, 2026**\nVisit.\n\n**May 2026**\nWill graduates from JMU.\n\n**Summer 2026**\nWill interns at the DOJ. Jolene interns at Star Family Medicine in Fairfax, VA. They actually get to see each other all the time.\n\n**August 10, 2026**\nWill starts at Scale AI and begins his Master's at Georgia Tech.\n\n**September 24, 2026**\nJolene turns 20.\n\n**September 25, 2026**\nJolene comes to visit - farmers market and a car show.\n\n**May 2028**\nJolene graduates from Penn State.\n\n**2028 and beyond**\nTogether.",
     suggestions: []
   },
   notes: {
@@ -527,17 +477,17 @@ var QA = {
   },
   distance: {
     question: "How far apart are they?",
-    answer: "Right now they're both in **Northern Virginia** for the summer - Will is in the DC/NOVA area for his DOJ internship, and Jolene is interning nearby at Star Family Medicine in Fairfax. So they're actually together.\n\nWhen the summer ends, Jolene heads back to **Penn State** in State College, PA - about a 4-hour drive from DC. Long distance, but they make it work.",
+    answer: "Will is in **Northern Virginia** and Jolene is back at **Penn State** in State College, PA.\n\nThat's about **190 miles** door to door, roughly a three and a half hour drive up through Maryland into central Pennsylvania.\n\nBack to long distance. They've done it before and they make it work.",
     suggestions: []
   },
   future: {
     question: "What's next for Will and Jolene?",
-    answer: "Things are moving fast in the best way.\n\n**Summer 2026:** Will is interning at the **Department of Justice** in DC. Jolene is interning at **Star Family Medicine** in Fairfax, VA. They're both in Northern Virginia and seeing each other all the time this summer.\n\n**August 10, 2026:** Will starts his **Master's at Georgia Tech** and begins at **Scale AI**.\n\n**May 2028:** Jolene graduates from Penn State.\n\n**2028 and beyond:** Together.",
+    answer: "Nothing dramatic. They're both just doing their thing right now.\n\n**Will** is working full time at Scale AI and chipping away at the Georgia Tech master's on the side.\n\n**Jolene** is a junior at Penn State - pre-med, EMT shifts, and a lot of MCAT prep.\n\n**May 2028:** Jolene graduates.\n\nAfter that they'll figure it out as it comes. No rush.",
     suggestions: []
   },
   palantir: {
     question: "What's Will's job after graduation?",
-    answer: "Will graduated from JMU in May 2026 and is now interning at the **Department of Justice** in DC.\n\nThis fall he starts at **Scale AI** and begins a **Master's in Computer Science at Georgia Tech**, starting August 10th.",
+    answer: "Will graduated from JMU in May 2026 and works full time as a **Technical Program Manager at Scale AI**.\n\nHe's also working through an online **Master's in Computer Science at Georgia Tech** alongside the job.",
     suggestions: []
   },
   graduate_will: {
@@ -578,11 +528,6 @@ var QA = {
   birthday_age: {
     question: "How old is Jolene turning?",
     answer: "She turns **20** on **September 24, 2026**.",
-    suggestions: []
-  },
-  fun: {
-    question: "Tell me something fun about them",
-    answer: "A few things:\n\n- Notes have been written since the first week they started dating.\n- Right now they're both in Northern Virginia for the summer. When school's back in session, Jolene's at Penn State - about 4 hours from DC.\n- They became official on January 17, 2026. First Valentine's Day together was 28 days later.\n- One of the earliest notes: *\"so proud of u; so unbelivably smart.\"*",
     suggestions: []
   },
   sweet: {
@@ -723,32 +668,32 @@ function getWillNow() {
   function between(sh, sm, eh, em) { return t >= sh*60+sm && t < eh*60+em; }
   function fmt(sh, sm) { var a = sh<12?'am':'pm', h12=sh%12||12; return sm===0?h12+a:h12+':'+(sm<10?'0'+sm:sm)+a; }
   var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
-  if (day === 0 || day === 6) return 'it\'s '+days[day]+', no work. he\'s probably free.';
-  // weekday blocks (mon-fri)
-  var blocks = [
-    { sh:4,sm:30,eh:5,em:30,name:'waking up' },
-    { sh:5,sm:30,eh:7,em:0,name:'at the gym (ashburn rec center)' },
-    { sh:7,sm:0,eh:8,em:0,name:'getting ready and commuting to work' },
-    { sh:8,sm:0,eh:17,em:0,name:'at work - DOJ internship in Ashburn' },
-    { sh:17,sm:0,eh:18,em:0,name:'commuting home from work' }
-  ];
-  if (day===1) {
-    blocks.push({ sh:18,sm:0,eh:19,em:0,name:'at a capstone meeting (full team)' });
-  } else if (day===2) {
-    blocks.push({ sh:18,sm:0,eh:19,em:0,name:'at a capstone meeting (team a)' });
+  // weekends go to the master's coursework
+  if (day === 0 || day === 6) {
+    return 'it\'s '+days[day]+', so no scale ai - he\'s working on his online master\'s in computer science.';
   }
+  // weekday blocks (mon-fri): commute, work 8-6, commute
+  var blocks = [
+    { sh:6,sm:0,eh:8,em:0,name:'commuting to work' },
+    { sh:8,sm:0,eh:18,em:0,name:'at work - scale ai',
+      note:'the job is demanding, so work takes up basically the whole day.' },
+    { sh:18,sm:0,eh:20,em:0,name:'commuting home' }
+  ];
   for (var i=0; i<blocks.length; i++) {
     var b = blocks[i];
     if (between(b.sh,b.sm,b.eh,b.em)) {
       var next = null;
       for (var j=i+1; j<blocks.length; j++) { if (blocks[j].sh*60+blocks[j].sm > t) { next=blocks[j]; break; } }
+      // names stay short so they read correctly in the "after that" line; any
+      // commentary rides along as a note on the current block only
       var s = 'right now he\'s '+b.name+' (until '+fmt(b.eh,b.em)+').';
+      if (b.note) s += '\n\n'+b.note;
       if (next) s += '\n\nafter that: '+next.name+' at '+fmt(next.sh,next.sm)+'.';
       return s;
     }
   }
-  if (t < 4*60+30) return 'it\'s the middle of the night - he\'s asleep. alarm goes off at 4:30am.';
-  return 'he\'s done for the day, probably free for the evening.';
+  if (t < 6*60) return 'it\'s the middle of the night - he\'s asleep.';
+  return 'he\'s done commuting for the day. probably catching up on master\'s work, or finally sitting down.';
 }
 
 function deliverAutoIntro() {
