@@ -231,18 +231,23 @@ body.sheet-open { overflow: hidden; }
 }
 /* One-time settle on load. Staggered by nth-child so the board assembles
    rather than snapping in all at once. */
-.tile { animation: tileIn .5s cubic-bezier(.22,.7,.3,1) both; }
-.bento > .tile:nth-child(1) { animation-delay: .02s; }
-.bento > .tile:nth-child(2) { animation-delay: .07s; }
-.bento > .tile:nth-child(3) { animation-delay: .12s; }
-.bento > .tile:nth-child(4) { animation-delay: .17s; }
-.bento > .tile:nth-child(5) { animation-delay: .22s; }
-.bento > .tile:nth-child(6) { animation-delay: .27s; }
-.tile-links .tile:nth-child(1) { animation-delay: .31s; }
-.tile-links .tile:nth-child(2) { animation-delay: .35s; }
-.tile-links .tile:nth-child(3) { animation-delay: .39s; }
-.tile-links .tile:nth-child(4) { animation-delay: .43s; }
-.tile-links .tile:nth-child(5) { animation-delay: .47s; }
+/* Only runs while .bento carries .intro, which JS adds on load and removes on
+   a timer. The animation starts at opacity 0 with fill-mode both, so if it
+   ever stalled - a backgrounded tab stops compositing, and the frame freezes -
+   it would hold that start frame and the whole page would render blank. Tiles
+   are therefore visible by default and the animation is the exception. */
+.bento.intro .tile { animation: tileIn .5s cubic-bezier(.22,.7,.3,1) both; }
+.bento.intro > .tile:nth-child(1) { animation-delay: .02s; }
+.bento.intro > .tile:nth-child(2) { animation-delay: .07s; }
+.bento.intro > .tile:nth-child(3) { animation-delay: .12s; }
+.bento.intro > .tile:nth-child(4) { animation-delay: .17s; }
+.bento.intro > .tile:nth-child(5) { animation-delay: .22s; }
+.bento.intro > .tile:nth-child(6) { animation-delay: .27s; }
+.bento.intro .tile-links .tile:nth-child(1) { animation-delay: .31s; }
+.bento.intro .tile-links .tile:nth-child(2) { animation-delay: .35s; }
+.bento.intro .tile-links .tile:nth-child(3) { animation-delay: .39s; }
+.bento.intro .tile-links .tile:nth-child(4) { animation-delay: .43s; }
+.bento.intro .tile-links .tile:nth-child(5) { animation-delay: .47s; }
 @keyframes tileIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
