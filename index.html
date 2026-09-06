@@ -122,6 +122,11 @@
       <span class="link-title">Why this exists</span>
       <span class="link-desc">the short version</span>
     </button>
+    <button class="tile t-link" data-sheet="bridge">
+      <span class="link-kicker">her joke</span>
+      <span class="link-title">That bridge</span>
+      <span class="link-desc">we&rsquo;ve got to it</span>
+    </button>
     </div>
 
   </main>
@@ -531,6 +536,84 @@ function joleneSheetHTML() {
   return html + '</ol>';
 }
 
+// ── THAT BRIDGE ──────────────────────────────────────────────────
+// Jolene says "let's burn that bridge when we get to it", so here is the
+// bridge. Built as one SVG: planks, a suspension cable and its hangers, then
+// flames and embers that ignite left to right before the deck drops away.
+var BRIDGE_PLANKS = 12, BRIDGE_EMBERS = 16;
+function bridgeSheetHTML() {
+  var x0 = 92, w = 20, deckY = 138;
+  // the cable is a quadratic; hangers hang from points along it
+  var P0 = [118, 72], P1 = [210, 126], P2 = [302, 72];
+  function cableY(t) {
+    return (1-t)*(1-t)*P0[1] + 2*(1-t)*t*P1[1] + t*t*P2[1];
+  }
+  function cableX(t) {
+    return (1-t)*(1-t)*P0[0] + 2*(1-t)*t*P1[0] + t*t*P2[0];
+  }
+  var planks = '', flames = '', hangers = '', embers = '';
+  for (var i = 0; i < BRIDGE_PLANKS; i++) {
+    var x = x0 + i * w;
+    planks += '<rect class="bp" style="--i:'+i+'" x="'+x+'" y="'+deckY+'" width="'+(w-2)+'" height="9" rx="1.5"/>';
+    // Outer g holds the position, inner g takes the animation. A CSS transform
+    // would otherwise replace the transform attribute and drop every flame at
+    // the origin.
+    flames += '<g transform="translate('+(x+w/2-1)+','+deckY+')">'
+            +   '<g class="bf" style="--i:'+i+'">'
+            +     '<path class="bf-o" d="M0 0 C -9 -13 -11 -25 0 -42 C 11 -25 9 -13 0 0 Z"/>'
+            +     '<path class="bf-m" d="M0 0 C -6 -9 -7 -16 0 -28 C 7 -16 6 -9 0 0 Z"/>'
+            +     '<path class="bf-i" d="M0 0 C -3 -5 -4 -9 0 -15 C 4 -9 3 -5 0 0 Z"/>'
+            +   '</g>'
+            + '</g>';
+  }
+  for (var h = 1; h <= 7; h++) {
+    var t = h / 8;
+    hangers += '<line class="bh" style="--i:'+(h-1)+'" x1="'+cableX(t).toFixed(1)+'" y1="'+cableY(t).toFixed(1)+
+               '" x2="'+cableX(t).toFixed(1)+'" y2="'+deckY+'"/>';
+  }
+  for (var e = 0; e < BRIDGE_EMBERS; e++) {
+    embers += '<circle class="be" style="--i:'+e+';--dx:'+(Math.random()*40-20).toFixed(1)+'px" cx="'+
+              (100 + Math.round(Math.random()*210))+'" cy="'+deckY+'" r="'+(0.9 + Math.random()*1.7).toFixed(1)+'"/>';
+  }
+  return '<div class="bridge-stage" id="bridgeStage">' +
+    '<svg class="bridge-svg" viewBox="0 0 420 200" role="img" ' +
+      'aria-label="A bridge catches fire, burns, and falls into the water">' +
+      '<rect class="bank" x="0" y="147" width="94" height="53" rx="2"/>' +
+      '<rect class="bank" x="326" y="147" width="94" height="53" rx="2"/>' +
+      '<line class="bwater" x1="96" y1="176" x2="324" y2="176"/>' +
+      '<line class="bwater bwater-2" x1="112" y1="187" x2="308" y2="187"/>' +
+      '<rect class="btower" x="114" y="60" width="8" height="88" rx="2"/>' +
+      '<rect class="btower" x="298" y="60" width="8" height="88" rx="2"/>' +
+      '<path class="bcable" d="M118 72 Q210 126 302 72"/>' +
+      hangers + planks + flames + embers +
+      '<g class="bsmoke" aria-hidden="true">' +
+        '<circle class="bs" style="--i:0" cx="150" cy="130" r="16"/>' +
+        '<circle class="bs" style="--i:1" cx="210" cy="130" r="20"/>' +
+        '<circle class="bs" style="--i:2" cx="268" cy="130" r="15"/>' +
+      '</g>' +
+    '</svg>' +
+    '<blockquote class="bridge-quote">' +
+      '<p>&ldquo;let&rsquo;s burn that bridge when we get to it&rdquo;</p>' +
+      '<cite>jolene</cite>' +
+    '</blockquote>' +
+    '<button class="bridge-again" id="bridgeAgain" type="button">burn it again</button>' +
+  '</div>';
+}
+function startBridge() {
+  var stage = document.getElementById('bridgeStage');
+  if (!stage) return;
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // With motion turned down, skip straight to the aftermath rather than
+  // animating - the joke still lands, the bridge is still gone.
+  stage.classList.add(reduced ? 'burnt' : 'go');
+  var again = document.getElementById('bridgeAgain');
+  if (again) again.addEventListener('click', function() {
+    stage.classList.remove('go', 'burnt');
+    void stage.offsetWidth;              // reflow, so the animations restart
+    stage.classList.add(reduced ? 'burnt' : 'go');
+  });
+}
+
 // ── SHEETS ───────────────────────────────────────────────────────
 // Each sheet is a set of titled sections pulled from QA. Headings are written
 // here rather than reusing QA questions, which were phrased for a chatbot.
@@ -553,7 +636,8 @@ var SHEETS = {
   ]},
   sweet: { title: 'Why this exists', sections: [['', 'sweet']] },
   photos: { title: 'Photos', photos: true },
-  her: { title: 'About Jolene', jolene: true }
+  her: { title: 'About Jolene', jolene: true },
+  bridge: { title: 'That bridge', bridge: true }
 };
 
 var lastFocused = null;
@@ -561,6 +645,7 @@ var lastFocused = null;
 function sheetHTML(key) {
   var cfg = SHEETS[key];
   if (cfg.jolene) return joleneSheetHTML();
+  if (cfg.bridge) return bridgeSheetHTML();
   if (cfg.photos) {
     return '<div class="photo-grid">' + photoList().map(function(src) {
       return '<figure class="pg-item"><img src="'+src+'" alt="Will and Jolene" loading="lazy" '+
@@ -592,6 +677,8 @@ function openSheet(key) {
   scrim.hidden = false; sheet.hidden = false;
   document.body.classList.add('sheet-open');
   document.getElementById('sheetClose').focus();
+  // let the markup land before kicking the animation off
+  if (cfg.bridge) setTimeout(startBridge, 40);
 }
 function closeSheet() {
   document.getElementById('sheet').hidden = true;
