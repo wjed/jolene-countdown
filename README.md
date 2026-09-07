@@ -1,38 +1,45 @@
 # will + jolene
 
-A shared site for the two of you: countdown to the next visit, messages, lifts, mood, photos, notes, timeline, weather, distance, and music.
+A single-page site for Jolene. Countdown to the next visit, the photos, the
+notes, the bucket list, and the rest of it.
 
-## Pages
+No build step, no framework, no dependencies. Open `index.html` and it works.
 
-- **index.html** — Home: countdown to March 12, 2026, live time, moon phase, school logos, and links to everything.
-- **messages.html** — Send and read messages (Supabase).
-- **lifts.html** — Log which muscle groups you hit (JMU UREC · Penn State).
-- **mood.html** — How you’re feeling (1–10 + optional note).
-- **photos.html** — Photo gallery.
-- **notes.html** — Static notes.
-- **timeline.html** — Your timeline.
-- **weather.html** — Weather for Harrisonburg & State College.
-- **distance.html** — Map and distance JMU ↔ Penn State.
-- **music.html** — Spotify playlists.
+## Files
 
-## Logo images
+| Path | What it is |
+|------|------------|
+| `index.html` | The whole site — markup, content and one inline `<script>` |
+| `css/style.css` | Every style, including both palettes |
+| `images/` | The photos, 80 of them |
+| `school_logos/`, `gyms/`, `fonts/` | Left over from an older version, unused |
 
-Put your logos in the `images/` folder with these names so they show up:
+## Content lives in the markup
 
-| File | Where it’s used |
-|------|------------------|
-| `jmu-logo.png` | Home (school logos) |
-| `penn-state-logo.png` | Home (school logos) |
-| `urec-logo.png` | Lifts page (Will’s gym – JMU UREC) |
-| `penn-gym-logo.png` | Lifts page (Jolene’s gym – Penn State) |
+There is no CMS and no data file. Everything editable is a plain array or
+object near the top of the `<script>` in `index.html`:
 
-You can use `.png`, `.jpg`, or `.svg`; if the filename differs, rename the file or update the `src` in `index.html` and `lifts.html`.
+- `QA` — the prose the sheets render, including the photo list
+- `JOLENE` / `JOLENE_LINES` — the facts, and the rotating one on her tile
+- `BUCKET` — the bucket list. Add `done: 'where it happened'` to an entry and
+  it moves to the Done section; the count, the bar and the tile all follow
+- `NEXT_VISIT`, `ANNIV_*`, `BDAY_*` — the dates every counter derives from
 
-## Supabase
+## Photos
 
-1. Run **supabase_tables.sql** in the Supabase SQL Editor (creates `messages`, `lifts`, `mood` and RLS).
-2. Your project URL and anon key are in **js/shared.js**. Messages, lifts, and mood all use that.
+Filenames follow `Category_Description.jpg`, with `_01`/`_02` where several
+photos share a description, so the category sorts them into their event:
 
-## Running it
+`Date` `Early` `Everyday` `Family` `FirstDate` `Gym` `Home` `JMU` `LakeAnna`
+`Milestone` `PSU` `Pets`
 
-Open **index.html** in a browser, or host the folder (e.g. GitHub Pages, Netlify) and use the site from the same URL so you both see the same data.
+The gallery list in `QA.photos` is generated from what is actually on disk. If
+you add or rename photos, it has to be regenerated or the page will point at
+files that no longer exist.
+
+## Birthday mode
+
+Tapping the birthday tile sets `data-party="on"` on `<html>`. That swaps the
+palette tokens only — every component follows automatically. The fire in the
+bridge animation and the two portraits deliberately keep literal colours, so
+they don't turn pink along with everything else.

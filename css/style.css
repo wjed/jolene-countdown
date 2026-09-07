@@ -200,88 +200,114 @@ body.sheet-open { overflow: hidden; }
   font-size: 12.5px; color: var(--text-3);
   letter-spacing: .04em;
 }
-/* ── WILL AND JOLENE ────────────────────────────────────────────
-   Two flat figures in the masthead, drawn from the photos: his Georgia Tech
-   hoodie, her Penn State one. Skin, hair and clothes are literal colours -
-   they are people, not palette slots, and they shouldn't turn pink in
-   birthday mode. The navies are lifted well off their real values; at true
-   Penn State navy they'd disappear into the background. */
-.crew { flex: none; line-height: 0; }
-.crew-svg { height: 96px; width: auto; display: block; overflow: visible; }
-.sk-w     { fill: #f1cbaa; }
-.sk-j     { fill: #d9a276; }
-.w-blush  { fill: #e08a72; opacity: .11; }
-.w-hair   { fill: #5c3f28; }
-.j-hair   { fill: url(#jHair); }
-.j-hair-back { fill: #3a2314; }
-.w-hoodie { fill: #44568a; }
-.w-hood   { fill: #35446f; }
-.w-neckline { fill: none; stroke: #35446f; stroke-width: 1.2; }
-.w-string { stroke: #d6b46a; stroke-width: 1; stroke-linecap: round; fill: none; }
-.w-mark   { fill: #d6b46a; }
-.w-pants  { fill: #c9b291; }
-.j-hoodie { fill: #5f66a6; }
-.j-hoodie-arm { fill: #545b96; }
-.j-hood   { fill: #4a5087; }
-.j-neckline { fill: none; stroke: #4a5087; stroke-width: 1.2; }
-.j-string { stroke: #e4e8f2; stroke-width: 1; stroke-linecap: round; fill: none; }
-.j-mark   { fill: #e4e8f2; }
-.shoe     { fill: #f2ede4; }
-.w-hand   { fill: #f1cbaa; }
-.w-hug    { fill: none; stroke: #3b4b7a; stroke-width: 4.4; stroke-linecap: round; }
-.fig-eye  { fill: #3a2418; }
-.w-eye    { fill: #35404e; }
-.fig-brow { stroke: #4a2e1c; stroke-width: 1.2; stroke-linecap: round; fill: none; }
-.j-brow   { stroke: #33200f; }
-.fig-smile { stroke: #a85b46; stroke-width: 1.1; stroke-linecap: round; fill: none; }
-.j-mouth  { fill: #8d3f36; }
-.j-freck  { fill: #b9805a; }
-.j-hat, .j-hat-pom { opacity: 0; }
+/* ── WILL AND JOLENE, IN PIXELS ──────────────────────────────────
+   Two 16x20 sprites drawn to canvas from the data in PX_SPR, scaled up with
+   image-rendering:pixelated so every pixel stays square. Tapping them opens
+   the overworld. Nothing here animates on hover - the whole point of the
+   earlier glitch was a transform starting and stopping under the cursor. */
+.crew {
+  flex: none; display: flex; align-items: flex-end; gap: 2px;
+  padding: 8px 12px 6px; background: none;
+  border: 1px solid var(--border); border-radius: 10px;
+  cursor: pointer; position: relative;
+  transition: border-color .15s ease, background .15s ease;
+}
+.crew:hover, .crew:focus-visible { border-color: var(--tone-1); background: var(--sidebar-bg); }
+.crew-px {
+  display: block; width: 48px; height: 60px;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+}
+/* they bob on their own clocks - pure translate, no origin to depend on */
+#crewWill   { animation: crewBob 1.9s steps(2, jump-none) infinite alternate; }
+#crewJolene { animation: crewBob 2.3s steps(2, jump-none) infinite alternate; animation-delay: -.9s; }
+@keyframes crewBob { from { transform: translateY(0); } to { transform: translateY(-2px); } }
 
-/* idle: they breathe, they blink, her hair moves */
-.crew-fig { transform-box: fill-box; transform-origin: 50% 100%; }
-.crew-w { animation: figBreathe 3.7s ease-in-out infinite alternate; }
-.crew-j { animation: figBreathe 4.3s ease-in-out infinite alternate; animation-delay: -1.5s; }
-@keyframes figBreathe {
-  from { transform: translateY(.45px) scaleY(.994); }
-  to   { transform: translateY(-.45px) scaleY(1.006); }
+.crew-hint {
+  position: absolute; left: 0; right: 0; bottom: -15px;
+  font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--text-3); text-align: center;
 }
-.fig-eye { transform-box: fill-box; transform-origin: 50% 50%; }
-.crew-w .fig-eye { animation: figBlink 5.6s linear infinite; }
-.crew-j .fig-eye { animation: figBlink 7.1s linear infinite; animation-delay: -2.6s; }
-@keyframes figBlink {
-  0%, 95%, 100% { transform: scaleY(1); }
-  96.5%, 97.8%  { transform: scaleY(.08); }
-}
-.j-hair { transform-box: fill-box; transform-origin: 50% 6%; }
-.crew-j .j-hair { animation: figHair 5.2s ease-in-out infinite alternate; }
-@keyframes figHair { from { transform: rotate(-1.2deg); } to { transform: rotate(1.5deg); } }
+.crew:hover .crew-hint, .crew:focus-visible .crew-hint { color: var(--tone-1); }
 
-/* They wave once on arrival and that is all. Firing it from :hover meant a
-   transform animation started and stopped every time the cursor crossed
-   the box - and leaving mid-swing killed it with no fill-mode, so the arm
-   snapped back. A greeting you have to trigger isn't worth that. */
-.fig-arm { transform-box: fill-box; transform-origin: 50% 5%; }
-.crew.wave .w-arm { animation: figWaveL 1.5s ease-in-out both; }
-.crew.wave .j-arm { animation: figWaveR 1.5s ease-in-out .12s both; }
-@keyframes figWaveL {
-  0%, 100% { transform: rotate(0deg); }
-  22% { transform: rotate(52deg); }
-  42% { transform: rotate(37deg); }
-  60% { transform: rotate(55deg); }
-  80% { transform: rotate(40deg); }
+/* ── THE OVERWORLD ───────────────────────────────────────────────── */
+.px-world { position: fixed; inset: 0; z-index: 900; }
+.px-world[hidden] { display: none; }
+body.px-open { overflow: hidden; }
+.px-scrim { position: absolute; inset: 0; background: #080503; }
+.px-frame {
+  position: relative; height: 100%;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 10px 10px 14px; gap: 8px;
 }
-@keyframes figWaveR {
-  0%, 100% { transform: rotate(0deg); }
-  22% { transform: rotate(-50deg); }
-  42% { transform: rotate(-35deg); }
-  60% { transform: rotate(-53deg); }
-  80% { transform: rotate(-38deg); }
+.px-bar {
+  width: 100%; max-width: 760px; flex: none;
+  display: flex; align-items: center; justify-content: space-between;
 }
+.px-title {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-2);
+}
+.px-close {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-2); background: var(--sidebar-bg);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 6px 12px; min-height: 34px; cursor: pointer;
+}
+.px-close:hover { color: var(--text); border-color: var(--tone-1); }
 
-/* birthday mode: she gets the hat */
-[data-party="on"] .j-hat     { opacity: 1; fill: var(--party-pink, #ff6fa8); }
-[data-party="on"] .j-hat-pom { opacity: 1; fill: var(--party-gold, #f2c94c); }
+.px-stage {
+  position: relative; flex: 1 1 auto; min-height: 0; width: 100%;
+  display: flex; align-items: center; justify-content: center;
+}
+#pxCanvas {
+  display: block;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+  border: 2px solid var(--border); border-radius: 2px;
+  background: #4f7a3a;
+}
+/* the text box sits over the bottom of the screen, like the games it copies */
+.px-talk {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  width: min(92%, 520px); margin: 0;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 13px; line-height: 1.5; color: #241a14;
+  background: #f4ecd8; border: 3px solid #241a14; border-radius: 3px;
+  box-shadow: 0 0 0 3px #f4ecd8, 4px 4px 0 3px rgba(0,0,0,.4);
+  padding: 10px 13px;
+}
+.px-talk[hidden] { display: none; }
+.px-talk::after { content: '\25BC'; position: absolute; right: 9px; bottom: 5px; font-size: 9px; }
+
+.px-pad {
+  flex: none; width: 100%; max-width: 760px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.px-dpad {
+  display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(2, 34px);
+  gap: 3px;
+}
+.px-dpad button:nth-child(1) { grid-area: 1 / 2; }
+.px-dpad button:nth-child(2) { grid-area: 2 / 1; }
+.px-dpad button:nth-child(3) { grid-area: 2 / 2; }
+.px-dpad button:nth-child(4) { grid-area: 2 / 3; }
+.px-dpad button, .px-a {
+  font-size: 12px; color: var(--text-2);
+  background: var(--sidebar-bg); border: 1px solid var(--border);
+  border-radius: 7px; cursor: pointer; touch-action: none; user-select: none;
+}
+.px-dpad button:active, .px-a:active { background: var(--sidebar-hover); color: var(--text); }
+.px-a {
+  width: 52px; height: 52px; border-radius: 50%;
+  font-family: ui-monospace, monospace; font-size: 15px; font-weight: 700;
+  color: var(--on-accent); background: var(--tone-1); border-color: transparent;
+}
+.px-keys {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 10px; letter-spacing: .06em; color: var(--text-3); margin: 0;
+}
+@media (max-width: 640px) { .px-keys { display: none; } }
+@media (prefers-reduced-motion: reduce) { .crew-px { animation: none !important; } }
 .mantel-foot {
   text-align: center; font-size: 12px; color: var(--text-3);
   padding: 30px 0 6px;
