@@ -537,83 +537,295 @@ function joleneSheetHTML() {
 }
 
 // ── THAT BRIDGE ──────────────────────────────────────────────────
-// Jolene says "let's burn that bridge when we get to it", so here is the
-// bridge. Built as one SVG: planks, a suspension cable and its hangers, then
-// flames and embers that ignite left to right before the deck drops away.
-var BRIDGE_PLANKS = 12, BRIDGE_EMBERS = 16;
-function bridgeSheetHTML() {
-  var x0 = 92, w = 20, deckY = 138;
-  // the cable is a quadratic; hangers hang from points along it
-  var P0 = [118, 72], P1 = [210, 126], P2 = [302, 72];
-  function cableY(t) {
-    return (1-t)*(1-t)*P0[1] + 2*(1-t)*t*P1[1] + t*t*P2[1];
-  }
-  function cableX(t) {
-    return (1-t)*(1-t)*P0[0] + 2*(1-t)*t*P1[0] + t*t*P2[0];
-  }
-  var planks = '', flames = '', hangers = '', embers = '';
-  for (var i = 0; i < BRIDGE_PLANKS; i++) {
-    var x = x0 + i * w;
-    planks += '<rect class="bp" style="--i:'+i+'" x="'+x+'" y="'+deckY+'" width="'+(w-2)+'" height="9" rx="1.5"/>';
-    // Outer g holds the position, inner g takes the animation. A CSS transform
-    // would otherwise replace the transform attribute and drop every flame at
-    // the origin.
-    flames += '<g transform="translate('+(x+w/2-1)+','+deckY+')">'
-            +   '<g class="bf" style="--i:'+i+'">'
-            +     '<path class="bf-o" d="M0 0 C -9 -13 -11 -25 0 -42 C 11 -25 9 -13 0 0 Z"/>'
-            +     '<path class="bf-m" d="M0 0 C -6 -9 -7 -16 0 -28 C 7 -16 6 -9 0 0 Z"/>'
-            +     '<path class="bf-i" d="M0 0 C -3 -5 -4 -9 0 -15 C 4 -9 3 -5 0 0 Z"/>'
-            +   '</g>'
-            + '</g>';
-  }
-  for (var h = 1; h <= 7; h++) {
-    var t = h / 8;
-    hangers += '<line class="bh" style="--i:'+(h-1)+'" x1="'+cableX(t).toFixed(1)+'" y1="'+cableY(t).toFixed(1)+
-               '" x2="'+cableX(t).toFixed(1)+'" y2="'+deckY+'"/>';
-  }
-  for (var e = 0; e < BRIDGE_EMBERS; e++) {
-    embers += '<circle class="be" style="--i:'+e+';--dx:'+(Math.random()*40-20).toFixed(1)+'px" cx="'+
-              (100 + Math.round(Math.random()*210))+'" cy="'+deckY+'" r="'+(0.9 + Math.random()*1.7).toFixed(1)+'"/>';
-  }
-  return '<div class="bridge-stage" id="bridgeStage">' +
-    '<svg class="bridge-svg" viewBox="0 0 420 200" role="img" ' +
-      'aria-label="A bridge catches fire, burns, and falls into the water">' +
-      '<rect class="bank" x="0" y="147" width="94" height="53" rx="2"/>' +
-      '<rect class="bank" x="326" y="147" width="94" height="53" rx="2"/>' +
-      '<line class="bwater" x1="96" y1="176" x2="324" y2="176"/>' +
-      '<line class="bwater bwater-2" x1="112" y1="187" x2="308" y2="187"/>' +
-      '<rect class="btower" x="114" y="60" width="8" height="88" rx="2"/>' +
-      '<rect class="btower" x="298" y="60" width="8" height="88" rx="2"/>' +
-      '<path class="bcable" d="M118 72 Q210 126 302 72"/>' +
-      hangers + planks + flames + embers +
-      '<g class="bsmoke" aria-hidden="true">' +
-        '<circle class="bs" style="--i:0" cx="150" cy="130" r="16"/>' +
-        '<circle class="bs" style="--i:1" cx="210" cy="130" r="20"/>' +
-        '<circle class="bs" style="--i:2" cx="268" cy="130" r="15"/>' +
-      '</g>' +
-    '</svg>' +
-    '<blockquote class="bridge-quote">' +
-      '<p>&ldquo;let&rsquo;s burn that bridge when we get to it&rdquo;</p>' +
-      '<cite>jolene</cite>' +
-    '</blockquote>' +
-    '<button class="bridge-again" id="bridgeAgain" type="button">burn it again</button>' +
-  '</div>';
-}
-function startBridge() {
-  var stage = document.getElementById('bridgeStage');
-  if (!stage) return;
-  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  // With motion turned down, skip straight to the aftermath rather than
-  // animating - the joke still lands, the bridge is still gone.
-  stage.classList.add(reduced ? 'burnt' : 'go');
-  var again = document.getElementById('bridgeAgain');
-  if (again) again.addEventListener('click', function() {
-    stage.classList.remove('go', 'burnt');
-    void stage.offsetWidth;              // reflow, so the animations restart
-    stage.classList.add(reduced ? 'burnt' : 'go');
-  });
+// One SVG scene: dusk sky, a river, a suspension bridge. A spark lands at
+// mid-span and the fire spreads outward from there until the deck goes into
+// the water. Fire, timber and water are literal colours - the palette turns
+// pink in birthday mode and none of this should follow it.
+var BR_PLANKS = 12;      // deck planks, left to right
+var BR_TONGUES = 2;      // flame tongues per plank
+var BR_EMBERS = 22;      // embers off the burning deck
+var BR_WRECK = 9;        // embers still drifting off the wreck afterwards
+var BR_STARS = 16;
+// deck runs x 134-350 at y 142; water starts at 190; towers stand on the banks
+var BR_X0 = 134, BR_PW = 18, BR_PH = 9, BR_DECK = 142;
+
+// flame silhouettes - three shapes so no two tongues trace the same outline
+var BR_TONGUE_D = [
+  'M 0 0 C -6 -6 -9 -14 -6 -22 C -5 -16 -3 -14.6 -1.5 -17 C 0.5 -21 -0.6 -27 -2.5 -33 C 4 -28 8.5 -19 7 -10 C 6 -5.5 3 -1.8 0 0 Z',
+  'M 0 0 C -7 -7 -8 -17 -4 -26 C -3.4 -19 -1.4 -17.6 0 -20 C 2 -24 1.4 -30 -0.6 -36 C 6 -30 10 -19 8 -10 C 6.8 -5 3.2 -1.6 0 0 Z',
+  'M 0 0 C -5 -5 -7.5 -12 -5 -19 C -4.2 -14 -2.6 -13 -1.4 -15 C 0 -17 -1 -22 -2 -27 C 3.5 -23 7 -15.5 6 -8.5 C 5.4 -4.6 2.6 -1.5 0 0 Z'
+];
+
+function brRand(a, b) { return a + Math.random() * (b - a); }
+function brF(v) { return Number(v).toFixed(1); }
+
+// the cable is one quadratic from tower top to tower top, sagging to mid-span
+function brCableX(t) { return (1-t)*(1-t)*129.5 + 2*(1-t)*t*242 + t*t*354.5; }
+function brCableY(t) { return (1-t)*(1-t)*60 + 2*(1-t)*t*148 + t*t*60; }
+
+function brDefs() {
+  return '<defs>' +
+    '<linearGradient id="brSky" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#0a0810"/>' +
+      '<stop offset=".42" stop-color="#1c1220"/>' +
+      '<stop offset=".76" stop-color="#3a1e1c"/>' +
+      '<stop offset="1" stop-color="#5c2c18"/>' +
+    '</linearGradient>' +
+    '<linearGradient id="brWaterG" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#0e2129"/>' +
+      '<stop offset="1" stop-color="#050a0e"/>' +
+    '</linearGradient>' +
+    '<radialGradient id="brGlowG" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#ffd382" stop-opacity=".92"/>' +
+      '<stop offset=".34" stop-color="#ff9a3c" stop-opacity=".54"/>' +
+      '<stop offset=".68" stop-color="#e2531d" stop-opacity=".22"/>' +
+      '<stop offset="1" stop-color="#e2531d" stop-opacity="0"/>' +
+    '</radialGradient>' +
+    '<radialGradient id="brFlameG" cx="50%" cy="86%" r="64%">' +
+      '<stop offset="0" stop-color="#fff8d6" stop-opacity=".96"/>' +
+      '<stop offset=".3" stop-color="#ffd25e" stop-opacity=".92"/>' +
+      '<stop offset=".62" stop-color="#f7822f" stop-opacity=".72"/>' +
+      '<stop offset="1" stop-color="#d1330f" stop-opacity="0"/>' +
+    '</radialGradient>' +
+    '<radialGradient id="brSparkG" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#fff3c4"/>' +
+      '<stop offset=".5" stop-color="#ffb03c"/>' +
+      '<stop offset="1" stop-color="#ff7a1c" stop-opacity="0"/>' +
+    '</radialGradient>' +
+    '<radialGradient id="brSmokeG" cx="50%" cy="50%" r="50%">' +
+      '<stop offset="0" stop-color="#cfc0b3" stop-opacity=".46"/>' +
+      '<stop offset=".5" stop-color="#9a8b80" stop-opacity=".2"/>' +
+      '<stop offset="1" stop-color="#8d7f76" stop-opacity="0"/>' +
+    '</radialGradient>' +
+    '<radialGradient id="brVigG" cx="50%" cy="46%" r="72%">' +
+      '<stop offset=".55" stop-color="#000000" stop-opacity="0"/>' +
+      '<stop offset="1" stop-color="#000000" stop-opacity=".55"/>' +
+    '</radialGradient>' +
+    '<clipPath id="brWaterClip"><rect x="0" y="190" width="480" height="50"/></clipPath>' +
+  '</defs>';
 }
 
+function brSky() {
+  var stars = '', i;
+  for (i = 0; i < BR_STARS; i++) {
+    stars += '<circle class="bstar" style="--dur:' + brF(brRand(2.4, 5.4)) + 's;--dly:' +
+             brF(brRand(0, 4)) + 's" cx="' + Math.round(brRand(8, 472)) +
+             '" cy="' + Math.round(brRand(6, 108)) + '" r="' + brF(brRand(0.5, 1.3)) + '"/>';
+  }
+  return '<rect class="bskyfill" x="0" y="0" width="480" height="190"/>' +
+    '<g class="bstars">' + stars + '</g>' +
+    '<circle class="bmoon" cx="406" cy="38" r="8.5"/>' +
+    // two ridges for depth - only the stretch between the towers is visible
+    '<path class="bridge-ridge far" d="M 118 190 L 118 176 L 142 168 L 166 174 L 192 163 L 214 171 L 240 161 L 268 172 L 292 165 L 318 174 L 344 169 L 362 176 L 362 190 Z"/>' +
+    '<path class="bridge-ridge near" d="M 118 190 L 118 182 L 138 177 L 150 181 L 162 174 L 172 180 L 190 176 L 206 182 L 224 177 L 244 183 L 262 178 L 280 183 L 298 178 L 316 184 L 334 179 L 350 184 L 362 181 L 362 190 Z"/>';
+}
+
+function brWater() {
+  var lines = '', i, half;
+  var ys = [195, 203, 212, 223, 235];
+  var cxs = [230, 256, 238, 252, 234];
+  for (i = 0; i < ys.length; i++) {
+    half = 32 + i * 19;
+    lines += '<line class="bshim" style="--i:' + i + '" x1="' + (cxs[i] - half) + '" y1="' + ys[i] +
+             '" x2="' + (cxs[i] + half) + '" y2="' + ys[i] + '"/>';
+  }
+  return '<rect class="bwaterfill" x="0" y="190" width="480" height="50"/>' +
+    '<g class="breflect" clip-path="url(#brWaterClip)">' +
+      '<g class="brefl-in"><ellipse class="brefl-glow" cx="242" cy="200" rx="152" ry="38"/></g>' +
+      '<g class="bshims">' + lines + '</g>' +
+    '</g>' +
+    '<g class="bsplash" clip-path="url(#brWaterClip)">' +
+      '<ellipse class="bring" style="--i:0" cx="204" cy="197" rx="7" ry="2.2"/>' +
+      '<ellipse class="bring" style="--i:1" cx="244" cy="202" rx="8" ry="2.6"/>' +
+      '<ellipse class="bring" style="--i:2" cx="286" cy="196" rx="6" ry="2"/>' +
+    '</g>';
+}
+
+function brStructure() {
+  var planks = '', hangers = '', posts = '', i, t, x, d, hd;
+  for (i = 0; i < BR_PLANKS; i++) {
+    x = BR_X0 + i * BR_PW;
+    // --d is the distance out from mid-span, so everything runs centre-outward
+    d = Math.abs(i - (BR_PLANKS - 1) / 2) - 0.5;
+    planks += '<rect class="bp" style="--d:' + d.toFixed(0) + ';--r:' +
+              (i < BR_PLANKS / 2 ? -1 : 1) + '" x="' + x + '" y="' + BR_DECK +
+              '" width="' + (BR_PW - 2) + '" height="' + BR_PH + '" rx="1.5"/>';
+  }
+  for (i = 1; i <= 7; i++) {
+    t = i / 8;
+    hd = Math.abs(i - 4);
+    hangers += '<line class="bh" style="--d:' + hd + '" x1="' + brF(brCableX(t)) + '" y1="' +
+               brF(brCableY(t)) + '" x2="' + brF(brCableX(t)) + '" y2="' + BR_DECK + '"/>';
+  }
+  for (i = 0; i <= 12; i += 2) {
+    posts += '<rect x="' + (BR_X0 + i * BR_PW - 1) + '" y="132" width="2" height="11"/>';
+  }
+  return '<g class="bstruct">' +
+    '<rect class="bbank" x="-4" y="184" width="138" height="60"/>' +
+    '<rect class="bbank" x="348" y="184" width="136" height="60"/>' +
+    '<g class="btowers">' +
+      '<rect class="btower" x="125" y="54" width="9" height="142"/>' +
+      '<rect class="btower" x="350" y="54" width="9" height="142"/>' +
+      '<rect class="btower" x="121" y="51" width="17" height="6" rx="1"/>' +
+      '<rect class="btower" x="346" y="51" width="17" height="6" rx="1"/>' +
+    '</g>' +
+    '<path class="bcable bcable-l" d="M 129.5 60 Q 185.75 104 242 104"/>' +
+    '<path class="bcable bcable-r" d="M 242 104 Q 298.25 104 354.5 60"/>' +
+    hangers +
+    '<g class="brail">' +
+      '<rect x="134" y="132" width="216" height="2.4" rx="1"/>' + posts +
+    '</g>' +
+    '<g class="bdeck">' + planks + '</g>' +
+  '</g>';
+}
+
+function brFlames() {
+  var out = '', i, k, cx, d, big, sx, sy, pos;
+  for (i = 0; i < BR_PLANKS; i++) {
+    cx = BR_X0 + i * BR_PW + BR_PW / 2 - 1;
+    d = Math.abs(i - (BR_PLANKS - 1) / 2) - 0.5;
+    for (k = 0; k < BR_TONGUES; k++) {
+      // taller tongues near mid-span, where it caught first
+      big = 1.8 - 0.16 * d;
+      sx = brRand(0.66, 1.02) * big;
+      sy = brRand(0.78, 1.26) * big;
+      pos = 'translate(' + brF(cx + brRand(-6, 6)) + ',' + (BR_DECK + 2) + ') rotate(' +
+            brF(brRand(-9, 9)) + ') scale(' + brF(sx) + ',' + brF(sy) + ')';
+      out += '<g transform="' + pos + '">' +
+        '<g class="bf" style="--d:' + d.toFixed(0) + ';--k:' + brF(brRand(0, 0.16)) + 's">' +
+          '<g class="bf-sw" style="--dur:' + brF(brRand(1.5, 2.7)) + 's">' +
+            '<g class="bf-lk" style="--dur:' + brF(brRand(0.26, 0.46)) + 's">' +
+              '<path class="bf-p" d="' + BR_TONGUE_D[(i + k) % 3] + '"/>' +
+            '</g>' +
+          '</g>' +
+        '</g>' +
+      '</g>';
+    }
+  }
+  var tall = [222, 242, 262];
+  for (i = 0; i < tall.length; i++) {
+    out += '<g transform="translate(' + brF(tall[i] + brRand(-4, 4)) + ',' + (BR_DECK + 2) +
+           ') rotate(' + brF(brRand(-6, 6)) + ') scale(' + brF(brRand(1.05, 1.35)) + ',' +
+           brF(brRand(2, 2.5)) + ')">' +
+      '<g class="bf" style="--d:0;--k:' + brF(brRand(0.1, 0.3)) + 's">' +
+        '<g class="bf-sw" style="--dur:' + brF(brRand(2.2, 3.2)) + 's">' +
+          '<g class="bf-lk" style="--dur:' + brF(brRand(0.38, 0.6)) + 's">' +
+            '<path class="bf-p" d="' + BR_TONGUE_D[i % 3] + '"/>' +
+          '</g>' +
+        '</g>' +
+      '</g>' +
+    '</g>';
+  }
+  return '<g class="bflames">' + out + '</g>';
+}
+
+function brSparks() {
+  var deck = '', wreck = '', i;
+  for (i = 0; i < BR_EMBERS; i++) {
+    deck += '<circle class="be" style="--dx:' + brF(brRand(-52, 52)) + 'px;--rise:' +
+            brF(brRand(-124, -68)) + 'px;--dur:' + brF(brRand(1.2, 1.9)) + 's;--dly:' +
+            brF(brRand(0.45, 2.2)) + 's" cx="' + Math.round(brRand(140, 344)) +
+            '" cy="' + (BR_DECK + 1) + '" r="' + brF(brRand(0.8, 2.1)) + '"/>';
+  }
+  for (i = 0; i < BR_WRECK; i++) {
+    wreck += '<circle class="bwe" style="--dx:' + brF(brRand(-26, 26)) + 'px;--rise:' +
+             brF(brRand(-52, -28)) + 'px;--dur:' + brF(brRand(2.6, 4.2)) + 's;--dly:' +
+             brF(brRand(4.6, 8.4)) + 's" cx="' + Math.round(brRand(178, 306)) +
+             '" cy="' + Math.round(brRand(188, 196)) + '" r="' + brF(brRand(0.7, 1.5)) + '"/>';
+  }
+  var burst = '';
+  for (i = 0; i < 14; i++) {
+    burst += '<circle class="bbu" style="--dx:' + brF(brRand(-72, 72)) + 'px;--rise:' +
+             brF(brRand(-104, -52)) + 'px;--dur:' + brF(brRand(0.7, 1.15)) + 's;--dly:' +
+             brF(brRand(3.75, 4.1)) + 's" cx="' + Math.round(brRand(184, 300)) +
+             '" cy="' + BR_DECK + '" r="' + brF(brRand(1, 2.4)) + '"/>';
+  }
+  return '<g class="bembers">' + deck + '</g><g class="bburst">' + burst +
+         '</g><g class="bwembers">' + wreck + '</g>';
+}
+
+function brSmoke() {
+  var deck = '', wreck = '', i;
+  var dx = [162, 188, 214, 240, 266, 292, 318];
+  for (i = 0; i < dx.length; i++) {
+    deck += '<circle class="bs" style="--dx:' + brF(brRand(14, 46)) + 'px;--dur:' +
+            brF(brRand(2.7, 3.6)) + 's;--dly:' + brF(1.1 + i * 0.26) + 's" cx="' + dx[i] +
+            '" cy="' + (BR_DECK - 4) + '" r="' + brF(brRand(10, 17)) + '"/>';
+  }
+  for (i = 0; i < 4; i++) {
+    wreck += '<circle class="bws" style="--dx:' + brF(brRand(16, 44)) + 'px;--dur:' +
+             brF(brRand(4.4, 6.2)) + 's;--dly:' + brF(4.4 + i * 1.15) + 's" cx="' +
+             Math.round(brRand(190, 298)) + '" cy="192" r="' + brF(brRand(9, 15)) + '"/>';
+  }
+  return '<g class="bsmoke">' + deck + '</g><g class="bwsmoke">' + wreck + '</g>';
+}
+
+// charred planks left floating where the deck came down
+function brDebris() {
+  var out = '', i, x, y, w, rot;
+  for (i = 0; i < 7; i++) {
+    x = 168 + i * 21 + brRand(-5, 5);
+    y = 191 + brRand(0, 8);
+    w = brRand(9, 17);
+    rot = brRand(-13, 13);
+    // the tilt lives on a wrapper so the bob animation can own the transform
+    out += '<g transform="rotate(' + brF(rot) + ',' + brF(x + w / 2) + ',' + brF(y + 1.3) + ')">' +
+           '<rect class="bdb" style="--dur:' + brF(brRand(2.4, 4.2)) + 's;--dly:' +
+           brF(4.45 + i * 0.12) + 's" x="' + brF(x) + '" y="' + brF(y) + '" width="' +
+           brF(w) + '" height="2.6" rx="1.2"/></g>';
+  }
+  return '<g class="bdebris" clip-path="url(#brWaterClip)">' + out + '</g>';
+}
+
+function bridgeStageHTML() {
+  return '<div class="bridge-stage">' +
+    '<svg class="bridge-svg" viewBox="0 0 480 240" role="img" ' +
+      'aria-label="A suspension bridge catches fire at mid-span, burns, and drops into the river">' +
+      brDefs() +
+      brSky() +
+      brWater() +
+      '<ellipse class="bglow" cx="242" cy="140" rx="172" ry="88"/>' +
+      brStructure() +
+      '<ellipse class="bglow-core" cx="242" cy="146" rx="88" ry="42"/>' +
+      brFlames() +
+      brSparks() +
+      brSmoke() +
+      '<ellipse class="bwreckglow" cx="242" cy="192" rx="72" ry="14"/>' +
+      brDebris() +
+      '<circle class="bseed" cx="242" cy="' + BR_DECK + '" r="2.4"/>' +
+      '<circle class="bflash" cx="242" cy="' + BR_DECK + '" r="5"/>' +
+      '<rect class="bwash" x="0" y="0" width="480" height="240"/>' +
+      '<rect class="bvig" x="0" y="0" width="480" height="240"/>' +
+    '</svg>' +
+  '</div>';
+}
+
+function bridgeSheetHTML() {
+  return '<div class="bridge-wrap">' +
+    '<div class="bridge-host" id="bridgeHost"></div>' +
+    '<button class="bridge-again" id="bridgeAgain" type="button">' +
+      '<svg class="ba-icon" viewBox="0 0 12 16" aria-hidden="true">' +
+        '<path d="M6 0C7.4 4 10.5 5.4 10.5 9.6A4.5 6 0 0 1 1.5 9.6C1.5 7.2 2.8 6 3.6 4.8 3.4 7 5 7.4 5 5.6 5 3.6 4.2 2.4 6 0Z"/>' +
+      '</svg>burn it again</button>' +
+  '</div>';
+}
+
+function startBridge() {
+  var host = document.getElementById('bridgeHost');
+  if (!host) return;
+  var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // With motion turned down, skip to the aftermath - the bridge is still gone.
+  function run() {
+    host.innerHTML = bridgeStageHTML();
+    var stage = host.firstChild;
+    if (!stage) return;
+    void stage.offsetWidth;              // reflow, so the animations restart
+    stage.classList.add(reduced ? 'burnt' : 'go');
+  }
+  run();
+  var again = document.getElementById('bridgeAgain');
+  if (again) again.addEventListener('click', run);
+}
 // ── SHEETS ───────────────────────────────────────────────────────
 // Each sheet is a set of titled sections pulled from QA. Headings are written
 // here rather than reusing QA questions, which were phrased for a chatbot.
@@ -684,6 +896,9 @@ function closeSheet() {
   document.getElementById('sheet').hidden = true;
   document.getElementById('sheetScrim').hidden = true;
   document.body.classList.remove('sheet-open');
+  // openSheet rebuilds the body every time, so dropping it here is free and
+  // stops the bridge's looping animations and the photo grid from lingering
+  document.getElementById('sheetBody').innerHTML = '';
   if (lastFocused && lastFocused.focus) lastFocused.focus();
 }
 
