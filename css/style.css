@@ -247,6 +247,11 @@ body.px-open { overflow: hidden; }
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-2);
 }
+.px-place {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: .1em; color: var(--tone-1);
+  flex: 1 1 auto; text-align: center;
+}
 .px-close {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 11px; letter-spacing: .12em; text-transform: uppercase;

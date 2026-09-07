@@ -165,6 +165,7 @@
   <div class="px-frame" role="dialog" aria-modal="true" aria-label="Pixel world">
     <div class="px-bar">
       <span class="px-title">will + jolene</span>
+      <span class="px-place" id="pxPlace"></span>
       <button class="px-close" id="pxClose" type="button">esc</button>
     </div>
     <div class="px-stage" id="pxStage">
@@ -1004,123 +1005,62 @@ var PX_SPR = {
   will_down: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhHHHhhhhhk.|.khhhssssssshhk.|.kssssssssssssk.|.kssseesseesssk.|.kssssssssssssk.|.ksssssmmsssssk.|..kssssssssssk..|..kcccssssccck..|.kcccccccccccck.|.kscccCCCCcccsk.|.kscccCCCCcccsk.|.kcccccccccccck.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhHHHhhhhhk.|.khhhssssssshhk.|.kssssssssssssk.|.kssseesseesssk.|.kssssssssssssk.|.ksssssmmsssssk.|..kssssssssssk..|..kcccssssccck..|.kcccccccccccck.|.kscccCCCCcccsk.|.kscccCCCCcccsk.|.kcccccccccccck.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhHHHhhhhhk.|.khhhssssssshhk.|.kssssssssssssk.|.kssseesseesssk.|.kssssssssssssk.|.ksssssmmsssssk.|..kssssssssssk..|..kcccssssccck..|.kcccccccccccck.|.kscccCCCCcccsk.|.kscccCCCCcccsk.|.kcccccccccccck.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.'},
   jol_down: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksseesseesskhh|hhksssssssssskhh|hhkssssmmsssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksseesseesskhh|hhksssssssssskhh|hhkssssmmsssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksseesseesskhh|hhksssssssssskhh|hhkssssmmsssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.'},
   jol_up: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkhhhhhhhhhhkhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.'},
-  jol_right: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksssssseesskhh|hhksssssssssskhh|hhksssssmmssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksssssseesskhh|hhksssssssssskhh|hhksssssmmssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksssssseesskhh|hhksssssssssskhh|hhksssssmmssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.'},
-  jol_left: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksseesssssskhh|hhksssssssssskhh|hhksssmmssssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksseesssssskhh|hhksssssssssskhh|hhksssmmssssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|hhkhhhhHHhhhhkhh|hhkhhsssssshhkhh|hhksssssssssskhh|hhksseesssssskhh|hhksssssssssskhh|hhksssmmssssskhh|hhksssssssssskhh|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.'}
+  jol_right: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhhhhhhhhhk.|.khhhhhhssssssk.|.khhhhssssssssk.|.khhhhsssseessk.|.khhhhssssssssk.|.khhhhsssssmmsk.|..khhhsssssssk..|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhhhhhhhhhk.|.khhhhhhssssssk.|.khhhhssssssssk.|.khhhhsssseessk.|.khhhhssssssssk.|.khhhhsssssmmsk.|..khhhsssssssk..|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhhhhhhhhhk.|.khhhhhhssssssk.|.khhhhssssssssk.|.khhhhsssseessk.|.khhhhssssssssk.|.khhhhsssssmmsk.|..khhhsssssssk..|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.'},
+  jol_left: {stand:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhhhhhhhhhk.|.ksssssshhhhhhk.|.ksssssssshhhhk.|.ksseesssshhhhk.|.ksssssssshhhhk.|.ksmmssssshhhhk.|..kssssssshhhk..|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|..knnnnkknnnnk..|..knnnn..nnnnk..|..kbbbb..bbbbk..|..kbbbb..bbbbk..',walkA:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhhhhhhhhhk.|.ksssssshhhhhhk.|.ksssssssshhhhk.|.ksseesssshhhhk.|.ksssssssshhhhk.|.ksmmssssshhhhk.|..kssssssshhhk..|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|...knnnn.knnnnk.|...knnn..knnnnk.|..kbbb...kbbbbk.|..kbbb...kbbbbk.',walkB:'....kkkkkkkk....|..kkhhhhhhhhkk..|.khhhhhhhhhhhhk.|.khhhhhhhhhhhhk.|.ksssssshhhhhhk.|.ksssssssshhhhk.|.ksseesssshhhhk.|.ksssssssshhhhk.|.ksmmssssshhhhk.|..kssssssshhhk..|hhkcccssssccckhh|hhcccccccccccchh|hhsccccccccccshh|hhscccCCCCcccshh|.hkcccccccccckh.|..kcccccccccck..|.knnnnk.nnnnk...|.knnnnk..nnnk...|.kbbbbk...bbbk..|.kbbbbk...bbbk..'}
 };
+// tile -> [base colour, [[colour, x, y, w, h], ...]]
+var PX_TILES = {".":["#4f7a3a",[]],",":["#4f7a3a",[["#3d6b2c",3,5,2,1],["#3d6b2c",9,9,2,1],["#3d6b2c",6,12,2,1]]],"f":["#4f7a3a",[["#3d6b2c",2,12,2,1],["#e8d05a",5,5,2,2],["#e8d05a",10,9,2,2],["#e07a9a",9,4,2,2]]],"T":["#4f7a3a",[["#5c3a22",6,10,4,6],["#2f5f2a",1,1,14,10],["#3d7534",2,2,12,6],["#4f8f42",4,3,6,3]]],"w":["#2f6d86",[["#4a93ad",2,4,2,1],["#4a93ad",9,6,2,1],["#4a93ad",5,11,2,1]]],"p":["#c2a878",[["#ad9165",3,3,2,1],["#ad9165",10,8,2,1],["#ad9165",6,12,2,1]]],"s":["#4f7a3a",[["#8a6034",7,8,2,7],["#c2a878",2,2,12,7],["#8a6034",3,4,10,1],["#8a6034",3,6,7,1]]],"=":["#3b3b40",[["#4a4a50",2,2,2,1],["#4a4a50",11,9,2,1]]],"-":["#3b3b40",[["#e6d98a",6,2,4,5],["#e6d98a",6,10,4,5]]],"#":["#6b5540",[["#5a4634",0,0,16,2],["#7d6550",0,7,16,1]]],"_":["#c9a97e",[["#b9995f",0,7,16,1],["#b9995f",7,0,1,16]]],"D":["#6b5540",[["#3a2416",3,2,10,14],["#e8c25a",10,9,2,2]]],"b":["#c9a97e",[["#e8e2ea",2,2,12,12],["#8f9ec4",2,2,12,4],["#6b5540",1,1,14,1]]],"d":["#c9a97e",[["#7d6550",1,4,14,9],["#5a4634",1,12,14,3],["#2b2f38",4,1,8,4]]],"c":["#c9a97e",[["#7a5a86",1,3,14,11],["#8f6c9c",2,4,12,5]]],"t":["#c9a97e",[["#8a6034",2,3,12,10],["#a3763f",3,4,10,4]]],"P":["#c9a97e",[["#8a6034",5,10,6,5],["#2f5f2a",2,1,12,9],["#4f8f42",4,3,5,3]]],"r":["#b06a55",[["#c47f68",2,2,12,12],["#b06a55",5,5,6,6]]],"k":["#c9a97e",[["#dcdce2",1,2,14,12],["#b8b8c0",1,8,14,1],["#8a8a94",10,4,4,2]]],"B":["#8f6a52",[["#7d5c46",0,0,16,1],["#7d5c46",0,8,16,1],["#7d5c46",7,0,1,16],["#b9d3e8",2,3,4,4],["#b9d3e8",10,3,4,4]]],"L":["#d8d4cc",[["#c2beb6",0,0,16,1],["#c2beb6",0,8,16,1],["#1c2a54",5,5,6,6]]],"S":["#101010",[["#262626",0,0,16,2],["#ffffff",3,5,10,2]]],"%":["#eaeaea",[["#dcdcdc",0,7,16,1],["#dcdcdc",7,0,1,16]]],"W":["#ffffff",[["#000000",0,0,16,2],["#929292",2,5,9,1],["#929292",2,8,6,1],["#193a29",12,11,2,2]]],"e":["#eaeaea",[["#ffffff",1,4,14,9],["#000000",3,1,10,5],["#a8927c",4,12,8,2]]]};
+var PX_SOLIDT = {"T":1,"w":1,"#":1,"B":1,"L":1,"S":1,"W":1,"b":1,"d":1,"c":1,"t":1,"P":1,"k":1,"e":1,"s":1};
+var PX_AREAS = {"apartment":{"map":["####################","#__________________#","#_bb___kkkk___cc___#","#_bb___kkkk___cc___#","#__________________#","#_______________tt_#","#_dd____________tt_#","#_dd_______________#","#_P_____rrrr_____P_#","#_______rrrr_______#","#__________________#","#########D##########"],"name":"Jolene’s apartment","warps":{"9,11":["campus",6,4,"down"]},"npcs":[{"x":3,"y":5,"spr":"will_down","pal":"jolene","lines":["ELSIE: He is still counting the days, you know.","ELSIE: It is a lot of days."]},{"x":16,"y":8,"spr":"jol_down","pal":"jolene","lines":["SOPHIE: The aquarium is still on the list.","SOPHIE: I am just saying."]}],"talk":{"8,2":["Your bed. Unmade, as usual."],"2,6":["Textbooks. Integrated science.","None of them are open."],"9,8":["A rug you two picked out."]}},"campus":{"map":["TTTTTTTTTTTTTTTTTTTT","T..................T","T..BBBBBB..BBBBBB..T","T..BBBDBB..BBBBBB..T","T..................T","T....LLLLLLLLLL....T","T....LLLLLLLLLL....T","T,.......pp.......,T","T........pp........T","T..f.....pp.....f..T","T........pp........T","T,.......pp.......,T","T........pp........T","TTTTTTTT.==.TTTTTTTT"],"name":"Penn State","warps":{"6,3":["apartment",9,10,"up"],"9,13":["road",8,0,"down"],"10,13":["road",9,0,"down"]},"npcs":[],"talk":{"7,5":["The stone plaza.","Blue and white, everywhere you look."]}},"road":{"map":["TT..===--===..TTTTTT","T...===--===...TTTTT","T.s.===--===.s.TTTTT","T...===--===...TTTTT","T,..===--===..,TTTTT","T...===--===...TTTTT","T...===--===...TTTTT","T.f.===--===.f.TTTTT","T...===--===...TTTTT","T...===--===...TTTTT","T,..===--===..,TTTTT","TT..===--===..TTTTTT"],"name":"190 miles","warps":{"8,0":["campus",9,12,"up"],"9,0":["campus",10,12,"up"],"8,11":["nova",8,1,"down"],"9,11":["nova",9,1,"down"]},"npcs":[],"talk":{"2,2":["SIGN: SOUTH — 190 MILES.","About three and a half hours."],"13,2":["SIGN: NORTH — PENN STATE.","The way back."]}},"nova":{"map":["TTTTTTTTTTTTTTTTTTTT","T.......===........T","T.......=-=........T","T.SSSSS.===.####...T","T.SSDSS.===.##D#...T","T.......===........T","T.......===........T","T,ppppppppppppppp,.T","T.......p..........T","T..f....p.....f....T","T.......p..........T","T..wwww.p..........T","T..wwww.pppppppppp.T","TTTTTTTTTTTTTTTTpTTT"],"name":"Northern Virginia","warps":{"8,1":["road",8,10,"up"],"9,1":["road",9,10,"up"],"4,4":["scale",9,10,"up"],"14,4":["willhouse",9,10,"up"],"16,13":["dates",9,12,"up"]},"npcs":[],"talk":{"3,3":["SCALE AI.","He is in there for ten hours a day."],"13,3":["His house.","Juno is probably at the door already."],"4,11":["A pond. Not the lake."]}},"willhouse":{"map":["####################","#__________________#","#_bb____kkkk____dd_#","#_bb____kkkk____dd_#","#__________________#","#_______tttt_______#","#_cc____tttt_______#","#_cc_______________#","#_P______rrrr____P_#","#________rrrr______#","#__________________#","#########D##########"],"name":"Will’s house","warps":{"9,11":["nova",14,5,"down"]},"npcs":[{"x":6,"y":8,"spr":"will_down","pal":"will","lines":"WILL_COUNTDOWN"},{"x":13,"y":6,"spr":"jol_down","pal":"will","lines":["Juno wags her whole back half.","She has missed you."]}],"talk":{"2,2":["His bed. Alarm set for 4am."],"16,2":["A desk. Georgia Tech coursework, still open."],"8,5":["Hazel is asleep on the table.","She does not acknowledge you."]}},"scale":{"map":["SSSSSSSSSSSSSSSSSSSS","S%%%%%%%%%%%%%%%%%%S","S%ee%%%WWWWWW%%ee%%S","S%ee%%%WWWWWW%%ee%%S","S%%%%%%%%%%%%%%%%%%S","S%ee%%%%%%%%%%%ee%%S","S%ee%%%%%%%%%%%ee%%S","S%%%%%%%%%%%%%%%%%%S","S%%%%%%ee%%%%%%%%%%S","S%%%%%%ee%%%%%%%%%%S","S%%%%%%%%%%%%%%%%%%S","SSSSSSSSSDSSSSSSSSSS"],"name":"Scale AI","warps":{"9,11":["nova",4,5,"down"]},"npcs":[{"x":7,"y":9,"spr":"will_down","pal":"will","lines":["WILL: Ten hours today.","WILL: Technical program manager. It is a lot of meetings.","WILL: Still counting though."]}],"talk":{"9,2":["A whiteboard. You do not understand any of it."],"2,2":["Somebody’s monitor. Black and white, like everything here."]}},"dates":{"map":["TTTTTTTTTTTTTTTTTTTT","T..................T","T.s...s...s...s....T","T..................T","T..pppppppppppppp..T","T..p............p..T","T.sp...ffff.....ps.T","T..p...ffff.....p..T","T..p............p..T","T..pppppppppppppp..T","T........p.........T","T..s.....p......s..T","T........p.........T","TTTTTTTTTpTTTTTTTTTT"],"name":"Places you have been","warps":{"9,13":["nova",16,12,"up"]},"npcs":[],"talk":{"2,2":["DC. The Capitol, in the heat."],"6,2":["Chipotle. The usual order."],"10,2":["Starbucks. Also the usual order."],"14,2":["The photobooth. Four frames, all bad."],"2,6":["Reston Town Center.","The candle place is still on the list."],"16,6":["Lake Anna. Jet skis. Crossed off."],"3,11":["Lagana."],"16,11":["The concert. Outdoors is still on the list."]}}};
 
 // ── THE PIXEL WORLD ──────────────────────────────────────────────
-// A small overworld she can walk around in. Renders at 240x160 - the actual
-// Game Boy Advance resolution - and is then integer-scaled up with
-// image-rendering:pixelated, so every pixel stays square at any window size.
-// Movement is grid-based and tweened, the way the games it is copying did it,
-// which also makes collision a single array lookup.
+// Renders at 240x160 - the actual Game Boy Advance resolution - then
+// integer-scales up, so every pixel stays square. Movement is grid-based and
+// tweened the way the games it is copying did it, which also makes collision
+// a single array lookup.
+//
+// Areas, tiles and sprites are all generated data (PX_AREAS, PX_TILES,
+// PX_SPR). PX_SOLIDT comes from the same list the generator's reachability
+// check uses, so the game and the check can never disagree about what blocks.
 
 var PXT = 16;                    // tile size, px
 var PXVW = 240, PXVH = 160;      // internal viewport, GBA-sized
-var PX_STEP = 190;               // ms per tile of walking
-
-var PX_MAP = [
-  'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT',
-  'T............................T',
-  'T...,..ffff.......,......f...T',
-  'T....HHHHHH.....,......,.....T',
-  'T....HHDHHH..........ffff....T',
-  'T......p...................,.T',
-  'T,.....p.....s...............T',
-  'T......ppppppppppp...........T',
-  'T..,.........p......wwwww....T',
-  'T............p.....wwwwwww...T',
-  'T...ffff.....p.....wwwwwww...T',
-  'T............p......wwwww....T',
-  'T,...........p...............T',
-  'T....ppppppppp......,....f...T',
-  'T....p.......................T',
-  'T....p...f...,......ffff.....T',
-  'T....p.......................T',
-  'T,...........,...........,...T',
-  'T............................T',
-  'TTTTTTTTTTTTTTTTTTTTTTTTTTTTTT'
-];
-
-var PX_SOLID = { T: 1, w: 1, H: 1, D: 1, s: 1 };
-// people stand on walkable tiles, so they need blocking of their own
-var PX_BLOCK = { '13,7': 1 };
-
-// Things she can walk up to and press A on. Keyed by "x,y".
-var PX_TALK = {
-  '13,6':  ['A wooden sign.', 'THIS WAY TO EVERYTHING ELSE.', 'It is not very specific.'],
-  '7,4':   ['The door is shut.', 'Someone inside is on a work call.', 'Ten hours of it, apparently.'],
-  '13,7':  ['WILL: you found it.',
-            'WILL: eleven days until september 18th.',
-            'WILL: i am counting too.'],
-  'pond':  ['The water is very cold.', 'You are not going in.']
-};
+var PX_STEP = 180;               // ms per tile of walking
+var PX_START = ['apartment', 9, 9, 'down'];
 
 var pxState = null;
 
+function pxArea() { return PX_AREAS[pxState.area]; }
 function pxTile(x, y) {
-  if (y < 0 || y >= PX_MAP.length) return 'T';
-  var row = PX_MAP[y];
-  if (x < 0 || x >= row.length) return 'T';
-  return row.charAt(x);
+  var m = pxArea().map;
+  if (y < 0 || y >= m.length) return 'T';
+  if (x < 0 || x >= m[y].length) return 'T';
+  return m[y].charAt(x);
+}
+function pxNpcAt(x, y) {
+  var n = pxArea().npcs;
+  for (var i = 0; i < n.length; i++) if (n[i].x === x && n[i].y === y) return n[i];
+  return null;
 }
 function pxWalkable(x, y) {
-  return !PX_SOLID[pxTile(x, y)] && !PX_BLOCK[x + ',' + y];
+  var m = pxArea().map;
+  if (y < 0 || y >= m.length || x < 0 || x >= m[y].length) return false;
+  var c = pxTile(x, y);
+  if (c === 'D') return true;                  // doors are warps, walk onto them
+  return !PX_SOLIDT[c] && !pxNpcAt(x, y);
 }
 
-// ── tiles, drawn from code rather than an image ──────────────────
-function pxTuft(ctx, x, y, c, pts) {
-  ctx.fillStyle = c;
-  for (var i = 0; i < pts.length; i += 2) ctx.fillRect(x + pts[i], y + pts[i + 1], 2, 1);
-}
+// ── drawing ──────────────────────────────────────────────────────
 function pxDrawTile(ctx, ch, x, y) {
-  if (ch === 'w') {
-    ctx.fillStyle = '#2f6d86'; ctx.fillRect(x, y, PXT, PXT);
-    pxTuft(ctx, x, y, '#4a93ad', [2, 4, 9, 6, 5, 11, 11, 13]);
-    return;
-  }
-  if (ch === 'p') {
-    ctx.fillStyle = '#c2a878'; ctx.fillRect(x, y, PXT, PXT);
-    pxTuft(ctx, x, y, '#ad9165', [3, 3, 10, 8, 6, 12]);
-    return;
-  }
-  if (ch === 'H') {
-    ctx.fillStyle = '#9c6b4a'; ctx.fillRect(x, y, PXT, PXT);
-    ctx.fillStyle = '#7d523a'; ctx.fillRect(x, y, PXT, 2); ctx.fillRect(x, y + 8, PXT, 1);
-    return;
-  }
-  if (ch === 'D') {
-    ctx.fillStyle = '#9c6b4a'; ctx.fillRect(x, y, PXT, PXT);
-    ctx.fillStyle = '#4a2f1e'; ctx.fillRect(x + 3, y + 3, 10, 13);
-    ctx.fillStyle = '#e8c25a'; ctx.fillRect(x + 10, y + 9, 2, 2);
-    return;
-  }
-  if (ch === 's') {
-    ctx.fillStyle = '#4f7a3a'; ctx.fillRect(x, y, PXT, PXT);
-    ctx.fillStyle = '#8a6034'; ctx.fillRect(x + 7, y + 8, 2, 7);
-    ctx.fillStyle = '#c2a878'; ctx.fillRect(x + 2, y + 2, 12, 7);
-    ctx.fillStyle = '#8a6034'; ctx.fillRect(x + 3, y + 4, 10, 1); ctx.fillRect(x + 3, y + 6, 7, 1);
-    return;
-  }
-  if (ch === 'T') {
-    ctx.fillStyle = '#4f7a3a'; ctx.fillRect(x, y, PXT, PXT);
-    ctx.fillStyle = '#5c3a22'; ctx.fillRect(x + 6, y + 10, 4, 6);
-    ctx.fillStyle = '#2f5f2a'; ctx.fillRect(x + 1, y + 1, 14, 10);
-    ctx.fillStyle = '#3d7534'; ctx.fillRect(x + 2, y + 2, 12, 6);
-    ctx.fillStyle = '#4f8f42'; ctx.fillRect(x + 4, y + 3, 6, 3);
-    return;
-  }
-  // grass, with two decorated variants
-  ctx.fillStyle = '#4f7a3a'; ctx.fillRect(x, y, PXT, PXT);
-  if (ch === ',') pxTuft(ctx, x, y, '#3d6b2c', [3, 5, 9, 9, 6, 12]);
-  if (ch === 'f') {
-    pxTuft(ctx, x, y, '#3d6b2c', [2, 12]);
-    ctx.fillStyle = '#e8d05a'; ctx.fillRect(x + 5, y + 5, 2, 2); ctx.fillRect(x + 10, y + 9, 2, 2);
-    ctx.fillStyle = '#e07a9a'; ctx.fillRect(x + 9, y + 4, 2, 2);
+  var t = PX_TILES[ch] || PX_TILES['.'];
+  ctx.fillStyle = t[0];
+  ctx.fillRect(x, y, PXT, PXT);
+  var d = t[1];
+  for (var i = 0; i < d.length; i++) {
+    ctx.fillStyle = d[i][0];
+    ctx.fillRect(x + d[i][1], y + d[i][2], d[i][3], d[i][4]);
   }
 }
-
-// ── sprites ──────────────────────────────────────────────────────
 function pxDrawSprite(ctx, key, frame, px, py, palName) {
   var rows = PX_SPR[key][frame].split('|');
   var pal = PX_PAL[palName];
@@ -1135,18 +1075,13 @@ function pxDrawSprite(ctx, key, frame, px, py, palName) {
   }
 }
 
-// ── the loop ─────────────────────────────────────────────────────
 // Whether she is mid-step is derived from the clock, never stored. The
-// renderer used to clear a s.moving flag, which meant a stalled
-// requestAnimationFrame - a backgrounded tab, a hidden window - wedged her
-// in place permanently.
+// renderer used to clear a flag, which meant a stalled requestAnimationFrame -
+// a backgrounded tab, a hidden window - wedged her in place permanently.
 function pxMoving(s) {
   return s.moveStart > 0 && (performance.now() - s.moveStart) < PX_STEP;
 }
-function pxFrameFor(s) {
-  if (!pxMoving(s)) return 'stand';
-  return (s.stepPhase % 2) ? 'walkA' : 'walkB';
-}
+function pxFrameFor(s) { return pxMoving(s) ? ((s.stepPhase % 2) ? 'walkA' : 'walkB') : 'stand'; }
 function pxKeyFor(dir) {
   return dir === 'up' ? 'jol_up' : dir === 'left' ? 'jol_left'
        : dir === 'right' ? 'jol_right' : 'jol_down';
@@ -1155,19 +1090,21 @@ function pxKeyFor(dir) {
 function pxRender() {
   var s = pxState;
   if (!s) return;
-  var ctx = s.ctx;
+  var ctx = s.ctx, a = pxArea(), m = a.map;
 
-  // interpolated player position, in pixels
   var t = pxMoving(s) ? (performance.now() - s.moveStart) / PX_STEP : 1;
   var pxp = (s.fromX + (s.x - s.fromX) * t) * PXT;
   var pyp = (s.fromY + (s.y - s.fromY) * t) * PXT;
 
-  // camera centred on her, clamped to the map
-  var worldW = PX_MAP[0].length * PXT, worldH = PX_MAP.length * PXT;
-  var camX = Math.round(Math.max(0, Math.min(worldW - PXVW, pxp + PXT / 2 - PXVW / 2)));
-  var camY = Math.round(Math.max(0, Math.min(worldH - PXVH, pyp + PXT / 2 - PXVH / 2)));
+  var worldW = m[0].length * PXT, worldH = m.length * PXT;
+  // a map smaller than the viewport is centred rather than pinned to a corner
+  var camX = worldW <= PXVW ? (worldW - PXVW) / 2
+           : Math.max(0, Math.min(worldW - PXVW, pxp + PXT / 2 - PXVW / 2));
+  var camY = worldH <= PXVH ? (worldH - PXVH) / 2
+           : Math.max(0, Math.min(worldH - PXVH, pyp + PXT / 2 - PXVH / 2));
+  camX = Math.round(camX); camY = Math.round(camY);
 
-  ctx.fillStyle = '#4f7a3a';
+  ctx.fillStyle = '#161016';
   ctx.fillRect(0, 0, PXVW, PXVH);
   ctx.save();
   ctx.translate(-camX, -camY);
@@ -1175,23 +1112,30 @@ function pxRender() {
   var x0 = Math.floor(camX / PXT), y0 = Math.floor(camY / PXT);
   for (var ty = y0; ty <= y0 + PXVH / PXT + 1; ty++) {
     for (var tx = x0; tx <= x0 + PXVW / PXT + 1; tx++) {
+      if (ty < 0 || ty >= m.length || tx < 0 || tx >= m[0].length) continue;
       pxDrawTile(ctx, pxTile(tx, ty), tx * PXT, ty * PXT);
     }
   }
-  // Will, standing on the path
-  pxDrawSprite(ctx, 'will_down', 'stand', 13 * PXT, 7 * PXT - 4, 'will');
-  // her - the sprite is taller than a tile, so it sits up a little
+  for (var i = 0; i < a.npcs.length; i++) {
+    var n = a.npcs[i];
+    pxDrawSprite(ctx, n.spr, 'stand', n.x * PXT, n.y * PXT - 4, n.pal);
+  }
+  // her sprite is taller than a tile, so it sits up a little
   pxDrawSprite(ctx, pxKeyFor(s.dir), pxFrameFor(s), Math.round(pxp), Math.round(pyp) - 4, 'jolene');
   ctx.restore();
 
   s.raf = requestAnimationFrame(pxRender);
 }
 
-// Logic tick, deliberately not tied to the render loop.
+// ── logic, deliberately not tied to the render loop ──────────────
 function pxTick() {
   var s = pxState;
   if (!s || pxMoving(s) || s.talking) return;
-  if (s.moveStart) { s.fromX = s.x; s.fromY = s.y; s.moveStart = 0; }
+  if (s.moveStart) {                       // a step just finished
+    s.fromX = s.x; s.fromY = s.y; s.moveStart = 0;
+    var w = pxArea().warps[s.x + ',' + s.y];
+    if (w) { pxGo(w[0], w[1], w[2], w[3]); return; }
+  }
   var d = s.held[s.held.length - 1];
   if (d) pxMove(d);
 }
@@ -1210,23 +1154,43 @@ function pxMove(dir) {
   s.stepPhase++;
 }
 
+function pxGo(area, x, y, dir) {
+  var s = pxState;
+  s.area = area; s.x = x; s.y = y; s.fromX = x; s.fromY = y;
+  s.dir = dir || s.dir; s.moveStart = 0; s.held = [];
+  var el = document.getElementById('pxPlace');
+  if (el) el.textContent = PX_AREAS[area].name;
+}
+
+// ── talking ──────────────────────────────────────────────────────
+function pxLines(v) {
+  if (v !== 'WILL_COUNTDOWN') return v;
+  var p = typeof getCountdownParts === 'function' ? getCountdownParts() : null;
+  if (!p) return ['WILL: You are here.', 'WILL: That is the whole point.'];
+  var mo = ['January','February','March','April','May','June','July',
+            'August','September','October','November','December'][NEXT_VISIT.getMonth()];
+  return ['WILL: You found it.',
+          'WILL: ' + p.d + ' days until ' + mo + ' ' + NEXT_VISIT.getDate() + '.',
+          'WILL: I am counting too.'];
+}
 function pxInteract() {
   var s = pxState;
   if (!s) return;
   if (s.talking) { pxAdvance(); return; }
   var dx = s.dir === 'left' ? -1 : s.dir === 'right' ? 1 : 0;
   var dy = s.dir === 'up' ? -1 : s.dir === 'down' ? 1 : 0;
-  var key = (s.x + dx) + ',' + (s.y + dy);
-  var lines = PX_TALK[key];
-  if (!lines && pxTile(s.x + dx, s.y + dy) === 'w') lines = PX_TALK.pond;
+  var tx = s.x + dx, ty = s.y + dy, key = tx + ',' + ty, a = pxArea();
+  var npc = pxNpcAt(tx, ty);
+  var lines = npc ? pxLines(npc.lines) : a.talk[key];
+  if (!lines && pxTile(tx, ty) === 'w') lines = ['The water is very cold.', 'You are not going in.'];
   if (!lines) return;
   s.talking = lines.slice();
   s.talkAt = 0;
   pxShowLine();
 }
 function pxShowLine() {
-  var s = pxState, box = document.getElementById('pxTalk');
-  box.textContent = s.talking[s.talkAt];
+  var box = document.getElementById('pxTalk');
+  box.textContent = pxState.talking[pxState.talkAt];
   box.hidden = false;
 }
 function pxAdvance() {
@@ -1246,7 +1210,6 @@ var PX_DIRKEY = {
   w: 'up', s: 'down', a: 'left', d: 'right',
   W: 'up', S: 'down', A: 'left', D: 'right'
 };
-
 function pxKeyDown(e) {
   if (!pxState) return;
   if (e.key === 'Escape') { pxClose(); return; }
@@ -1270,28 +1233,27 @@ function pxKeyUp(e) {
 function pxFit() {
   if (!pxState) return;
   var wrap = document.getElementById('pxStage');
-  // Integer scaling keeps pixels perfectly square, but on a phone the
-  // integer step is 1x and the game ends up postage-stamp sized. Below 2x,
-  // fill the space instead - slightly uneven pixels beat unreadable ones.
+  // Integer scaling keeps pixels perfectly square, but the integer step on a
+  // phone is 1x and the game ends up postage-stamp sized. Below 2x, fill the
+  // space instead - slightly uneven pixels beat unreadable ones.
   var raw = Math.min(wrap.clientWidth / PXVW, wrap.clientHeight / PXVH);
   var scale = raw >= 2 ? Math.floor(raw) : Math.max(1, raw);
-  var c = pxState.canvas;
-  c.style.width = (PXVW * scale) + 'px';
-  c.style.height = (PXVH * scale) + 'px';
+  pxState.canvas.style.width = (PXVW * scale) + 'px';
+  pxState.canvas.style.height = (PXVH * scale) + 'px';
 }
 
 function pxOpen() {
   if (pxState) return;
-  var world = document.getElementById('pxWorld');
-  world.hidden = false;
+  document.getElementById('pxWorld').hidden = false;
   document.body.classList.add('px-open');
   var c = document.getElementById('pxCanvas');
   c.width = PXVW; c.height = PXVH;
   var ctx = c.getContext('2d');
   ctx.imageSmoothingEnabled = false;
-  pxState = { canvas: c, ctx: ctx, x: 5, y: 16, dir: 'up', moveStart: 0,
-              fromX: 5, fromY: 16, stepPhase: 0, held: [], talking: null,
-              raf: 0, tick: 0 };
+  pxState = { canvas: c, ctx: ctx, area: PX_START[0], x: PX_START[1], y: PX_START[2],
+              dir: PX_START[3], moveStart: 0, fromX: PX_START[1], fromY: PX_START[2],
+              stepPhase: 0, held: [], talking: null, raf: 0, tick: 0 };
+  document.getElementById('pxPlace').textContent = PX_AREAS[pxState.area].name;
   pxState.tick = setInterval(pxTick, 40);
   pxFit();
   document.addEventListener('keydown', pxKeyDown);
@@ -1300,7 +1262,6 @@ function pxOpen() {
   document.getElementById('pxClose').focus();
   pxRender();
 }
-
 function pxClose() {
   if (!pxState) return;
   cancelAnimationFrame(pxState.raf);
@@ -1329,17 +1290,15 @@ function renderCrew() {
   if (!w || !j) return;
   pxPaintBadge(w, 'will_down', 'will');
   pxPaintBadge(j, 'jol_down', 'jolene');
-  var btn = document.getElementById('crewBtn');
-  if (btn) btn.addEventListener('click', pxOpen);
+  document.getElementById('crewBtn').addEventListener('click', pxOpen);
   document.getElementById('pxClose').addEventListener('click', pxClose);
   document.getElementById('pxScrim').addEventListener('click', pxClose);
-  // on-screen controls, for anyone without a keyboard
   document.querySelectorAll('[data-px-dir]').forEach(function(el) {
     var dir = el.dataset.pxDir, timer = 0;
     function go(e) {
       e.preventDefault();
       pxMove(dir);
-      if (pxState) { if (pxState.held.indexOf(dir) === -1) pxState.held.push(dir); }
+      if (pxState && pxState.held.indexOf(dir) === -1) pxState.held.push(dir);
       clearInterval(timer);
       timer = setInterval(function() { pxMove(dir); }, PX_STEP);
     }
