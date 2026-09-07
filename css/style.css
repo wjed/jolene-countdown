@@ -210,9 +210,8 @@ body.sheet-open { overflow: hidden; }
 .crew-svg { height: 96px; width: auto; display: block; overflow: visible; }
 .sk-w     { fill: #f1cbaa; }
 .sk-j     { fill: #d9a276; }
-.w-blush  { fill: #e08a72; opacity: .17; }
-.w-hair   { fill: #6b4a2e; }
-.w-lock   { fill: #7f5836; }
+.w-blush  { fill: #e08a72; opacity: .11; }
+.w-hair   { fill: #5c3f28; }
 .j-hair   { fill: url(#jHair); }
 .j-hair-back { fill: #3a2314; }
 .w-hoodie { fill: #44568a; }
