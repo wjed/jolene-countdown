@@ -43,78 +43,91 @@
       <svg class="crew-svg" viewBox="26 10 58 86" role="img" aria-label="Will and Jolene">
         <defs>
           <linearGradient id="jHair" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#3b2214"/>
-            <stop offset=".4" stop-color="#5b3620"/>
-            <stop offset="1" stop-color="#a97038"/>
+            <stop offset="0" stop-color="#311d10"/>
+            <stop offset=".45" stop-color="#462b18"/>
+            <stop offset="1" stop-color="#7b4c29"/>
           </linearGradient>
         </defs>
 
         <!-- his far arm, first, so both of them cover the middle of it -->
-        <path class="w-hug" d="M52.5 47 C 57 49 64 50 74.5 49.5"/>
+        <path class="w-hug" d="M53 47.4 C 57 49.4 64 50.2 75 48.6"/>
 
-        <!-- ── WILL ── -->
+        <!-- WILL -->
         <g class="crew-fig crew-w">
-          <rect x="36.4" y="62" width="6.6" height="27" rx="2.4" class="w-pants"/>
-          <rect x="45" y="62" width="6.6" height="27" rx="2.4" class="w-pants"/>
+          <rect x="36.4" y="63" width="6.6" height="26" rx="2.4" class="w-pants"/>
+          <rect x="45" y="63" width="6.6" height="26" rx="2.4" class="w-pants"/>
           <rect x="34.8" y="86.6" width="9.2" height="5.4" rx="2.4" class="shoe"/>
           <rect x="43.8" y="86.6" width="9.2" height="5.4" rx="2.4" class="shoe"/>
-          <rect x="35" y="41" width="18.4" height="23" rx="5.2" class="w-top"/>
-          <path class="w-collar" d="M41.3 41.4 L44 45.6 L46.7 41.4"/>
-          <!-- arm sits on top of the torso so the shoulder joins cleanly, and
-               so a wave swings across the body rather than behind it -->
+          <!-- hood worn down, drawn first so it shows either side of the neck -->
+          <path class="w-hood" d="M34.6 48 C 33.6 41.4 37.4 37.6 44 37.6 C 50.6 37.6 54.4 41.4 53.4 48 Z"/>
+          <rect x="34.6" y="41" width="19.2" height="24.5" rx="5.6" class="w-hoodie"/>
+          <path class="w-neckline" d="M40.4 41.6 C 41.8 44.4 46.2 44.4 47.6 41.6"/>
+          <path class="w-string" d="M41.9 43.8 V 50.4"/>
+          <path class="w-string" d="M46.1 43.8 V 49.6"/>
+          <rect class="w-mark" x="41.4" y="54.6" width="5.2" height="3.4" rx="1"/>
           <g class="fig-arm w-arm">
-            <rect x="31.6" y="42.2" width="6.4" height="20.6" rx="2.7" class="sk-w"/>
-            <rect x="31.6" y="42.2" width="6.4" height="9.4" rx="2.7" class="w-top"/>
+            <rect x="31.6" y="42.2" width="6.4" height="18.4" rx="2.9" class="w-hoodie"/>
+            <circle cx="34.8" cy="61.8" r="2.8" class="sk-w"/>
           </g>
-          <rect x="41.2" y="36.5" width="5.6" height="5.5" rx="2" class="sk-w"/>
-          <circle cx="53.2" cy="31" r="1.7" class="sk-w"/>
-          <circle cx="44" cy="29.6" r="9.3" class="sk-w"/>
-          <path class="w-hair" d="M34.7 30 C 33.8 20.4 38.2 16.2 44 16.2 C 49.8 16.2 54.2 20.4 53.3 30 C 52.6 25.4 51 23.6 47.4 23 C 44 22.4 39.6 23 37.4 24.6 C 35.8 25.8 35.1 27.4 34.7 30 Z"/>
-          <circle class="w-hair" cx="37.6" cy="21.8" r="3.4"/>
-          <circle class="w-hair" cx="43.2" cy="18.6" r="3.9"/>
-          <circle class="w-hair" cx="48.8" cy="20.4" r="3.5"/>
-          <circle class="w-hair" cx="51.8" cy="25" r="2.7"/>
-          <circle class="w-hair" cx="36.2" cy="26.2" r="2.5"/>
-          <rect class="fig-eye" x="39.9" y="28.5" width="2.2" height="2.4" rx="1.1"/>
-          <rect class="fig-eye" x="45.9" y="28.5" width="2.2" height="2.4" rx="1.1"/>
-          <path class="fig-brow" d="M39.5 26.5 H42.5"/>
-          <path class="fig-brow" d="M45.5 26.5 H48.5"/>
-          <path class="fig-smile" d="M41.6 33.6 Q44 35.4 46.4 33.6"/>
+          <rect x="41.2" y="36.4" width="5.6" height="5.6" rx="2" class="sk-w"/>
+          <circle cx="52.4" cy="31.4" r="1.6" class="sk-w"/>
+          <ellipse cx="44" cy="29.8" rx="8.6" ry="9.5" class="sk-w"/>
+          <ellipse class="w-blush" cx="38.4" cy="32.6" rx="2.3" ry="1.5"/>
+          <ellipse class="w-blush" cx="49.6" cy="32.6" rx="2.3" ry="1.5"/>
+          <!-- wavy and swept, short at the sides. The top edge dips and rises
+               rather than running smooth - that is the whole difference
+               between tousled waves and ringlets. -->
+          <path class="w-hair" d="M35.8 27 C 34.4 21.6 34.6 16.6 37.6 14.2 C 39 13.1 40.4 14.2 41.6 13.4 C 43 12.4 44.2 13.5 45.4 13.1 C 47 12.5 48.6 13.3 49.8 13.4 C 51.8 13.6 53 15.8 53.1 18.6 C 53.2 21.4 52.9 24.4 52.4 27 C 51.8 24 50.8 22.6 49.2 21.8 C 46.6 20.4 41.6 20.5 38.8 21.9 C 37.2 22.7 36.4 24.2 35.8 27 Z"/>
+          <path class="w-hair" d="M40.2 14 C 41.2 11.7 43.2 11.3 44.6 12.6 C 43 12.4 41.4 12.9 40.2 14 Z"/>
+          <path class="w-hair" d="M46.2 13 C 47.5 11.1 49.7 11.4 50.6 13.4 C 49.1 12.5 47.5 12.4 46.2 13 Z"/>
+          <path class="w-lock" d="M39.4 16.8 C 42 14.6 45.8 14.2 49 15.6 C 46 15.2 42.2 15.7 39.4 16.8 Z"/>
+          <path class="w-lock" d="M37.2 21.2 C 39.2 18.6 42.4 17.4 45.4 17.6 C 42.4 18.4 39.4 19.5 37.2 21.2 Z"/>
+          <rect class="fig-eye w-eye" x="40" y="28.8" width="2.2" height="2.3" rx="1.1"/>
+          <rect class="fig-eye w-eye" x="45.8" y="28.8" width="2.2" height="2.3" rx="1.1"/>
+          <path class="fig-brow" d="M39.5 26.6 H42.7"/>
+          <path class="fig-brow" d="M45.3 26.6 H48.5"/>
+          <!-- closed-mouth smirk, not a grin -->
+          <path class="fig-smile" d="M41.7 34.4 C 43 35.2 45 35.2 46.4 34.2"/>
         </g>
 
-        <!-- ── JOLENE ── -->
+        <!-- JOLENE -->
         <g class="crew-fig crew-j">
-          <ellipse class="j-hair-back" cx="68" cy="40" rx="9.6" ry="10.4"/>
-          <rect x="62.2" y="70" width="5.4" height="19" rx="2.2" class="sk-j"/>
-          <rect x="68.6" y="70" width="5.4" height="19" rx="2.2" class="sk-j"/>
-          <rect x="60.4" y="86.6" width="8.2" height="5.4" rx="2.4" class="shoe"/>
-          <rect x="67.6" y="86.6" width="8.2" height="5.4" rx="2.4" class="shoe"/>
-          <rect x="60.4" y="63" width="15.2" height="9.5" rx="2.6" class="j-shorts"/>
-          <rect x="60.8" y="48" width="14.4" height="17" rx="4" class="j-top"/>
-          <rect x="65.4" y="45.5" width="5.2" height="5" rx="1.8" class="sk-j"/>
-          <circle cx="68" cy="40.4" r="8.4" class="sk-j"/>
-          <!-- one path: the cap, a middle part, and a tress down each side -->
-          <path class="j-hair" d="M59.6 41 C 58.6 31 62.4 26.6 68 26.6 C 73.6 26.6 77.4 31 76.4 41 C 77.4 50 78 60 76.6 68.5 C 76 71 72.8 70.6 72.6 67.5 C 73 58 73 48 72 40 C 71.4 34.6 69.8 33 68 33 C 66.2 33 64.6 34.6 64 40 C 63 48 63 58 63.4 67.5 C 63.2 70.6 60 71 59.4 68.5 C 58 60 58.6 50 59.6 41 Z"/>
+          <ellipse class="j-hair-back" cx="68" cy="40.2" rx="9.8" ry="10.6"/>
+          <rect x="62.4" y="68" width="5.4" height="21" rx="2.2" class="sk-j"/>
+          <rect x="68.8" y="68" width="5.4" height="21" rx="2.2" class="sk-j"/>
+          <rect x="60.6" y="86.6" width="8.2" height="5.4" rx="2.4" class="shoe"/>
+          <rect x="67.8" y="86.6" width="8.2" height="5.4" rx="2.4" class="shoe"/>
+          <path class="j-hood" d="M59.6 52 C 58.8 45.6 62.2 42 68 42 C 73.8 42 77.2 45.6 76.4 52 Z"/>
+          <rect x="60" y="46.6" width="16" height="23.6" rx="5" class="j-hoodie"/>
+          <path class="j-neckline" d="M64.6 47.2 C 65.8 49.8 70.2 49.8 71.4 47.2"/>
+          <path class="j-string" d="M65.9 49.4 V 55.4"/>
+          <path class="j-string" d="M70.1 49.4 V 54.6"/>
+          <rect class="j-mark" x="63.2" y="57" width="9.6" height="2.6" rx="1.3"/>
+          <rect x="58.2" y="49" width="4" height="16.4" rx="2" class="j-hoodie-arm"/>
+          <circle cx="60.2" cy="66.2" r="2.3" class="sk-j"/>
+          <ellipse cx="68" cy="40.4" rx="8.2" ry="8.4" class="sk-j"/>
+          <path class="j-hair" d="M59.6 41 C 58.6 30.8 62.4 26.4 68 26.4 C 73.6 26.4 77.4 30.8 76.4 41 C 77.5 50 78.1 60.6 76.7 69 C 76.1 71.6 72.8 71.2 72.6 68 C 73 58.2 73 48 72 40 C 71.4 34.6 69.8 33 68 33 C 66.2 33 64.6 34.6 64 40 C 63 48 63 58.2 63.4 68 C 63.2 71.2 59.9 71.6 59.3 69 C 57.9 60.6 58.5 50 59.6 41 Z"/>
           <!-- arms after the hair, or the tresses bury them -->
-          <rect x="57.6" y="50" width="4.2" height="16.5" rx="2.1" class="sk-j"/>
           <g class="fig-arm j-arm">
-            <rect x="75" y="50" width="4.2" height="16.5" rx="2.1" class="sk-j"/>
+            <rect x="74.2" y="48.6" width="4.4" height="17" rx="2.2" class="j-hoodie"/>
+            <circle cx="76.4" cy="66.4" r="2.4" class="sk-j"/>
           </g>
-          <rect class="fig-eye" x="64.4" y="39.3" width="2" height="2.2" rx="1"/>
-          <rect class="fig-eye" x="69.6" y="39.3" width="2" height="2.2" rx="1"/>
-          <path class="fig-brow" d="M64 37.4 H66.8"/>
-          <path class="fig-brow" d="M69.2 37.4 H72"/>
-          <path class="fig-smile" d="M66 43.7 Q68 45.3 70 43.7"/>
-          <circle class="j-freck" cx="65.5" cy="42.1" r=".42"/>
-          <circle class="j-freck" cx="68" cy="42.5" r=".42"/>
-          <circle class="j-freck" cx="70.5" cy="42.1" r=".42"/>
+          <rect class="fig-eye" x="64.4" y="39.4" width="2" height="2.2" rx="1"/>
+          <rect class="fig-eye" x="69.6" y="39.4" width="2" height="2.2" rx="1"/>
+          <path class="fig-brow j-brow" d="M63.9 37.2 C 65 36.7 66.2 36.8 67 37.4"/>
+          <path class="fig-brow j-brow" d="M72.1 37.2 C 71 36.7 69.8 36.8 69 37.4"/>
+          <!-- hers is the big open smile -->
+          <path class="j-mouth" d="M65.5 43.4 C 66.4 45.9 69.6 45.9 70.5 43.4 Z"/>
+          <circle class="j-freck" cx="65.6" cy="42" r=".42"/>
+          <circle class="j-freck" cx="68" cy="42.4" r=".42"/>
+          <circle class="j-freck" cx="70.4" cy="42" r=".42"/>
           <!-- birthday mode only -->
-          <path class="j-hat" d="M68 17.4 L73.6 28.4 L62.4 28.4 Z"/>
-          <circle class="j-hat-pom" cx="68" cy="16.4" r="1.9"/>
+          <path class="j-hat" d="M68 17.2 L73.6 28.2 L62.4 28.2 Z"/>
+          <circle class="j-hat-pom" cx="68" cy="16.2" r="1.9"/>
         </g>
 
         <!-- his hand on her shoulder, last so it sits on top -->
-        <ellipse class="w-hand" cx="76" cy="49.4" rx="2.3" ry="1.9"/>
+        <ellipse class="w-hand" cx="75.4" cy="48" rx="2.4" ry="2"/>
       </svg>
     </div>
   </header>
@@ -421,7 +434,7 @@ var QA = {
   },
   photos: {
     question: "Where are all our photos?",
-    answer: "Here are all of them.\n\n![Will and Jolene](images/6MonthAniverseryDate.jpg)\n\n![Will and Jolene](images/FirstDate_76.jpg)\n\n![Will and Jolene](images/IMG_8448.jpg)\n\n![Will and Jolene](images/IMG_8472.jpg)\n\n![Will and Jolene](images/IMG_8502.jpg)\n\n![Will and Jolene](images/IMG_8830.jpg)\n\n![Will and Jolene](images/IMG_8840.jpg)\n\n![Will and Jolene](images/IMG_8850.jpg)\n\n![Will and Jolene](images/IMG_8859.jpg)\n\n![Will and Jolene](images/IMG_8860.jpg)\n\n![Will and Jolene](images/IMG_8889.jpg)\n\n![Will and Jolene](images/IMG_9223.jpg)\n\n![Will and Jolene](images/JOlene_With_family.jpg)\n\n![Will and Jolene](images/JW_6Months.jpg)\n\n![Will and Jolene](images/JW_Photobooth.jpg)\n\n![Will and Jolene](images/JW_WillAtPSU.jpg)\n\n![Will and Jolene](images/Jolene_6_Month.jpg)\n\n![Will and Jolene](images/Jolene_At_7Eleven.jpg)\n\n![Will and Jolene](images/Jolene_At_Pool.jpg)\n\n![Will and Jolene](images/Jolene_Decline_Curl_Up.jpg)\n\n![Will and Jolene](images/Jolene_Dollar_Tree.jpg)\n\n![Will and Jolene](images/Jolene_Driving.jpg)\n\n![Will and Jolene](images/Jolene_Driving_To_Lake.jpg)\n\n![Will and Jolene](images/Jolene_First_Date_Photo.jpg)\n\n![Will and Jolene](images/Jolene_First_Date_Photo_Fifth.jpg)\n\n![Will and Jolene](images/Jolene_First_Date_Photo_Fourth.jpg)\n\n![Will and Jolene](images/Jolene_First_Date_Photo_Second.jpg)\n\n![Will and Jolene](images/Jolene_First_Date_Photo_Third.jpg)\n\n![Will and Jolene](images/Jolene_Huge_Perfume_Bottle.jpg)\n\n![Will and Jolene](images/Jolene_In_MA_Outfit_After_Lift.jpg)\n\n![Will and Jolene](images/Jolene_Lake_House.jpg)\n\n![Will and Jolene](images/Jolene_Monkey_Bars.jpg)\n\n![Will and Jolene](images/Jolene_Pancake.jpg)\n\n![Will and Jolene](images/Jolene_Photo_From_Gym.jpg)\n\n![Will and Jolene](images/Jolene_Photo_Wills_New_Room.jpg)\n\n![Will and Jolene](images/Jolene_Pickle.jpg)\n\n![Will and Jolene](images/Jolene_Visits_JMU_First_Time_DrivingFromWalmart.jpg)\n\n![Will and Jolene](images/Jolene_Visits_JMU_First_Time_Winter.jpg)\n\n![Will and Jolene](images/Jolene_Visits_JMU_SelfieAfterPlanetFitness.jpg)\n\n![Will and Jolene](images/Jolene_Walking_Wills_Dog_Juno.jpg)\n\n![Will and Jolene](images/Jolene_Will_Concert.jpg)\n\n![Will and Jolene](images/Jolene_Will_MatchingGreen.jpg)\n\n![Will and Jolene](images/Jolene_With_Cybertruck.jpg)\n\n![Will and Jolene](images/Jolene_With_Juno.jpg)\n\n![Will and Jolene](images/Jolene_With_Juno_Again.jpg)\n\n![Will and Jolene](images/Jolene_With_Wills_Cat_Hazel.jpg)\n\n![Will and Jolene](images/Jolene_With_Wills_Grandpa.jpg)\n\n![Will and Jolene](images/Jolene_With_Zero_Sugar_Slurpee_First_Time_Trying.jpg)\n\n![Will and Jolene](images/Will_And_Jolene_At_Graduation.jpg)\n\n![Will and Jolene](images/Will_And_Jolene_At_Graduation_Second.jpg)\n\n![Will and Jolene](images/Will_And_Jolene_At_Pool.jpg)\n\n![Will and Jolene](images/Will_Fixing_Things_At_Lake_Anna.jpg)\n\n![Will and Jolene](images/Will_Jolene_2022_Second.jpg)\n\n![Will and Jolene](images/Will_Jolene_Chipotle_Selfie.jpg)\n\n![Will and Jolene](images/Will_Jolene_Coffee_Date_At_Lake.jpg)\n\n![Will and Jolene](images/Will_Jolene_DC_Trip.jpg)\n\n![Will and Jolene](images/Will_Jolene_Gym_Photo.jpg)\n\n![Will and Jolene](images/Will_Jolene_In_2022.jpg)\n\n![Will and Jolene](images/Will_Jolene_Legos.jpg)\n\n![Will and Jolene](images/Will_Jolene_Matching_FBI_Shirts.jpg)\n\n![Will and Jolene](images/Will_Jolene_Mirror_Photo_From_Fairfax_Date.jpg)\n\n![Will and Jolene](images/Will_Jolene_PLanetFitnes.jpg)\n\n![Will and Jolene](images/Will_Jolene_Photo_In_Bed.jpg)\n\n![Will and Jolene](images/Will_Jolene_Photobooth_Photos.jpg)\n\n![Will and Jolene](images/Will_Jolene_Reston_Date.jpg)\n\n![Will and Jolene](images/Will_Jolene_Selfie.jpg)\n\n![Will and Jolene](images/Will_Jolene_Starbucks.jpg)\n\n![Will and Jolene](images/Will_Jolene_Sunglasses.jpg)\n\n![Will and Jolene](images/Will_Jolene_UREC_Hill.jpg)\n\n![Will and Jolene](images/Will_Jolene_Valentines_Day_Mirror_Photo.jpg)\n\n![Will and Jolene](images/Will_Jolene_Visiting_FBI.jpg)\n\n![Will and Jolene](images/Will_Jolene_Wills_Birthday.jpg)\n\n![Will and Jolene](images/Will_Jolknee_COllege_Hoodies.jpg)\n\n![Will and Jolene](images/Will_TakenAtURECHill.jpg)\n\n![Will and Jolene](images/Will_Visits_PSU_First_Time_BrushingTeeth.jpg)\n\n![Will and Jolene](images/Will_Visits_PSU_First_Time_GoingAroundCampus.jpg)\n\n![Will and Jolene](images/Will_Visits_PSU_First_Time_GoingAroundCampus_Second.jpg)\n\n![Will and Jolene](images/Will_Visits_PSU_First_Time_Gym.jpg)\n\n![Will and Jolene](images/Will_Visits_PSU_First_Time_Mirror_Photo.jpg)\n\n![Will and Jolene](images/Will_Visits_PSU_First_time.jpg)",
+    answer: "Here are all of them.\n\n![Will and Jolene](images/Date_Chipotle.jpg)\n\n![Will and Jolene](images/Date_Concert.jpg)\n\n![Will and Jolene](images/Date_DC_Trip.jpg)\n\n![Will and Jolene](images/Date_Fairfax_Mirror.jpg)\n\n![Will and Jolene](images/Date_Photobooth_01.jpg)\n\n![Will and Jolene](images/Date_Photobooth_02.jpg)\n\n![Will and Jolene](images/Date_Reston.jpg)\n\n![Will and Jolene](images/Date_Rice_Bowls.jpg)\n\n![Will and Jolene](images/Date_Starbucks.jpg)\n\n![Will and Jolene](images/Early_2022_01.jpg)\n\n![Will and Jolene](images/Early_2022_02.jpg)\n\n![Will and Jolene](images/Everyday_7_Eleven.jpg)\n\n![Will and Jolene](images/Everyday_Ashburn_Metro.jpg)\n\n![Will and Jolene](images/Everyday_Car_Selfie.jpg)\n\n![Will and Jolene](images/Everyday_Cybertruck.jpg)\n\n![Will and Jolene](images/Everyday_Dollar_Tree.jpg)\n\n![Will and Jolene](images/Everyday_First_Zero_Sugar_Slurpee.jpg)\n\n![Will and Jolene](images/Everyday_Giant_Perfume_Bottle.jpg)\n\n![Will and Jolene](images/Everyday_Jolene_Driving.jpg)\n\n![Will and Jolene](images/Everyday_Matching_Green.jpg)\n\n![Will and Jolene](images/Everyday_Monkey_Bars.jpg)\n\n![Will and Jolene](images/Everyday_Pickle.jpg)\n\n![Will and Jolene](images/Everyday_Pool_01.jpg)\n\n![Will and Jolene](images/Everyday_Pool_02.jpg)\n\n![Will and Jolene](images/Everyday_Selfie.jpg)\n\n![Will and Jolene](images/Everyday_Sunglasses.jpg)\n\n![Will and Jolene](images/Everyday_Walmart_Peeps_01.jpg)\n\n![Will and Jolene](images/Everyday_Walmart_Peeps_02.jpg)\n\n![Will and Jolene](images/Family_Jolenes_Family.jpg)\n\n![Will and Jolene](images/Family_Wills_Grandpa.jpg)\n\n![Will and Jolene](images/FirstDate_01.jpg)\n\n![Will and Jolene](images/FirstDate_02.jpg)\n\n![Will and Jolene](images/FirstDate_03.jpg)\n\n![Will and Jolene](images/FirstDate_04.jpg)\n\n![Will and Jolene](images/FirstDate_05.jpg)\n\n![Will and Jolene](images/FirstDate_06.jpg)\n\n![Will and Jolene](images/Gym_After_Lift.jpg)\n\n![Will and Jolene](images/Gym_Decline_Situp.jpg)\n\n![Will and Jolene](images/Gym_Jolene.jpg)\n\n![Will and Jolene](images/Gym_Planet_Fitness_01.jpg)\n\n![Will and Jolene](images/Gym_Planet_Fitness_02.jpg)\n\n![Will and Jolene](images/Gym_Together.jpg)\n\n![Will and Jolene](images/Home_College_Hoodies_01.jpg)\n\n![Will and Jolene](images/Home_College_Hoodies_02.jpg)\n\n![Will and Jolene](images/Home_Cooking_01.jpg)\n\n![Will and Jolene](images/Home_Cooking_02.jpg)\n\n![Will and Jolene](images/Home_In_Bed.jpg)\n\n![Will and Jolene](images/Home_Legos.jpg)\n\n![Will and Jolene](images/Home_Pancake.jpg)\n\n![Will and Jolene](images/Home_Wills_New_Room.jpg)\n\n![Will and Jolene](images/JMU_After_Planet_Fitness.jpg)\n\n![Will and Jolene](images/JMU_Driving_From_Walmart.jpg)\n\n![Will and Jolene](images/JMU_First_Visit_Winter.jpg)\n\n![Will and Jolene](images/JMU_UREC_Hill_01.jpg)\n\n![Will and Jolene](images/JMU_UREC_Hill_02.jpg)\n\n![Will and Jolene](images/JMU_UREC_Hill_Sunset.jpg)\n\n![Will and Jolene](images/LakeAnna_Coffee_Date.jpg)\n\n![Will and Jolene](images/LakeAnna_Driving_There.jpg)\n\n![Will and Jolene](images/LakeAnna_Lake_House.jpg)\n\n![Will and Jolene](images/LakeAnna_Will_Fixing_Things.jpg)\n\n![Will and Jolene](images/Milestone_FBI_Matching_Shirts.jpg)\n\n![Will and Jolene](images/Milestone_FBI_Visit.jpg)\n\n![Will and Jolene](images/Milestone_Graduation_01.jpg)\n\n![Will and Jolene](images/Milestone_Graduation_02.jpg)\n\n![Will and Jolene](images/Milestone_Six_Months_01.jpg)\n\n![Will and Jolene](images/Milestone_Six_Months_02.jpg)\n\n![Will and Jolene](images/Milestone_Six_Months_03.jpg)\n\n![Will and Jolene](images/Milestone_Valentines_Day.jpg)\n\n![Will and Jolene](images/Milestone_Wills_Birthday.jpg)\n\n![Will and Jolene](images/PSU_Around_Campus_01.jpg)\n\n![Will and Jolene](images/PSU_Around_Campus_02.jpg)\n\n![Will and Jolene](images/PSU_Brushing_Teeth.jpg)\n\n![Will and Jolene](images/PSU_First_Visit.jpg)\n\n![Will and Jolene](images/PSU_Gym.jpg)\n\n![Will and Jolene](images/PSU_Mirror_Photo.jpg)\n\n![Will and Jolene](images/PSU_Together.jpg)\n\n![Will and Jolene](images/Pets_Hazel.jpg)\n\n![Will and Jolene](images/Pets_Juno_01.jpg)\n\n![Will and Jolene](images/Pets_Juno_02.jpg)\n\n![Will and Jolene](images/Pets_Juno_Walk.jpg)",
     suggestions: []
   },
   sweet: {
@@ -1098,7 +1111,11 @@ function renderNowTile() {
 }
 
 function renderPhotoTile() {
-  var photos = photoList();
+  var photos = photoList().slice();
+  for (var s = photos.length - 1; s > 0; s--) {
+    var j = Math.floor(Math.random() * (s + 1));
+    var swap = photos[s]; photos[s] = photos[j]; photos[j] = swap;
+  }
   var a = document.getElementById('photoImg'), b = document.getElementById('photoImgB');
   document.getElementById('photoCount').textContent = photos.length;
   if (!photos.length || !a || !b) return;

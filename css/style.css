@@ -201,27 +201,41 @@ body.sheet-open { overflow: hidden; }
   letter-spacing: .04em;
 }
 /* ── WILL AND JOLENE ────────────────────────────────────────────
-   Two flat figures in the masthead. Skin, hair and clothes are literal
-   colours - they are people, not palette slots, and they shouldn't turn
-   pink in birthday mode. */
+   Two flat figures in the masthead, drawn from the photos: his Georgia Tech
+   hoodie, her Penn State one. Skin, hair and clothes are literal colours -
+   they are people, not palette slots, and they shouldn't turn pink in
+   birthday mode. The navies are lifted well off their real values; at true
+   Penn State navy they'd disappear into the background. */
 .crew { flex: none; line-height: 0; }
 .crew-svg { height: 96px; width: auto; display: block; overflow: visible; }
-.sk-w     { fill: #efc7a4; }
-.sk-j     { fill: #dda87c; }
+.sk-w     { fill: #f1cbaa; }
+.sk-j     { fill: #d9a276; }
+.w-blush  { fill: #e08a72; opacity: .17; }
 .w-hair   { fill: #6b4a2e; }
+.w-lock   { fill: #7f5836; }
 .j-hair   { fill: url(#jHair); }
-.j-hair-back { fill: #4a2b19; }
-.w-top    { fill: #7f8b7c; }
+.j-hair-back { fill: #3a2314; }
+.w-hoodie { fill: #44568a; }
+.w-hood   { fill: #35446f; }
+.w-neckline { fill: none; stroke: #35446f; stroke-width: 1.2; }
+.w-string { stroke: #d6b46a; stroke-width: 1; stroke-linecap: round; fill: none; }
+.w-mark   { fill: #d6b46a; }
 .w-pants  { fill: #c9b291; }
-.j-top    { fill: #eadfcb; }
-.j-shorts { fill: #5f7ea6; }
+.j-hoodie { fill: #5f66a6; }
+.j-hoodie-arm { fill: #545b96; }
+.j-hood   { fill: #4a5087; }
+.j-neckline { fill: none; stroke: #4a5087; stroke-width: 1.2; }
+.j-string { stroke: #e4e8f2; stroke-width: 1; stroke-linecap: round; fill: none; }
+.j-mark   { fill: #e4e8f2; }
 .shoe     { fill: #f2ede4; }
-.w-hand   { fill: #efc7a4; }
-.w-hug    { fill: none; stroke: #efc7a4; stroke-width: 4.4; stroke-linecap: round; }
-.w-collar { fill: none; stroke: #6d786b; stroke-width: 1.1; stroke-linejoin: round; }
+.w-hand   { fill: #f1cbaa; }
+.w-hug    { fill: none; stroke: #3b4b7a; stroke-width: 4.4; stroke-linecap: round; }
 .fig-eye  { fill: #3a2418; }
-.fig-brow { stroke: #4a2e1c; stroke-width: 1.1; stroke-linecap: round; fill: none; }
+.w-eye    { fill: #35404e; }
+.fig-brow { stroke: #4a2e1c; stroke-width: 1.2; stroke-linecap: round; fill: none; }
+.j-brow   { stroke: #33200f; }
 .fig-smile { stroke: #a85b46; stroke-width: 1.1; stroke-linecap: round; fill: none; }
+.j-mouth  { fill: #8d3f36; }
 .j-freck  { fill: #b9805a; }
 .j-hat, .j-hat-pom { opacity: 0; }
 
