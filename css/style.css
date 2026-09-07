@@ -257,10 +257,13 @@ body.sheet-open { overflow: hidden; }
 .crew-j .j-hair { animation: figHair 5.2s ease-in-out infinite alternate; }
 @keyframes figHair { from { transform: rotate(-1.2deg); } to { transform: rotate(1.5deg); } }
 
-/* they wave once on arrival, and again whenever you point at them */
+/* They wave once on arrival and that is all. Firing it from :hover meant a
+   transform animation started and stopped every time the cursor crossed
+   the box - and leaving mid-swing killed it with no fill-mode, so the arm
+   snapped back. A greeting you have to trigger isn't worth that. */
 .fig-arm { transform-box: fill-box; transform-origin: 50% 5%; }
-.crew.wave .w-arm, .crew:hover .w-arm { animation: figWaveL 1.5s ease-in-out; }
-.crew.wave .j-arm, .crew:hover .j-arm { animation: figWaveR 1.5s ease-in-out .12s; }
+.crew.wave .w-arm { animation: figWaveL 1.5s ease-in-out both; }
+.crew.wave .j-arm { animation: figWaveR 1.5s ease-in-out .12s both; }
 @keyframes figWaveL {
   0%, 100% { transform: rotate(0deg); }
   22% { transform: rotate(52deg); }
