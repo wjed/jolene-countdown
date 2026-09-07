@@ -200,6 +200,72 @@ body.sheet-open { overflow: hidden; }
   font-size: 12.5px; color: var(--text-3);
   letter-spacing: .04em;
 }
+/* ── WILL AND JOLENE ────────────────────────────────────────────
+   Two flat figures in the masthead. Skin, hair and clothes are literal
+   colours - they are people, not palette slots, and they shouldn't turn
+   pink in birthday mode. */
+.crew { flex: none; line-height: 0; }
+.crew-svg { height: 96px; width: auto; display: block; overflow: visible; }
+.sk-w     { fill: #efc7a4; }
+.sk-j     { fill: #dda87c; }
+.w-hair   { fill: #6b4a2e; }
+.j-hair   { fill: url(#jHair); }
+.j-hair-back { fill: #4a2b19; }
+.w-top    { fill: #7f8b7c; }
+.w-pants  { fill: #c9b291; }
+.j-top    { fill: #eadfcb; }
+.j-shorts { fill: #5f7ea6; }
+.shoe     { fill: #f2ede4; }
+.w-hand   { fill: #efc7a4; }
+.w-hug    { fill: none; stroke: #efc7a4; stroke-width: 4.4; stroke-linecap: round; }
+.w-collar { fill: none; stroke: #6d786b; stroke-width: 1.1; stroke-linejoin: round; }
+.fig-eye  { fill: #3a2418; }
+.fig-brow { stroke: #4a2e1c; stroke-width: 1.1; stroke-linecap: round; fill: none; }
+.fig-smile { stroke: #a85b46; stroke-width: 1.1; stroke-linecap: round; fill: none; }
+.j-freck  { fill: #b9805a; }
+.j-hat, .j-hat-pom { opacity: 0; }
+
+/* idle: they breathe, they blink, her hair moves */
+.crew-fig { transform-box: fill-box; transform-origin: 50% 100%; }
+.crew-w { animation: figBreathe 3.7s ease-in-out infinite alternate; }
+.crew-j { animation: figBreathe 4.3s ease-in-out infinite alternate; animation-delay: -1.5s; }
+@keyframes figBreathe {
+  from { transform: translateY(.45px) scaleY(.994); }
+  to   { transform: translateY(-.45px) scaleY(1.006); }
+}
+.fig-eye { transform-box: fill-box; transform-origin: 50% 50%; }
+.crew-w .fig-eye { animation: figBlink 5.6s linear infinite; }
+.crew-j .fig-eye { animation: figBlink 7.1s linear infinite; animation-delay: -2.6s; }
+@keyframes figBlink {
+  0%, 95%, 100% { transform: scaleY(1); }
+  96.5%, 97.8%  { transform: scaleY(.08); }
+}
+.j-hair { transform-box: fill-box; transform-origin: 50% 6%; }
+.crew-j .j-hair { animation: figHair 5.2s ease-in-out infinite alternate; }
+@keyframes figHair { from { transform: rotate(-1.2deg); } to { transform: rotate(1.5deg); } }
+
+/* they wave once on arrival, and again whenever you point at them */
+.fig-arm { transform-box: fill-box; transform-origin: 50% 5%; }
+.crew.wave .w-arm, .crew:hover .w-arm { animation: figWaveL 1.5s ease-in-out; }
+.crew.wave .j-arm, .crew:hover .j-arm { animation: figWaveR 1.5s ease-in-out .12s; }
+@keyframes figWaveL {
+  0%, 100% { transform: rotate(0deg); }
+  22% { transform: rotate(52deg); }
+  42% { transform: rotate(37deg); }
+  60% { transform: rotate(55deg); }
+  80% { transform: rotate(40deg); }
+}
+@keyframes figWaveR {
+  0%, 100% { transform: rotate(0deg); }
+  22% { transform: rotate(-50deg); }
+  42% { transform: rotate(-35deg); }
+  60% { transform: rotate(-53deg); }
+  80% { transform: rotate(-38deg); }
+}
+
+/* birthday mode: she gets the hat */
+[data-party="on"] .j-hat     { opacity: 1; fill: var(--party-pink, #ff6fa8); }
+[data-party="on"] .j-hat-pom { opacity: 1; fill: var(--party-gold, #f2c94c); }
 .mantel-foot {
   text-align: center; font-size: 12px; color: var(--text-3);
   padding: 30px 0 6px;
@@ -243,11 +309,13 @@ body.sheet-open { overflow: hidden; }
 .bento.intro > .tile:nth-child(4) { animation-delay: .17s; }
 .bento.intro > .tile:nth-child(5) { animation-delay: .22s; }
 .bento.intro > .tile:nth-child(6) { animation-delay: .27s; }
-.bento.intro .tile-links .tile:nth-child(1) { animation-delay: .31s; }
-.bento.intro .tile-links .tile:nth-child(2) { animation-delay: .35s; }
-.bento.intro .tile-links .tile:nth-child(3) { animation-delay: .39s; }
-.bento.intro .tile-links .tile:nth-child(4) { animation-delay: .43s; }
-.bento.intro .tile-links .tile:nth-child(5) { animation-delay: .47s; }
+.bento.intro > .tile:nth-child(7) { animation-delay: .32s; }
+.bento.intro .tile-links .tile:nth-child(1) { animation-delay: .36s; }
+.bento.intro .tile-links .tile:nth-child(2) { animation-delay: .40s; }
+.bento.intro .tile-links .tile:nth-child(3) { animation-delay: .44s; }
+.bento.intro .tile-links .tile:nth-child(4) { animation-delay: .48s; }
+.bento.intro .tile-links .tile:nth-child(5) { animation-delay: .52s; }
+.bento.intro .tile-links .tile:nth-child(6) { animation-delay: .56s; }
 @keyframes tileIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -324,7 +392,7 @@ button.tile:active { transform: translateY(0); }
 /* together tile - full width, its own row */
 /* Full width and short on content, so centre it rather than letting it sit at
    the top of a row sized for the taller tiles. */
-.t-together { grid-column: 1 / -1; justify-content: center; gap: 11px; }
+.t-together { grid-column: span 2; justify-content: center; gap: 11px; }
 .tog-body { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
 .tog-big {
   font-family: 'Lora', Georgia, serif;
@@ -343,6 +411,62 @@ button.tile:active { transform: translateY(0); }
   transition: width .8s cubic-bezier(.22,.7,.3,1);
 }
 .t-together .tile-label { color: var(--tone-4); }
+/* ── THE LIST ───────────────────────────────────────────────────
+   Tile shows one open item at random, so it reads as a prompt rather than a
+   score. The number underneath is the score. */
+.t-list { grid-column: span 2; justify-content: center; gap: 9px; }
+.t-list .tile-label { color: var(--tone-3); }
+.list-next {
+  font-family: 'Lora', Georgia, serif; font-size: 21px; font-weight: 600;
+  color: var(--text); line-height: 1.25;
+}
+.list-fill {
+  display: block; height: 100%; width: 0; border-radius: 4px;
+  background: linear-gradient(90deg, var(--tone-3), var(--tone-2));
+  transition: width .8s cubic-bezier(.22,.7,.3,1);
+}
+.bk-head { margin-bottom: 10px; }
+.bk-count {
+  font-family: 'Lora', Georgia, serif; font-size: 34px; font-weight: 600;
+  line-height: 1; color: var(--tone-3); font-variant-numeric: tabular-nums;
+}
+.bk-count i { font-style: normal; font-size: 18px; color: var(--text-3); }
+.bk-head-sub { margin-left: 10px; font-size: 13px; color: var(--text-3); }
+.bk-track {
+  height: 4px; border-radius: 4px; margin-top: 12px;
+  background: var(--border); overflow: hidden;
+}
+.bk-fill {
+  display: block; height: 100%; border-radius: 4px;
+  background: linear-gradient(90deg, var(--tone-3), var(--tone-2));
+}
+.bk-list { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.bk-item { display: flex; align-items: flex-start; gap: 10px; }
+.bk-box {
+  flex: none; width: 17px; height: 17px; margin-top: 2px;
+  border: 1.5px solid var(--border); border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+}
+.bk-item.is-done .bk-box { background: var(--tone-3); border-color: var(--tone-3); }
+.bk-box svg {
+  width: 12px; height: 12px; fill: none; stroke: var(--on-accent);
+  stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+}
+.bk-text {
+  font-family: 'Lora', Georgia, serif; font-size: 15.5px;
+  line-height: 1.45; color: var(--text);
+}
+.bk-item.is-done .bk-text {
+  color: var(--text-3); text-decoration: line-through;
+  text-decoration-color: var(--text-3); text-decoration-thickness: 1px;
+}
+/* inline-block, not block: a strike-through propagates into in-flow block
+   descendants and cannot be cancelled there, but it stops at an inline-block. */
+.bk-note {
+  display: inline-block; width: 100%; margin-top: 1px;
+  font-family: var(--font); font-size: 11.5px; letter-spacing: .03em;
+  color: var(--text-3); text-decoration: none;
+}
 /* birthday tile */
 .bday-body { display: flex; align-items: baseline; gap: 9px; }
 .bday-big {
@@ -831,6 +955,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .t-note  { grid-column: span 4; }
   .t-now   { grid-column: span 4; }
   .t-bday  { grid-column: span 4; }
+  .t-together, .t-list { grid-column: span 6; }
   .tile-links { grid-template-columns: repeat(6, 1fr); gap: 16px; }
   .mark-title { font-size: 34px; }
   .cdcell b { font-size: 38px; }
@@ -846,7 +971,8 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .mantel-hdr { padding: 24px 0 16px; }
   .bento { grid-template-columns: 1fr; gap: 12px; }
   .tile-links { grid-template-columns: 1fr; gap: 12px; }
-  .t-visit, .t-photo, .t-note, .t-now, .t-bday, .t-link { grid-column: span 1; }
+  .t-visit, .t-photo, .t-note, .t-now, .t-bday,
+  .t-together, .t-list, .t-link { grid-column: span 1; }
   .t-photo { min-height: 260px; }
   .t-link { min-height: 96px; }
   .cdrow { gap: 14px; }
@@ -869,6 +995,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
      The scene has a lot of moving parts, so cancel the lot rather than
      naming them and leaving one behind. */
   .bridge-stage, .bridge-stage * { animation: none !important; }
+  .crew, .crew * { animation: none !important; }
   [data-party="on"] .party-bar::after,
   [data-party="on"] .t-bday::before,
   [data-party="on"] .party-bar-dots span { animation: none !important; }
