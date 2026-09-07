@@ -214,7 +214,7 @@ body.sheet-open { overflow: hidden; }
 }
 .crew:hover, .crew:focus-visible { border-color: var(--tone-1); background: var(--sidebar-bg); }
 .crew-px {
-  display: block; width: 48px; height: 60px;
+  display: block; width: 48px; height: 66px;
   image-rendering: pixelated; image-rendering: crisp-edges;
 }
 /* they bob on their own clocks - pure translate, no origin to depend on */
