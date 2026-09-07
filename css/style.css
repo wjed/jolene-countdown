@@ -311,6 +311,9 @@ body.px-open { overflow: hidden; }
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 10px; letter-spacing: .06em; color: var(--text-3); margin: 0;
 }
+.px-keys b {
+  font-weight: 700; color: var(--tone-1); letter-spacing: .1em;
+}
 @media (max-width: 640px) { .px-keys { display: none; } }
 @media (prefers-reduced-motion: reduce) { .crew-px { animation: none !important; } }
 .mantel-foot {
