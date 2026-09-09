@@ -230,53 +230,45 @@ body.sheet-open { overflow: hidden; }
 .crew:hover .crew-hint, .crew:focus-visible .crew-hint { color: var(--tone-1); }
 
 /* ── THE OVERWORLD ───────────────────────────────────────────────── */
-.px-world { position: fixed; inset: 0; z-index: 900; }
+/* The game takes the whole screen. It used to sit in a padded frame with the
+   bar above it and the controls below, which cost about a third of the height
+   and made it read as a panel on a page rather than somewhere you went. The
+   chrome is now overlaid on the letterbox, so the canvas gets the whole
+   viewport to scale into - a 1280x860 window goes from 4x to 5x. */
+.px-world { position: fixed; inset: 0; z-index: 900; background: #080503; }
 .px-world[hidden] { display: none; }
 body.px-open { overflow: hidden; }
-.px-scrim { position: absolute; inset: 0; background: #080503; }
-.px-frame {
-  position: relative; height: 100%;
-  display: flex; flex-direction: column; align-items: center;
-  padding: 10px 10px 14px; gap: 8px;
-}
-.px-bar {
-  width: 100%; max-width: 760px; flex: none;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.px-title {
-  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--text-2);
-}
-.px-place {
-  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  font-size: 11px; letter-spacing: .1em; color: var(--tone-1);
-  flex: 1 1 auto; text-align: center;
-}
-.px-close {
-  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--text-2); background: var(--sidebar-bg);
-  border: 1px solid var(--border); border-radius: 6px;
-  padding: 6px 12px; min-height: 34px; cursor: pointer;
-}
-.px-close:hover { color: var(--text); border-color: var(--tone-1); }
+
+.px-frame { position: absolute; inset: 0; }
 
 .px-stage {
-  position: relative; flex: 1 1 auto; min-height: 0; width: 100%;
+  position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
+}
+.px-screen {
+  position: relative; line-height: 0;
+  box-shadow: 0 0 0 2px #2a2119, 0 0 46px 6px rgba(232,161,60,.10);
 }
 #pxCanvas {
   display: block;
   image-rendering: pixelated; image-rendering: crisp-edges;
-  border: 2px solid var(--border); border-radius: 2px;
   background: #4f7a3a;
 }
+/* One faint line per game pixel row - a CRT hint, not a filter. pxFit only
+   turns it on at a whole-number scale, where the lines land on real rows. */
+.px-scan { position: absolute; inset: 0; pointer-events: none; display: none; }
+.px-scan-on .px-scan {
+  display: block;
+  background: repeating-linear-gradient(
+    rgba(0,0,0,.13) 0 1px, rgba(0,0,0,0) 1px var(--px-scale, 4px));
+}
+
 /* the text box sits over the bottom of the screen, like the games it copies */
 .px-talk {
-  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
-  width: min(92%, 520px); margin: 0;
+  position: absolute; left: 50%; bottom: 5%; transform: translateX(-50%);
+  width: 90%; margin: 0; box-sizing: border-box;
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  font-size: 13px; line-height: 1.5; color: #241a14;
+  font-size: clamp(11px, 1.35vw, 15px); line-height: 1.5; color: #241a14;
   background: #f4ecd8; border: 3px solid #241a14; border-radius: 3px;
   box-shadow: 0 0 0 3px #f4ecd8, 4px 4px 0 3px rgba(0,0,0,.4);
   padding: 10px 13px;
@@ -284,10 +276,42 @@ body.px-open { overflow: hidden; }
 .px-talk[hidden] { display: none; }
 .px-talk::after { content: '\25BC'; position: absolute; right: 9px; bottom: 5px; font-size: 9px; }
 
-.px-pad {
-  flex: none; width: 100%; max-width: 760px;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+/* ── the HUD, floating over the letterbox ───────────────────────── */
+.px-bar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+  display: flex; align-items: center; gap: 14px;
+  padding: 11px 16px;
+  background: linear-gradient(rgba(8,5,3,.92), rgba(8,5,3,0));
+  pointer-events: none;
 }
+.px-bar > * { pointer-events: auto; }
+.px-title {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text-3); flex: none;
+}
+.px-place {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 13px; letter-spacing: .1em; color: var(--tone-1);
+  text-shadow: 0 1px 0 #080503;
+  flex: 1 1 auto; text-align: center;
+}
+.px-close {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-2); background: rgba(20,14,10,.7);
+  border: 1px solid var(--border); border-radius: 6px;
+  padding: 6px 12px; min-height: 34px; cursor: pointer; flex: none;
+}
+.px-close:hover { color: var(--text); border-color: var(--tone-1); }
+
+.px-pad {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px 14px;
+  pointer-events: none;
+}
+.px-pad > * { pointer-events: auto; }
 .px-dpad {
   display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(2, 34px);
   gap: 3px;
@@ -298,10 +322,14 @@ body.px-open { overflow: hidden; }
 .px-dpad button:nth-child(4) { grid-area: 2 / 3; }
 .px-dpad button, .px-a {
   font-size: 12px; color: var(--text-2);
-  background: var(--sidebar-bg); border: 1px solid var(--border);
+  background: rgba(20,14,10,.7); border: 1px solid var(--border);
   border-radius: 7px; cursor: pointer; touch-action: none; user-select: none;
+  /* faded on a keyboard machine, where they are only a hint; full strength
+     the moment a hand goes near them */
+  opacity: .42; transition: opacity .15s ease;
 }
-.px-dpad button:active, .px-a:active { background: var(--sidebar-hover); color: var(--text); }
+.px-dpad:hover button, .px-a:hover, .px-dpad button:focus-visible, .px-a:focus-visible { opacity: 1; }
+.px-dpad button:active, .px-a:active { background: var(--sidebar-hover); color: var(--text); opacity: 1; }
 .px-a {
   width: 52px; height: 52px; border-radius: 50%;
   font-family: ui-monospace, monospace; font-size: 15px; font-weight: 700;
@@ -310,11 +338,29 @@ body.px-open { overflow: hidden; }
 .px-keys {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 10px; letter-spacing: .06em; color: var(--text-3); margin: 0;
+  text-shadow: 0 1px 0 #080503;
 }
 .px-keys b {
   font-weight: 700; color: var(--tone-1); letter-spacing: .1em;
 }
-@media (max-width: 640px) { .px-keys { display: none; } }
+
+/* On a phone the controls get their own band under the screen, because a
+   translucent pad over a 375px-wide game covers half the map. */
+@media (max-width: 700px), (max-height: 560px) {
+  .px-keys { display: none; }
+  .px-stage { top: 40px; bottom: 92px; }
+  .px-pad { background: linear-gradient(rgba(8,5,3,0), rgba(8,5,3,.92) 40%); }
+  .px-dpad button, .px-a { opacity: 1; }
+}
+
+/* the screen wipe, over everything including the page behind it */
+.px-wipe {
+  position: fixed; inset: 0; z-index: 1000;
+  width: 100%; height: 100%; pointer-events: none;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+}
+.px-wipe[hidden] { display: none; }
+
 @media (prefers-reduced-motion: reduce) { .crew-px { animation: none !important; } }
 .mantel-foot {
   text-align: center; font-size: 12px; color: var(--text-3);

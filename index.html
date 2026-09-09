@@ -161,16 +161,18 @@
 
 <!-- PIXEL WORLD -->
 <div class="px-world" id="pxWorld" hidden>
-  <div class="px-scrim" id="pxScrim"></div>
   <div class="px-frame" role="dialog" aria-modal="true" aria-label="Pixel world">
+    <div class="px-stage" id="pxStage">
+      <div class="px-screen" id="pxScreen">
+        <canvas id="pxCanvas" width="240" height="160"></canvas>
+        <div class="px-scan" aria-hidden="true"></div>
+        <p class="px-talk" id="pxTalk" hidden></p>
+      </div>
+    </div>
     <div class="px-bar">
       <span class="px-title">will + jolene</span>
       <span class="px-place" id="pxPlace"></span>
       <button class="px-close" id="pxClose" type="button">esc</button>
-    </div>
-    <div class="px-stage" id="pxStage">
-      <canvas id="pxCanvas" width="240" height="160"></canvas>
-      <p class="px-talk" id="pxTalk" hidden></p>
     </div>
     <div class="px-pad">
       <div class="px-dpad">
@@ -184,6 +186,7 @@
     </div>
   </div>
 </div>
+<canvas class="px-wipe" id="pxWipe" hidden aria-hidden="true"></canvas>
 
 <script>
 var wTimeout;
@@ -1033,6 +1036,7 @@ var PX_AREAS = {"apartment":{"map":["####################","#__________________#
 var PXT = 16;                    // tile size, px
 var PXVW = 240, PXVH = 160;      // internal viewport, GBA-sized
 var PX_STEP = 180;               // ms per tile of walking
+var PX_DOOR = 200;               // ms of black either side of a doorway
 var PX_START = ['apartment', 9, 9, 'down'];
 // sprites are taller than a tile, so they are drawn lifted by the overhang
 var PX_LIFT = 0;   // set once PX_H is known
@@ -1237,17 +1241,40 @@ function pxRender() {
     } else { s.bannerAt = 0; }
   }
 
+  // A doorway blacks the screen out and back, so you feel the threshold
+  // instead of teleporting. Drawn last so it dims the arrival banner too.
+  if (s.fade) {
+    var fa = performance.now() - s.fade.at;
+    ctx.globalAlpha = s.fade.warp ? Math.min(1, fa / PX_DOOR)
+                                  : Math.max(0, 1 - fa / PX_DOOR);
+    ctx.fillStyle = '#080503';
+    ctx.fillRect(0, 0, PXVW, PXVH);
+    ctx.globalAlpha = 1;
+  }
+
   s.raf = requestAnimationFrame(pxRender);
 }
 
 // ── logic, deliberately not tied to the render loop ──────────────
 function pxTick() {
   var s = pxState;
-  if (!s || pxMoving(s) || s.talking) return;
+  if (!s) return;
+  if (s.fade) {                            // mid-doorway; nothing else runs
+    if (performance.now() - s.fade.at < PX_DOOR) return;
+    if (s.fade.warp) {
+      var g = s.fade.warp;
+      pxGo(g[0], g[1], g[2], g[3]);
+      s.fade = { at: performance.now(), warp: null };
+    } else {
+      s.fade = null;
+    }
+    return;
+  }
+  if (pxMoving(s) || s.talking) return;
   if (s.moveStart) {                       // a step just finished
     s.fromX = s.x; s.fromY = s.y; s.moveStart = 0;
     var w = pxArea().warps[s.x + ',' + s.y];
-    if (w) { pxGo(w[0], w[1], w[2], w[3]); return; }
+    if (w) { s.fade = { at: performance.now(), warp: w }; s.held = []; return; }
   }
   var d = s.held[s.held.length - 1];
   if (d) pxMove(d);
@@ -1255,7 +1282,7 @@ function pxTick() {
 
 function pxMove(dir) {
   var s = pxState;
-  if (!s || pxMoving(s) || s.talking) return;
+  if (!s || s.fade || pxMoving(s) || s.talking) return;
   s.dir = dir;
   var dx = dir === 'left' ? -1 : dir === 'right' ? 1 : 0;
   var dy = dir === 'up' ? -1 : dir === 'down' ? 1 : 0;
@@ -1299,7 +1326,7 @@ function pxHasTalk(x, y) {
 
 function pxInteract() {
   var s = pxState;
-  if (!s) return;
+  if (!s || s.fade) return;
   if (s.talking) { pxAdvance(); return; }
   var dx = s.dir === 'left' ? -1 : s.dir === 'right' ? 1 : 0;
   var dy = s.dir === 'up' ? -1 : s.dir === 'down' ? 1 : 0;
@@ -1336,7 +1363,7 @@ var PX_DIRKEY = {
 };
 function pxKeyDown(e) {
   if (!pxState) return;
-  if (e.key === 'Escape') { pxClose(); return; }
+  if (e.key === 'Escape') { pxLeave(); return; }
   if (e.key === ' ' || e.key === 'Enter' || e.key === 'e' || e.key === 'E') {
     e.preventDefault(); pxInteract(); return;
   }
@@ -1357,6 +1384,7 @@ function pxKeyUp(e) {
 function pxFit() {
   if (!pxState) return;
   var wrap = document.getElementById('pxStage');
+  var screen = document.getElementById('pxScreen');
   // Integer scaling keeps pixels perfectly square, but the integer step on a
   // phone is 1x and the game ends up postage-stamp sized. Below 2x, fill the
   // space instead - slightly uneven pixels beat unreadable ones.
@@ -1364,7 +1392,79 @@ function pxFit() {
   var scale = raw >= 2 ? Math.floor(raw) : Math.max(1, raw);
   pxState.canvas.style.width = (PXVW * scale) + 'px';
   pxState.canvas.style.height = (PXVH * scale) + 'px';
+  // One scanline per game pixel row. That only lines up on a whole-number
+  // scale - at 1.6x it moires against the art instead, so it stays off.
+  screen.style.setProperty('--px-scale', scale + 'px');
+  screen.classList.toggle('px-scan-on', scale >= 3);
 }
+
+// ── the way in and the way out ───────────────────────────────────
+// Opening used to be a hard cut, which makes the world read as a widget
+// sitting on a page. Wiping the whole screen out and back makes it read as
+// somewhere you went. The cells fall in a hash-scattered order rather than a
+// straight sweep, the way the games this is copying did their transitions.
+var PX_WIPE = 420;
+var pxWiping = false;
+
+function pxReduced() {
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function pxWipeDraw(ctx, w, h, p, cell, out) {
+  ctx.clearRect(0, 0, w, h);
+  ctx.fillStyle = '#080503';
+  var cols = Math.ceil(w / cell), rows = Math.ceil(h / cell);
+  for (var cy = 0; cy < rows; cy++) {
+    for (var cx = 0; cx < cols; cx++) {
+      var t = (cx / cols) * .42 + (cy / rows) * .22 + (pxHash(cx, cy) % 1000) / 1000 * .36;
+      if (out ? (p <= t) : (p > t)) ctx.fillRect(cx * cell, cy * cell, cell, cell);
+    }
+  }
+}
+// mid() runs against a fully black screen, halfway through.
+function pxTransition(mid) {
+  if (pxWiping) return;
+  if (pxReduced()) { mid(); return; }
+  pxWiping = true;
+  var el = document.getElementById('pxWipe');
+  el.hidden = false;
+  el.width = window.innerWidth; el.height = window.innerHeight;
+  var ctx = el.getContext('2d');
+  ctx.imageSmoothingEnabled = false;
+  var cell = Math.max(10, Math.round(Math.min(el.width, el.height) / 30));
+  var phase = 0, t0 = performance.now(), raf = 0, guard = 0;
+
+  function frame() {
+    var p = (performance.now() - t0) / PX_WIPE;
+    if (phase === 0 && p >= 1) { black(); return; }
+    if (phase === 1 && p >= 1) { done(); return; }
+    pxWipeDraw(ctx, el.width, el.height, p, cell, phase === 1);
+    raf = requestAnimationFrame(frame);
+  }
+  function black() {
+    if (phase) return;
+    phase = 1;
+    ctx.fillStyle = '#080503';
+    ctx.fillRect(0, 0, el.width, el.height);
+    clearTimeout(guard);
+    guard = setTimeout(done, PX_WIPE + 400);
+    try { mid(); } catch (err) { done(); throw err; }
+    t0 = performance.now() + 110;           // a beat of black before the reveal
+    raf = requestAnimationFrame(frame);
+  }
+  function done() {
+    if (phase === 2) return;
+    phase = 2;
+    cancelAnimationFrame(raf); clearTimeout(guard);
+    el.hidden = true;
+    pxWiping = false;
+  }
+  // requestAnimationFrame does not fire in a stalled or backgrounded
+  // compositor. Without these the screen would stick on black for good.
+  guard = setTimeout(black, PX_WIPE + 400);
+  raf = requestAnimationFrame(frame);
+}
+function pxEnter() { pxTransition(pxOpen); }
+function pxLeave() { if (pxState) pxTransition(pxClose); }
 
 function pxOpen() {
   if (pxState) return;
@@ -1377,7 +1477,7 @@ function pxOpen() {
   PX_LIFT = PX_H - PXT;
   pxState = { canvas: c, ctx: ctx, area: PX_START[0], x: PX_START[1], y: PX_START[2],
               dir: PX_START[3], moveStart: 0, fromX: PX_START[1], fromY: PX_START[2],
-              stepPhase: 0, held: [], talking: null, raf: 0, tick: 0,
+              stepPhase: 0, held: [], talking: null, raf: 0, tick: 0, fade: null,
               bannerAt: performance.now() };
   document.getElementById('pxPlace').textContent = PX_AREAS[pxState.area].name;
   pxState.tick = setInterval(pxTick, 40);
@@ -1416,9 +1516,8 @@ function renderCrew() {
   if (!w || !j) return;
   pxPaintBadge(w, 'will_down', 'will');
   pxPaintBadge(j, 'jol_down', 'jolene');
-  document.getElementById('crewBtn').addEventListener('click', pxOpen);
-  document.getElementById('pxClose').addEventListener('click', pxClose);
-  document.getElementById('pxScrim').addEventListener('click', pxClose);
+  document.getElementById('crewBtn').addEventListener('click', pxEnter);
+  document.getElementById('pxClose').addEventListener('click', pxLeave);
   document.querySelectorAll('[data-px-dir]').forEach(function(el) {
     var dir = el.dataset.pxDir, timer = 0;
     function go(e) {
