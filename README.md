@@ -43,3 +43,36 @@ Tapping the birthday tile sets `data-party="on"` on `<html>`. That swaps the
 palette tokens only — every component follows automatically. The fire in the
 bridge animation and the two portraits deliberately keep literal colours, so
 they don't turn pink along with everything else.
+
+## The pixel world
+
+Pressing the two sprites in the masthead wipes the screen out and opens a
+240x160 overworld — Game Boy Advance resolution, integer-scaled to fill the
+viewport. Thirteen areas: her apartment, campus, the drive south, Northern
+Virginia and seven shops you can walk into, plus his house and Scale AI.
+
+The maps, tiles, sprites, font and cast are all generated rather than written
+by hand. The generators live outside this repo and emit one block of data that
+gets spliced into `index.html`:
+
+- `sprites.py` — 16x22 characters as pixel rows. Six human silhouettes and a
+  dog; everyone else is one of those with a different palette.
+- `font.py` — the 4x5 font the in-world signage is lettered with.
+- `genworld.py` — tiles, maps, warps, dialogue, the cast, and each area's
+  roam mask.
+- `validate.py` — reachability and integrity checks. It fails the build for a
+  sealed-off shop, a door that isn't a door, a sign nobody can read, a
+  character with a missing facing, or two people on one screen who look too
+  alike.
+
+Two rules keep the moving characters from breaking the world. A **roam mask**
+per area lists the tiles anyone who walks is allowed to stand on — computed by
+removing each tile in turn and checking whether the map falls into two pieces,
+so doorways and corridors are excluded. On top of that, no character may take
+a step that leaves the player unable to reach an exit; that one is checked at
+the moment of the step, because two bodies can close a gap that neither closes
+alone.
+
+Every frame of a walk cycle inks exactly the same columns. When they didn't,
+the whole lower body slid sideways once per step and it read as a shake rather
+than a walk.
