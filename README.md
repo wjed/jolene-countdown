@@ -105,3 +105,23 @@ Other things those games do that this now does:
   outdoor areas from the viewer's own time of day. Indoors the lights are on.
 - **It remembers where you were**, so reopening puts you back rather than at
   the start. Never onto a doorway, or she would warp the instant it opened.
+
+### The start menu, and something to find
+
+Everything in those games hangs off one button. Enter (or the start control)
+opens a menu drawn in the world:
+
+- **The list** — the bucket list the rest of the site is about, ticked off,
+  read straight from the same `BUCKET` data the page uses.
+- **Places** — all fourteen areas, ticked as you reach them, the one you are
+  standing in picked out, and a line saying where that is. She said more than
+  once that she never knew where she was.
+- **Moments** — one thing to find in every area, picked up by walking onto it.
+- **Leave.**
+
+`genworld.py` asserts every place name fits the menu column, so a new area with
+a long name fails the build rather than running off the edge of the panel.
+
+Small feedback, from the same reference: a puff of dust under a running foot, a
+green one out of tall grass, and two pixels of nudge when you walk into a wall
+instead of nothing happening at all.

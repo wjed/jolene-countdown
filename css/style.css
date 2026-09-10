@@ -325,6 +325,17 @@ body.px-open { overflow: hidden; }
 }
 .px-dpad:hover button, .px-a:hover, .px-dpad button:focus-visible, .px-a:focus-visible { opacity: 1; }
 .px-dpad button:active, .px-a:active { background: var(--sidebar-hover); color: var(--text); opacity: 1; }
+.px-btns { display: flex; align-items: center; gap: 10px; }
+.px-start {
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--text-2); background: rgba(20,14,10,.7);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 8px 14px; min-height: 34px; cursor: pointer;
+  opacity: .42; transition: opacity .15s ease;
+}
+.px-start:hover, .px-start:focus-visible { opacity: 1; color: var(--text); }
+.px-start:active { background: var(--sidebar-hover); opacity: 1; }
 .px-a {
   width: 52px; height: 52px; border-radius: 50%;
   font-family: ui-monospace, monospace; font-size: 15px; font-weight: 700;
@@ -345,7 +356,7 @@ body.px-open { overflow: hidden; }
   .px-keys { display: none; }
   .px-stage { top: 40px; bottom: 92px; }
   .px-pad { background: linear-gradient(rgba(8,5,3,0), rgba(8,5,3,.92) 40%); }
-  .px-dpad button, .px-a { opacity: 1; }
+  .px-dpad button, .px-a, .px-start { opacity: 1; }
 }
 
 /* the screen wipe, over everything including the page behind it */
