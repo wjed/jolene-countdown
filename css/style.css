@@ -240,6 +240,7 @@ body.sheet-open { overflow: hidden; }
 body.px-open { overflow: hidden; }
 
 .px-frame { position: absolute; inset: 0; }
+.px-frame:focus { outline: none; }
 
 .px-stage {
   position: absolute; inset: 0;

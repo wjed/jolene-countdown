@@ -82,12 +82,16 @@ than a walk.
 
 ### What it borrows from the games it is copying
 
-Gen 3 splits a map across background layers and puts tall scenery on one that
-objects pass *behind*. Everything here used to draw in a single plane, so a
-sprite always won and her head sat on top of the tree she was standing under.
-`TOPT` lists the tiles that get a second pass after the sprites, and how much
-of the tile that pass covers — the whole thing for a tree, the bottom half for
-tall grass, which swallows your legs instead.
+What draws over a character is decided by the ground it is standing on. In a
+top-down view a wall or a tree one tile north of you is *behind* you, so those
+never cover anybody — an earlier version redrew every tall tile over whoever
+overlapped it, which tucked her head behind shopfronts and tree lines she was
+standing in front of. Two things do cover you, drawn straight after each sprite
+in depth order: tall grass round your legs, and a tree canopy you have walked
+into, which hides you from the shoulders down. Trees are built the way Gen 3
+builds them — a solid trunk with a walkable canopy above — so you can stand
+behind one. `TOPT` holds the band of each covering tile. Signs are scenery too,
+so they go down before the people standing under them.
 
 Other things those games do that this now does:
 
@@ -125,3 +129,23 @@ a long name fails the build rather than running off the edge of the panel.
 Small feedback, from the same reference: a puff of dust under a running foot, a
 green one out of tall grass, and two pixels of nudge when you walk into a wall
 instead of nothing happening at all.
+
+### People, and the small stuff
+
+- **Bubbles over heads**, the way Stardew does it: people look up with a `!` the
+  first time she comes near on a visit, a dog gets a heart, and finding
+  something puts a note over her own head.
+- **Everyone blinks**, each on their own rhythm, worked out from the clock and
+  their name rather than a timer per person.
+- **A dog follows in her footsteps**, like a walking Pokemon in HeartGold: each
+  step it takes the shortest route to her over ground it may stand on, and on
+  that route prefers her own footprints. It never takes a step that does not
+  bring it closer.
+- **Footprints in the sand** at Lake Anna, fading after a couple of seconds.
+- **Doors open** as she walks into them, before the screen goes dark.
+- **Sound, off unless she turns it on** in the menu: a blip per letter pitched
+  per speaker, the way EarthBound and Undertale give characters a voice, plus a
+  thud for walking into a wall and a chime for finding something.
+
+Keyboard focus sits on the game surface rather than on a button, and returns
+there after any on-screen control, so Space and Enter only ever mean the game.
