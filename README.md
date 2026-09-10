@@ -57,7 +57,10 @@ gets spliced into `index.html`:
 
 - `sprites.py` — 16x22 characters as pixel rows. Six human silhouettes and a
   dog; everyone else is one of those with a different palette.
-- `font.py` — the 4x5 font the in-world signage is lettered with.
+- `font.py` — the 4x5 capitals the in-world signage is lettered with.
+- `font2.py` — a 5x9 proportional face with real lower case and descenders,
+  for the speech box. Each glyph is trimmed to its own ink, so an `i` does not
+  take the same room as an `M`.
 - `genworld.py` — tiles, maps, warps, dialogue, the cast, and each area's
   roam mask.
 - `validate.py` — reachability and integrity checks. It fails the build for a
@@ -76,3 +79,29 @@ alone.
 Every frame of a walk cycle inks exactly the same columns. When they didn't,
 the whole lower body slid sideways once per step and it read as a shake rather
 than a walk.
+
+### What it borrows from the games it is copying
+
+Gen 3 splits a map across background layers and puts tall scenery on one that
+objects pass *behind*. Everything here used to draw in a single plane, so a
+sprite always won and her head sat on top of the tree she was standing under.
+`TOPT` lists the tiles that get a second pass after the sprites, and how much
+of the tile that pass covers — the whole thing for a tree, the bottom half for
+tall grass, which swallows your legs instead.
+
+Other things those games do that this now does:
+
+- **Speech is drawn in the world**, in the game's own font, a character at a
+  time, with the blinking arrow that means press A. It used to be an HTML
+  paragraph laid over the canvas — wrong typeface, wrong pixel grid, no
+  reveal.
+- **You turn before you walk.** Emerald walks at 16 frames a tile and spends 8
+  turning on the spot first. That delay is most of why those games feel
+  deliberate rather than slippery. Hold shift to run.
+- **Water and flowers move.** A static surface is the loudest tell that a
+  scene is a picture rather than a place.
+- **Ledges** you drop off and cannot climb back up.
+- **The sky follows the clock** — dawn, golden hour, dusk and night tint the
+  outdoor areas from the viewer's own time of day. Indoors the lights are on.
+- **It remembers where you were**, so reopening puts you back rather than at
+  the start. Never onto a doorway, or she would warp the instant it opened.

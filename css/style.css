@@ -263,18 +263,13 @@ body.px-open { overflow: hidden; }
     rgba(0,0,0,.13) 0 1px, rgba(0,0,0,0) 1px var(--px-scale, 4px));
 }
 
-/* the text box sits over the bottom of the screen, like the games it copies */
+/* The speech box is drawn inside the canvas in the game's own font. This
+   element still carries the words for a screen reader, out of sight. */
 .px-talk {
-  position: absolute; left: 50%; bottom: 5%; transform: translateX(-50%);
-  width: 90%; margin: 0; box-sizing: border-box;
-  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  font-size: clamp(11px, 1.35vw, 15px); line-height: 1.5; color: #241a14;
-  background: #f4ecd8; border: 3px solid #241a14; border-radius: 3px;
-  box-shadow: 0 0 0 3px #f4ecd8, 4px 4px 0 3px rgba(0,0,0,.4);
-  padding: 10px 13px;
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
 }
 .px-talk[hidden] { display: none; }
-.px-talk::after { content: '\25BC'; position: absolute; right: 9px; bottom: 5px; font-size: 9px; }
 
 /* ── the HUD, floating over the letterbox ───────────────────────── */
 .px-bar {
