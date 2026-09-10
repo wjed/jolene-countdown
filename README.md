@@ -127,8 +127,7 @@ opens a menu drawn in the world:
 a long name fails the build rather than running off the edge of the panel.
 
 Small feedback, from the same reference: a puff of dust under a running foot, a
-green one out of tall grass, and two pixels of nudge when you walk into a wall
-instead of nothing happening at all.
+green one out of tall grass, and walking on the spot, with a thud if sound is on, when you walk into a wall.
 
 ### People, and the small stuff
 
@@ -149,3 +148,16 @@ instead of nothing happening at all.
 
 Keyboard focus sits on the game surface rather than on a button, and returns
 there after any on-screen control, so Space and Enter only ever mean the game.
+
+### Movement
+
+Steps chain: the next one starts on the exact frame the last one ends, because
+the render loop runs the same step check as the 40ms logic tick. With the tick
+alone, ordinary browser timer jitter left a small freeze before almost every
+step. Turning a corner while walking carries straight on — the turn-in-place
+pause only applies from standing still. The walk cycle is step, stand, other
+step, stand, the pattern sprite RPGs use; holding one stepping pose for a whole
+tile read as legs shaking. Pressing into a wall walks on the spot. A or start
+pressed mid-step waits until she stops, arriving at a tile always runs its
+checks before the next step can begin, and leaving the window lets go of every
+key. Characters who pace walk their whole beat and pause at the ends.
