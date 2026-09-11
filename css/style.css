@@ -1106,3 +1106,9 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   button.tile:hover { transform: none; }
   .t-photo img { transition: none; }
 }
+
+/* On a phone the sheet is anchored to the bottom of the screen, so it rises from
+   there. It used to reuse the desktop drawer's slide in from the right. The
+   reduced-motion rule cancels this with !important, the same as before. */
+@keyframes sheetUp { from { transform: translateY(26px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@media (max-width: 560px) { .sheet { animation-name: sheetUp; } }

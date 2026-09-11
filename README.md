@@ -23,7 +23,7 @@ object near the top of the `<script>` in `index.html`:
 - `JOLENE` / `JOLENE_LINES` — the facts, and the rotating one on her tile
 - `BUCKET` — the bucket list. Add `done: 'where it happened'` to an entry and
   it moves to the Done section; the count, the bar and the tile all follow
-- `NEXT_VISIT`, `ANNIV_*`, `BDAY_*` — the dates every counter derives from
+- `NEXT_VISIT`, `NEXT_VISIT_DAYS` (how long the tile says it's here), `ANNIV_*`, `BDAY_*` — the dates every counter derives from
 
 ## Photos
 

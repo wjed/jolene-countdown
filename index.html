@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317110c'/%3E%3Cpath d='M32 52S10 39 10 24a11 11 0 0 1 22-4 11 11 0 0 1 22 4c0 15-22 28-22 28z' fill='%23e58150'/%3E%3C/svg%3E">
 </head>
 <body>
 
@@ -213,11 +214,24 @@ try {
     'so i made you this',
     'everything about us, right here.',
   ];
-  var CHAR_MS = 40, LINE_PAUSE = 300, lineIdx = 0, activeEl = null;
+  var CHAR_MS = 40, LINE_PAUSE = 300, lineIdx = 0, activeEl = null, ended = false;
+  // About five and a half seconds of typing: lovely the first time, a wall on
+  // every load after. A tap, a click or any key goes straight to the fade.
+  function onKey() { end(0); }
+  function end(delay) {
+    if (ended) return;
+    ended = true;
+    document.removeEventListener('keydown', onKey);
+    wTimeout(function() {
+      intro.classList.add('fade-out');
+      wTimeout(function() { if (intro.parentNode) intro.remove(); }, 800);
+    }, delay);
+  }
   function nextLine() {
+    if (ended) return;
     if (lineIdx >= lines.length) {
       if (activeEl) activeEl.classList.add('done');
-      wTimeout(function() { intro.classList.add('fade-out'); wTimeout(function() { intro.remove(); }, 800); }, 700);
+      end(700);
       return;
     }
     if (activeEl) activeEl.classList.add('done');
@@ -227,17 +241,23 @@ try {
     activeEl = span;
     var text = lines[lineIdx++], i = 0;
     function typeChar() {
+      if (ended) return;
       if (i < text.length) { span.textContent += text[i++]; wTimeout(typeChar, CHAR_MS); }
       else { wTimeout(nextLine, LINE_PAUSE); }
     }
     typeChar();
   }
+  intro.addEventListener('click', function() { end(0); });
+  document.addEventListener('keydown', onKey);
   nextLine();
 })();
 
 // ── COUNTDOWN ─────────────────────────────────────────────────────
 
 var NEXT_VISIT = new Date('2026-09-18T22:00:00Z'); // Sep 18, 6pm EDT (UTC-4)
+// How long a visit lasts. For this many days after NEXT_VISIT the tile says
+// it's here; after that it stops saying so and waits for the next date.
+var NEXT_VISIT_DAYS = 3;
 var NEXT_VISIT_LABEL = 'September 18, 2026 · 6pm';
 function getCountdownParts() {
   var diff = NEXT_VISIT - Date.now();
@@ -433,8 +453,18 @@ function getWillNow() {
   function between(sh, sm, eh, em) { return t >= sh*60+sm && t < eh*60+em; }
   function fmt(sh, sm) { var a = sh<12?'am':'pm', h12=sh%12||12; return sm===0?h12+a:h12+':'+(sm<10?'0'+sm:sm)+a; }
   var days = ['sunday','monday','tuesday','wednesday','thursday','friday','saturday'];
+  var weekend = day === 0 || day === 6;
+  // Asleep from 9pm, until 4am before the gym and 8am at the weekend. The alarm
+  // line belongs only to a night before a weekday: it used to be told on Friday
+  // night, and the weekend said "coursework" at three in the morning.
+  if (t >= 21 * 60 || t < (weekend ? 8 : 4) * 60) {
+    var morning = t >= 21 * 60 ? (day + 1) % 7 : day;
+    return (morning >= 1 && morning <= 5)
+      ? 'he\'s asleep. the alarm goes off at 4am for the gym.'
+      : 'he\'s asleep.';
+  }
   // weekends go to the master's coursework
-  if (day === 0 || day === 6) {
+  if (weekend) {
     return 'it\'s '+days[day]+', so no scale ai - he\'s on coursework for the georgia tech master\'s.';
   }
   // Weekday blocks covering all 24 hours. Sleep wraps past midnight, so it sits
@@ -981,6 +1011,16 @@ function sheetHTML(key) {
   }).join('');
 }
 
+// While a sheet or the pixel world is open, the page behind it stops taking
+// focus - otherwise Tab walks straight out of the overlay onto tiles hidden
+// underneath it. The sheet and the world sit outside .page, so they are not
+// affected.
+function setPageInert(on) {
+  var page = document.querySelector('.page');
+  if (!page) return;
+  if (on) page.setAttribute('inert', ''); else page.removeAttribute('inert');
+}
+
 function openSheet(key) {
   var cfg = SHEETS[key];
   if (!cfg) return;
@@ -991,6 +1031,7 @@ function openSheet(key) {
   var sheet = document.getElementById('sheet'), scrim = document.getElementById('sheetScrim');
   scrim.hidden = false; sheet.hidden = false;
   document.body.classList.add('sheet-open');
+  setPageInert(true);
   document.getElementById('sheetClose').focus();
   // let the markup land before kicking the animation off
   if (cfg.bridge) setTimeout(startBridge, 40);
@@ -1002,6 +1043,7 @@ function closeSheet() {
   // openSheet rebuilds the body every time, so dropping it here is free and
   // stops the bridge's looping animations and the photo grid from lingering
   document.getElementById('sheetBody').innerHTML = '';
+  setPageInert(false);
   if (lastFocused && lastFocused.focus) lastFocused.focus();
 }
 
@@ -2438,6 +2480,7 @@ function pxOpen() {
   document.addEventListener('keyup', pxKeyUp);
   window.addEventListener('resize', pxFit);
   window.addEventListener('blur', pxLetGo);
+  if (typeof setPageInert === 'function') setPageInert(true);
   document.addEventListener('visibilitychange', pxLetGo);
   pxFocus();
   pxRender();
@@ -2456,6 +2499,7 @@ function pxClose() {
   document.getElementById('pxTalk').hidden = true;
   document.getElementById('pxWorld').hidden = true;
   document.body.classList.remove('px-open');
+  if (typeof setPageInert === 'function') setPageInert(false);
   var t = document.getElementById('crewBtn');
   if (t) t.focus();
 }
@@ -2505,7 +2549,16 @@ function renderVisitTile() {
   function tick() {
     var p = getCountdownParts();
     var row = document.getElementById('visitCd');
-    if (!p) { row.innerHTML = '<span class="cd-passed">it&#39;s here</span>'; return; }
+    if (!p) {
+      // "it's here" is right for the visit itself. A month later, next to a
+      // date that has gone, it was simply wrong - and it never changed back.
+      var over = Date.now() - NEXT_VISIT > NEXT_VISIT_DAYS * 86400000;
+      row.innerHTML = over ? '<span class="cd-passed">see you soon</span>'
+                           : '<span class="cd-passed">it&#39;s here</span>';
+      document.getElementById('visitDate').textContent =
+        over ? 'last visit: ' + NEXT_VISIT_DATE_LABEL : NEXT_VISIT_DATE_LABEL;
+      return;
+    }
     var d = document.getElementById('v-d'); if (!d) return;
     d.textContent = p.d;
     document.getElementById('v-h').textContent = pad(p.h);
