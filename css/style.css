@@ -112,7 +112,6 @@
   border: none; border-radius: 20px; padding: 5px 13px;
   cursor: pointer; touch-action: manipulation;
 }
-.party-bar-off:hover { background: var(--accent-hover); }
 [data-party="on"] .party-bar::after,
 [data-party="on"] .t-bday::before {
   content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
@@ -212,7 +211,7 @@ body.sheet-open { overflow: hidden; }
   cursor: pointer; position: relative;
   transition: border-color .15s ease, background .15s ease;
 }
-.crew:hover, .crew:focus-visible { border-color: var(--tone-1); background: var(--sidebar-bg); }
+.crew:focus-visible { border-color: var(--tone-1); background: var(--sidebar-bg); }
 .crew-px {
   display: block; width: 48px; height: 66px;
   image-rendering: pixelated; image-rendering: crisp-edges;
@@ -227,7 +226,7 @@ body.sheet-open { overflow: hidden; }
   font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase;
   color: var(--text-3); text-align: center;
 }
-.crew:hover .crew-hint, .crew:focus-visible .crew-hint { color: var(--tone-1); }
+.crew:focus-visible .crew-hint { color: var(--tone-1); }
 
 /* ── THE OVERWORLD ───────────────────────────────────────────────── */
 /* The game takes the whole screen. It used to sit in a padded frame with the
@@ -235,7 +234,13 @@ body.sheet-open { overflow: hidden; }
    and made it read as a panel on a page rather than somewhere you went. The
    chrome is now overlaid on the letterbox, so the canvas gets the whole
    viewport to scale into - a 1280x860 window goes from 4x to 5x. */
-.px-world { position: fixed; inset: 0; z-index: 900; background: #080503; }
+.px-world {
+  position: fixed; inset: 0; z-index: 900; background: #080503;
+  /* a game, not a page: no panning or zooming the page behind it, and no text
+     selection, callout or grey flash from a long press or a tap */
+  touch-action: none; -webkit-user-select: none; user-select: none;
+  -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent;
+}
 .px-world[hidden] { display: none; }
 body.px-open { overflow: hidden; }
 
@@ -273,10 +278,14 @@ body.px-open { overflow: hidden; }
 .px-talk[hidden] { display: none; }
 
 /* ── the HUD, floating over the letterbox ───────────────────────── */
+/* The page asks for the whole screen (viewport-fit=cover), so the edges that
+   carry controls keep themselves clear of a notch, a status bar and the home
+   indicator. */
 .px-bar {
   position: absolute; top: 0; left: 0; right: 0; z-index: 2;
   display: flex; align-items: center; gap: 14px;
-  padding: 11px 16px;
+  padding: calc(11px + env(safe-area-inset-top)) calc(16px + env(safe-area-inset-right))
+           11px calc(16px + env(safe-area-inset-left));
   background: linear-gradient(rgba(8,5,3,.92), rgba(8,5,3,0));
   pointer-events: none;
 }
@@ -291,6 +300,7 @@ body.px-open { overflow: hidden; }
   font-size: 13px; letter-spacing: .1em; color: var(--tone-1);
   text-shadow: 0 1px 0 #080503;
   flex: 1 1 auto; text-align: center;
+  min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .px-close {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
@@ -298,66 +308,140 @@ body.px-open { overflow: hidden; }
   color: var(--text-2); background: rgba(20,14,10,.7);
   border: 1px solid var(--border); border-radius: 6px;
   padding: 6px 12px; min-height: 34px; cursor: pointer; flex: none;
+  touch-action: manipulation;
 }
-.px-close:hover { color: var(--text); border-color: var(--tone-1); }
+/* "esc" means something beside a keyboard and nothing on a phone */
+.px-on-touch { display: none; }
 
+/* ── the controls ─────────────────────────────────────────────────
+   On a keyboard machine they sit faded along the bottom, more a hint than a
+   control. Touch screens and small windows give them room of their own, below. */
 .px-pad {
   position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding: 12px 16px 14px;
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px calc(16px + env(safe-area-inset-right))
+           calc(14px + env(safe-area-inset-bottom)) calc(16px + env(safe-area-inset-left));
   pointer-events: none;
 }
 .px-pad > * { pointer-events: auto; }
 .px-dpad {
-  display: grid; grid-template-columns: repeat(3, 34px); grid-template-rows: repeat(2, 34px);
-  gap: 3px;
+  --dp: 34px;
+  display: grid; gap: 3px; flex: none;
+  grid-template-columns: repeat(3, var(--dp)); grid-template-rows: repeat(2, var(--dp));
+  touch-action: none;
 }
-.px-dpad button:nth-child(1) { grid-area: 1 / 2; }
-.px-dpad button:nth-child(2) { grid-area: 2 / 1; }
-.px-dpad button:nth-child(3) { grid-area: 2 / 2; }
-.px-dpad button:nth-child(4) { grid-area: 2 / 3; }
-.px-dpad button, .px-a {
-  font-size: 12px; color: var(--text-2);
-  background: rgba(20,14,10,.7); border: 1px solid var(--border);
-  border-radius: 7px; cursor: pointer; touch-action: none; user-select: none;
+.px-dpad [data-px-dir="up"]    { grid-area: 1 / 2; }
+.px-dpad [data-px-dir="left"]  { grid-area: 2 / 1; }
+.px-dpad [data-px-dir="down"]  { grid-area: 2 / 2; }
+.px-dpad [data-px-dir="right"] { grid-area: 2 / 3; }
+.px-dpad button, .px-a, .px-b, .px-start {
+  color: var(--text-2); background: rgba(20,14,10,.7); border: 1px solid var(--border);
+  cursor: pointer; touch-action: none; -webkit-user-select: none; user-select: none;
   /* faded on a keyboard machine, where they are only a hint; full strength
      the moment a hand goes near them */
-  opacity: .42; transition: opacity .15s ease;
+  opacity: .42; transition: opacity .15s ease, transform .06s ease;
 }
-.px-dpad:hover button, .px-a:hover, .px-dpad button:focus-visible, .px-a:focus-visible { opacity: 1; }
-.px-dpad button:active, .px-a:active { background: var(--sidebar-hover); color: var(--text); opacity: 1; }
-.px-btns { display: flex; align-items: center; gap: 10px; }
+.px-dpad button { font-size: 12px; border-radius: 7px; }
+.px-dpad button:focus-visible, .px-a:focus-visible, .px-b:focus-visible, .px-start:focus-visible { opacity: 1; }
+@media (hover: hover) {
+  .px-dpad:hover button, .px-a:hover, .px-b:hover, .px-start:hover { opacity: 1; }
+  .px-start:hover, .px-close:hover { color: var(--text); }
+  .px-close:hover { border-color: var(--tone-1); }
+}
+/* Pressed. The handlers set .is-down, because a press whose default has been
+   cancelled never shows :active on a touch screen. */
+.px-dpad button.is-down, .px-b.is-down, .px-start.is-down,
+.px-dpad button:active, .px-b:active, .px-start:active {
+  background: var(--sidebar-hover); color: var(--text); opacity: 1;
+}
+.px-a.is-down, .px-a:active { opacity: 1; filter: brightness(1.15); }
+.px-a.is-down, .px-b.is-down, .px-start.is-down { transform: scale(.94); }
+.px-btns { display: flex; align-items: center; gap: 10px; flex: none; }
 .px-start {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--text-2); background: rgba(20,14,10,.7);
-  border: 1px solid var(--border); border-radius: 14px;
-  padding: 8px 14px; min-height: 34px; cursor: pointer;
-  opacity: .42; transition: opacity .15s ease;
+  border-radius: 14px; padding: 8px 14px; min-height: 34px; flex: none;
 }
-.px-start:hover, .px-start:focus-visible { opacity: 1; color: var(--text); }
-.px-start:active { background: var(--sidebar-hover); opacity: 1; }
+.px-a, .px-b { border-radius: 50%; font-family: ui-monospace, monospace; font-weight: 700; }
 .px-a {
-  width: 52px; height: 52px; border-radius: 50%;
-  font-family: ui-monospace, monospace; font-size: 15px; font-weight: 700;
+  width: 52px; height: 52px; font-size: 15px;
   color: var(--on-accent); background: var(--tone-1); border-color: transparent;
 }
+.px-b { width: 40px; height: 40px; font-size: 13px; }
 .px-keys {
   font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
   font-size: 10px; letter-spacing: .06em; color: var(--text-3); margin: 0;
   text-shadow: 0 1px 0 #080503;
+  flex: 1 1 auto; text-align: center;
 }
 .px-keys b {
   font-weight: 700; color: var(--tone-1); letter-spacing: .1em;
 }
 
-/* On a phone the controls get their own band under the screen, because a
-   translucent pad over a 375px-wide game covers half the map. */
-@media (max-width: 700px), (max-height: 560px) {
+/* ── touch screens and small windows ──────────────────────────────
+   A translucent pad over a phone-sized game covers half the map, so the
+   controls get room of their own here, sized for thumbs. The old 34px arrows
+   sat on the very bottom edge - on an iPhone, the strip that swipes home. */
+@media (max-width: 700px), (max-height: 560px), (hover: none) and (pointer: coarse) {
   .px-keys { display: none; }
-  .px-stage { top: 40px; bottom: 92px; }
-  .px-pad { background: linear-gradient(rgba(8,5,3,0), rgba(8,5,3,.92) 40%); }
-  .px-dpad button, .px-a, .px-start { opacity: 1; }
+  .px-dpad button, .px-a, .px-b, .px-start { opacity: 1; }
+  .px-on-keys { display: none; }
+  .px-on-touch { display: inline; }
+  .px-close { min-height: 40px; padding: 6px 14px; position: relative; }
+  /* a finger-sized target without making the bar taller: the hit area reaches
+     past the button's edge */
+  .px-close::after { content: ''; position: absolute; inset: -6px; }
+  .px-pad { display: grid; grid-template-columns: auto 1fr auto; grid-template-rows: 1fr auto; align-items: center; }
+  /* a cross rather than the keyboard's inverted T: a thumb finds it by feel */
+  .px-dpad { gap: 2px; grid-template-rows: repeat(3, var(--dp)); }
+  .px-dpad [data-px-dir="down"] { grid-area: 3 / 2; }
+  .px-dpad button { font-size: 15px; border-radius: 10px; }
+  .px-btns { display: grid; grid-template-columns: auto auto; column-gap: 8px; align-items: start; }
+  .px-b { grid-area: 2 / 1; }
+  .px-a { grid-area: 1 / 2; }
+  .px-start { min-height: 40px; padding: 0 18px; font-size: 11px; }
+}
+/* upright: the screen above, the controls below, the way a handheld is laid out */
+@media (orientation: portrait) and (max-width: 700px), (orientation: portrait) and (max-height: 560px),
+       (orientation: portrait) and (hover: none) and (pointer: coarse) {
+  .px-stage { top: calc(56px + env(safe-area-inset-top)); bottom: calc(240px + env(safe-area-inset-bottom)); }
+  .px-pad {
+    height: calc(240px + env(safe-area-inset-bottom)); row-gap: 6px;
+    padding: 8px calc(18px + env(safe-area-inset-right))
+             calc(16px + env(safe-area-inset-bottom)) calc(18px + env(safe-area-inset-left));
+  }
+  .px-dpad { --dp: clamp(44px, 13.5vw, 54px); grid-column: 1; grid-row: 1; }
+  .px-btns { grid-column: 3; grid-row: 1; }
+  .px-a { width: 68px; height: 68px; font-size: 18px; }
+  .px-b { width: 56px; height: 56px; font-size: 16px; margin-top: -16px; }
+  .px-start { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+}
+/* sideways: the screen in the middle, a thumb either side of it */
+@media (orientation: landscape) and (max-width: 700px), (orientation: landscape) and (max-height: 560px),
+       (orientation: landscape) and (hover: none) and (pointer: coarse) {
+  .px-bar { padding-top: calc(6px + env(safe-area-inset-top)); padding-bottom: 6px; }
+  .px-close { min-height: 34px; }
+  .px-stage {
+    top: calc(46px + env(safe-area-inset-top)); bottom: calc(8px + env(safe-area-inset-bottom));
+    left: calc(150px + env(safe-area-inset-left)); right: calc(150px + env(safe-area-inset-right));
+  }
+  .px-pad {
+    top: calc(46px + env(safe-area-inset-top)); row-gap: 10px;
+    padding: 0 calc(14px + env(safe-area-inset-right))
+             calc(12px + env(safe-area-inset-bottom)) calc(14px + env(safe-area-inset-left));
+  }
+  .px-dpad { --dp: 42px; grid-column: 1; grid-row: 1 / 3; }
+  .px-btns { grid-column: 3; grid-row: 1; }
+  .px-a { width: 58px; height: 58px; font-size: 16px; }
+  .px-b { width: 48px; height: 48px; font-size: 14px; margin-top: -12px; }
+  .px-start { grid-column: 3; grid-row: 2; justify-self: center; }
+}
+
+/* On a narrow screen the place name needs the room more than the title does:
+   six of the names wrapped onto a second line at 320px. */
+@media (max-width: 480px) {
+  .px-title { display: none; }
+  .px-place { text-align: left; }
 }
 
 /* the screen wipe, over everything including the page behind it */
@@ -381,7 +465,6 @@ body.px-open { overflow: hidden; }
   color: var(--text-2); border-radius: 50%; cursor: pointer;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-.icon-btn:hover { background: var(--card-hover); color: var(--text); border-color: var(--tone-4); }
 /* ── BENTO GRID ─────────────────────────────────────────────────── */
 /* Explicit row height. Without it the photo's natural portrait aspect ratio
    sets the row size and every neighbouring tile stretches to match it. */
@@ -427,7 +510,6 @@ button.tile {
   cursor: pointer; touch-action: manipulation;
   transition: transform .14s ease, border-color .14s, background .14s;
 }
-button.tile:hover { transform: translateY(-2px); background: var(--card-hover); border-color: var(--tone-4); }
 button.tile:active { transform: translateY(0); }
 .tile-label {
   font-size: 10.5px; font-weight: 600;
@@ -595,6 +677,7 @@ button.tile:active { transform: translateY(0); }
 .sheet[hidden], .sheet-scrim[hidden] { display: none; }
 .sheet-scrim {
   position: fixed; inset: 0; background: var(--overlay); z-index: 600;
+  touch-action: none;
   animation: scrimIn .22s ease both;
 }
 @keyframes scrimIn { from { opacity: 0; } to { opacity: 1; } }
@@ -616,10 +699,13 @@ button.tile:active { transform: translateY(0); }
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
   padding: 15px 18px; flex-shrink: 0;
   border-bottom: 1px solid var(--border);
+  touch-action: none;
 }
 .sheet-title { font-family: 'Lora', Georgia, serif; font-size: 19px; font-weight: 600; color: var(--text); }
 .sheet-body { flex: 1 1 auto; min-height: 0; overflow-y: auto;
-  -webkit-overflow-scrolling: touch; padding: 18px 18px 40px; }
+  -webkit-overflow-scrolling: touch; padding: 18px 18px 40px;
+  /* reaching the end of a sheet does not carry on into scrolling the page behind */
+  overscroll-behavior: contain; }
 .sheet-h {
   font-size: 11px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase;
   color: var(--tone-1); margin: 24px 0 8px;
@@ -941,7 +1027,6 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   box-shadow: 0 3px 14px rgba(239,122,42,.3);
   transition: transform .16s ease, box-shadow .16s ease;
 }
-.bridge-again:hover  { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,122,42,.42); }
 .bridge-again:active { transform: translateY(0); }
 .ba-icon { width: 10px; height: 13px; fill: #2a1408; flex: none; }
 /* note list inside the notes sheet */
@@ -1080,6 +1165,9 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .t-link { min-height: 96px; }
   .cdrow { gap: 14px; }
   .cdcell b { font-size: 29px; }
+  /* the anniversary line takes its own line under the count, left-aligned,
+     rather than wrapping to a lone right-aligned line */
+  .tog-next { flex-basis: 100%; margin-left: 0; }
   .sheet { top: 6vh; left: 0; right: 0; width: 100%;
            border-left: none; border-top: 1px solid var(--border);
            border-radius: 18px 18px 0 0; }
@@ -1087,6 +1175,17 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .party-bar-off { min-height: 44px; padding: 0 18px; font-size: 13px; }
   .bridge-again  { min-height: 44px; padding: 0 22px; font-size: 13px; }
   .photo-grid { grid-template-columns: repeat(2, 1fr); }
+}
+/* Hover styles only where a pointer hovers. On a touch screen a tap leaves
+   :hover on whatever was tapped until something else is touched, so a tile
+   would stay lifted and gold-edged after its sheet had closed. */
+@media (hover: hover) {
+  .crew:hover { border-color: var(--tone-1); background: var(--sidebar-bg); }
+  .crew:hover .crew-hint { color: var(--tone-1); }
+  .icon-btn:hover { background: var(--card-hover); color: var(--text); border-color: var(--tone-4); }
+  button.tile:hover { transform: translateY(-2px); background: var(--card-hover); border-color: var(--tone-4); }
+  .party-bar-off:hover { background: var(--accent-hover); }
+  .bridge-again:hover  { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,122,42,.42); }
 }
 /* Motion is decoration only - drop it all when asked, keep every colour. */
 @media (prefers-reduced-motion: reduce) {

@@ -63,8 +63,8 @@
 
     <!-- PHOTO -->
     <button class="tile t-photo" data-sheet="photos" aria-label="Open all photos">
-      <img id="photoImg" alt="Will and Jolene">
-      <img id="photoImgB" alt="" aria-hidden="true">
+      <img id="photoImg" alt="Will and Jolene" decoding="async">
+      <img id="photoImgB" alt="" aria-hidden="true" decoding="async">
       <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
     </button>
 
@@ -173,7 +173,7 @@
     <div class="px-bar">
       <span class="px-title">will + jolene</span>
       <span class="px-place" id="pxPlace"></span>
-      <button class="px-close" id="pxClose" type="button">esc</button>
+      <button class="px-close" id="pxClose" type="button"><span class="px-on-keys">esc</span><span class="px-on-touch">exit</span></button>
     </div>
     <div class="px-pad">
       <div class="px-dpad">
@@ -183,8 +183,9 @@
         <button type="button" data-px-dir="right" aria-label="Right">&#9654;</button>
       </div>
       <p class="px-keys"><b>walk</b> arrows / wasd &nbsp; <b>run</b> shift &nbsp; <b>talk</b> space &nbsp; <b>menu</b> enter &nbsp; <b>leave</b> esc</p>
+      <button class="px-start" id="pxStart" type="button" aria-label="Menu">start</button>
       <div class="px-btns">
-        <button class="px-start" id="pxStart" type="button" aria-label="Menu">start</button>
+        <button class="px-b" id="pxB" type="button" aria-label="Back, or hold to run">B</button>
         <button class="px-a" id="pxA" type="button" aria-label="Talk">A</button>
       </div>
     </div>
@@ -993,7 +994,7 @@ function sheetHTML(key) {
   if (cfg.bucket) return bucketSheetHTML();
   if (cfg.photos) {
     return '<div class="photo-grid">' + photoList().map(function(src) {
-      return '<figure class="pg-item"><img src="'+src+'" alt="Will and Jolene" loading="lazy" '+
+      return '<figure class="pg-item"><img src="'+src+'" alt="Will and Jolene" loading="lazy" decoding="async" '+
              'onerror="this.parentElement.style.display=\'none\'"></figure>';
     }).join('') + '</div>';
   }
@@ -1499,6 +1500,18 @@ function pxTone(freq, ms, type, vol) {
     o.start(t); o.stop(t + ms / 1000 + 0.02);
     return true;
   } catch (e) { return false; }
+}
+// iOS lets an AudioContext start only inside a touch that ends, or a click. The
+// first sound is usually a letter blip on the logic timer, which is neither, so
+// with sound saved as on an iPhone would stay silent. The tap that opens the
+// world, and every release of an on-screen control, wakes it.
+function pxWakeAudio() {
+  var on = pxState ? pxState.sound : pxLoadSound();
+  if (!on) return;
+  try {
+    if (!pxAudio) pxAudio = new (window.AudioContext || window.webkitAudioContext)();
+    if (pxAudio.state === 'suspended') pxAudio.resume();
+  } catch (e) {}
 }
 function pxVoicePitch(voice) {
   if (!voice || voice === 'narrator') return 330;
@@ -2107,6 +2120,21 @@ function pxAdvance() {
   pxShowLine();
 }
 
+// B backs out one level, as it does in those games: a page of the menu to the
+// menu, the menu to the world, and a line of speech along, like A. When there
+// is nothing to back out of, holding it runs.
+function pxBack() {
+  var s = pxState;
+  if (!s || s.fade) return false;
+  if (s.menu) {
+    if (s.menu.page >= 0) { s.menu.page = -1; s.menu.scroll = 0; }
+    else s.menu = null;
+    return true;
+  }
+  if (s.talking) { pxAdvance(); return true; }
+  return false;
+}
+
 // ── open / close ─────────────────────────────────────────────────
 var PX_DIRKEY = {
   ArrowUp: 'up', ArrowDown: 'down', ArrowLeft: 'left', ArrowRight: 'right',
@@ -2116,6 +2144,9 @@ var PX_DIRKEY = {
 function pxKeyDown(e) {
   var s = pxState;
   if (!s) return;
+  // Ctrl, Cmd and Alt belong to the browser. Ctrl+D and Cmd+A were cancelled and
+  // moved her, and Alt+Enter opened the menu.
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
   if (e.key === 'Escape') {              // out of the menu first, then the world
     if (s.menu) { s.menu = null; return; }
     pxLeave(); return;
@@ -2123,7 +2154,11 @@ function pxKeyDown(e) {
   if (e.key === 'Enter' || e.key === 'm' || e.key === 'M') {
     e.preventDefault(); pxStart(); return;
   }
-  if (e.key === 'Shift' || e.key === 'b' || e.key === 'B') { s.run = true; return; }
+  if (e.key === 'Shift') { s.run = true; return; }
+  if (e.key === 'b' || e.key === 'B') {        // back out, as the B button does; held, run
+    if (e.repeat || !pxBack()) s.run = true;
+    return;
+  }
   if (e.key === ' ' || e.key === 'e' || e.key === 'E') {
     e.preventDefault(); pxInteract(); return;
   }
@@ -2445,12 +2480,13 @@ function pxFocus() {
 // walked on by herself indefinitely - seven tiles in a second and a half, and
 // no end to it. Losing focus, or the tab going hidden, lets go of everything.
 function pxLetGo() {
+  pxControlsLetGo();
   var s = pxState;
   if (!s) return;
   s.held = []; s.run = false;
 }
 
-function pxEnter() { pxTransition(pxOpen); }
+function pxEnter() { pxWakeAudio(); pxTransition(pxOpen); }
 function pxLeave() { if (pxState) pxTransition(pxClose); }
 
 function pxOpen() {
@@ -2490,6 +2526,7 @@ function pxClose() {
   pxRemember();
   cancelAnimationFrame(pxState.raf);
   clearInterval(pxState.tick);
+  pxControlsLetGo();
   document.removeEventListener('keydown', pxKeyDown);
   document.removeEventListener('keyup', pxKeyUp);
   window.removeEventListener('resize', pxFit);
@@ -2502,6 +2539,90 @@ function pxClose() {
   if (typeof setPageInert === 'function') setPageInert(false);
   var t = document.getElementById('crewBtn');
   if (t) t.focus();
+}
+
+// ── the on-screen controls ───────────────────────────────────────
+// The d-pad is one surface, the way a thumb uses one: press anywhere on it and
+// roll onto another arrow without lifting. It was four buttons with a handler
+// each, and a touch belongs to the element it started on, so rolling from right
+// to up kept her walking right until the thumb came off the glass.
+var pxPad = { dir: null, id: null, timer: 0 };
+function pxMarkDown(el, on) { if (el) el.classList.toggle('is-down', !!on); }
+function pxPadDirAt(x, y) {
+  var pad = document.querySelector('.px-dpad');
+  if (!pad) return null;
+  var hit = document.elementFromPoint(x, y);
+  var b = hit && hit.closest ? hit.closest('[data-px-dir]') : null;
+  if (b && pad.contains(b)) return b.getAttribute('data-px-dir');
+  // Off the arrows - a gap, a corner, or slid off the pad: whichever way the
+  // thumb is further from the middle. The middle itself keeps what it had.
+  var r = pad.getBoundingClientRect();
+  var dx = x - (r.left + r.width / 2), dy = y - (r.top + r.height / 2);
+  if (Math.abs(dx) < r.width / 6 && Math.abs(dy) < r.height / 6) return pxPad.dir;
+  return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+}
+function pxPadSet(d) {
+  if (d === pxPad.dir) return;
+  var s = pxState, pad = document.querySelector('.px-dpad');
+  clearTimeout(pxPad.timer);
+  if (pxPad.dir) {
+    pxMarkDown(pad && pad.querySelector('[data-px-dir="' + pxPad.dir + '"]'), false);
+    if (s) { var i = s.held.indexOf(pxPad.dir); if (i > -1) s.held.splice(i, 1); }
+  }
+  pxPad.dir = d;
+  if (!d) return;
+  pxMarkDown(pad && pad.querySelector('[data-px-dir="' + d + '"]'), true);
+  if (s && s.held.indexOf(d) === -1) s.held.push(d);
+  pxPress(d);
+  // What a held arrow key's auto-repeat does: after a moment, keep pressing.
+  // That scrolls a menu along, and takes the way up again once a menu or a line
+  // of speech has let go of it.
+  pxPad.timer = setTimeout(function repeat() {
+    var s2 = pxState;
+    if (!s2 || pxPad.dir !== d) return;
+    if (s2.held.indexOf(d) === -1) s2.held.push(d);
+    pxPress(d);
+    pxPad.timer = setTimeout(repeat, PX_STEP);
+  }, 400);
+}
+function pxPadRelease() {
+  pxPad.id = null;
+  pxPadSet(null);
+}
+// Losing the window or closing the world lets go of every control at once.
+function pxControlsLetGo() {
+  pxPadRelease();
+  var down = document.querySelectorAll('.px-world .is-down');
+  for (var i = 0; i < down.length; i++) down[i].classList.remove('is-down');
+}
+// A, B and start act on the press, as a game's buttons do, not on the release.
+// A keyboard user who tabs onto one still gets a click; a click that came from
+// a pointer (detail above 0) was already handled when it went down.
+function pxButton(id, down, up) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('pointerdown', function(e) {
+    if (e.button > 0) return;
+    e.preventDefault();
+    pxMarkDown(el, true);
+    down();
+    pxFocus();
+  });
+  var release = function() {
+    if (!el.classList.contains('is-down')) return;
+    pxMarkDown(el, false);
+    if (up) up();
+    pxWakeAudio();
+  };
+  el.addEventListener('pointerup', release);
+  el.addEventListener('pointercancel', release);
+  el.addEventListener('pointerleave', release);
+  el.addEventListener('click', function(e) {
+    if (e.detail !== 0) return;
+    down();
+    if (up) up();
+    pxFocus();
+  });
 }
 
 // ── the two sprites in the masthead ──────────────────────────────
@@ -2519,28 +2640,44 @@ function renderCrew() {
   pxPaintBadge(j, 'long_down', 'jolene');
   document.getElementById('crewBtn').addEventListener('click', pxEnter);
   document.getElementById('pxClose').addEventListener('click', pxLeave);
-  document.querySelectorAll('[data-px-dir]').forEach(function(el) {
-    var dir = el.dataset.pxDir, timer = 0;
-    function go(e) {
+  var pad = document.querySelector('.px-dpad');
+  if (pad) {
+    pad.addEventListener('pointerdown', function(e) {
+      if (e.button > 0 || (pxPad.id !== null && pxPad.id !== e.pointerId)) return;
       e.preventDefault();
+      pxPad.id = e.pointerId;
+      try { pad.setPointerCapture(e.pointerId); } catch (err) {}
       pxFocus();
-      pxPress(dir);
-      if (pxState && !pxState.menu && pxState.held.indexOf(dir) === -1) pxState.held.push(dir);
-      clearInterval(timer);
-      timer = setInterval(function() { pxPress(dir); }, PX_STEP);
-    }
-    function stop() {
-      clearInterval(timer);
-      if (pxState) { var i = pxState.held.indexOf(dir); if (i > -1) pxState.held.splice(i, 1); }
-    }
-    el.addEventListener('pointerdown', go);
-    el.addEventListener('pointerup', stop);
-    el.addEventListener('pointerleave', stop);
-    el.addEventListener('pointercancel', stop);
-  });
-  document.getElementById('pxA').addEventListener('click', function() { pxInteract(); pxFocus(); });
-  var st = document.getElementById('pxStart');
-  if (st) st.addEventListener('click', function() { pxStart(); pxFocus(); });
+      pxPadSet(pxPadDirAt(e.clientX, e.clientY));
+    });
+    pad.addEventListener('pointermove', function(e) {
+      if (e.pointerId === pxPad.id) pxPadSet(pxPadDirAt(e.clientX, e.clientY));
+    });
+    var padUp = function(e) {
+      if (e.pointerId !== pxPad.id) return;
+      pxPadRelease();
+      pxWakeAudio();
+    };
+    pad.addEventListener('pointerup', padUp);
+    pad.addEventListener('pointercancel', padUp);
+    pad.addEventListener('lostpointercapture', padUp);
+  }
+  pxButton('pxA', function() { pxInteract(); });
+  pxButton('pxB', function() { if (pxState && !pxBack()) pxState.run = true; },
+                  function() { if (pxState) pxState.run = false; });
+  pxButton('pxStart', function() { pxStart(); });
+  // a line of speech also moves along with a tap on the screen itself
+  var stage = document.getElementById('pxStage');
+  if (stage) {
+    stage.addEventListener('pointerdown', function(e) {
+      var s = pxState;
+      if (!s || !s.talking || s.menu || e.button > 0) return;
+      e.preventDefault();
+      pxInteract();
+      pxFocus();
+    });
+    stage.addEventListener('pointerup', pxWakeAudio);
+  }
 }
 
 // ── TILES ────────────────────────────────────────────────────────
@@ -2620,13 +2757,17 @@ function renderPhotoTile() {
     // Decode first, then fade. Swapping src on a visible layer would flash the
     // empty tile while the next file loads.
     var pre = new Image();
-    pre.onload = function() {
+    function show() {
       back.src = pre.src;
       back.classList.add('shown');
       front.classList.remove('shown');
       var t = front; front = back; back = t;
-    };
+    }
     pre.src = photos[i];
+    // decode() does the decoding off the main thread before the fade starts,
+    // so the crossfade never waits on a full-size photo being unpacked
+    if (pre.decode) pre.decode().then(show, function() {});
+    else pre.onload = show;
   }, 7000);
 }
 

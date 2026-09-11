@@ -148,6 +148,24 @@ green one out of tall grass, and walking on the spot, with a thud if sound is on
 
 Keyboard focus sits on the game surface rather than on a button, and returns
 there after any on-screen control, so Space and Enter only ever mean the game.
+Ctrl, Cmd and Alt combinations are left to the browser.
+
+### On a phone
+
+On a touch screen (and in a small window) the controls get room of their own
+instead of floating faded over the map:
+
+- **Upright**, the screen sits above and the controls below, the way a handheld
+  is laid out. **Sideways**, the screen sits between two thumb columns. Every
+  edge keeps clear of the notch and the home indicator.
+- **The d-pad is one surface.** Press anywhere on it and roll onto another arrow
+  without lifting; the middle keeps whichever way you were going. Four separate
+  buttons could not do that — a touch stays with the element it started on.
+- **A, B and start act on the press**, not the release. **B** backs out of a
+  menu page, then out of the menu, and moves speech along; held, it runs. The
+  `b` key does the same. A tap on the screen also moves speech along.
+- The game does not pan or zoom the page behind it, a long press selects
+  nothing, and the close button reads "exit" rather than "esc".
 
 ### Movement
 
