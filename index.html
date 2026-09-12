@@ -49,8 +49,8 @@
 
   <main class="page-main">
 
-    <!-- WHEN SHE SEES HIM NEXT. The one thing that leads the page. -->
-    <section class="hero t-visit" aria-labelledby="visitLabel">
+    <!-- WHEN SHE SEES HIM NEXT. The countdown leads the page. -->
+    <section class="card hero t-visit" aria-labelledby="visitLabel">
       <span class="tile-label" id="visitLabel">Next visit</span>
       <div class="cdrow" id="visitCd">
         <span class="cdcell"><b id="v-d">--</b><i>days</i></span>
@@ -58,62 +58,56 @@
         <span class="cdcell"><b id="v-m">--</b><i>min</i></span>
         <span class="cdcell"><b id="v-s">--</b><i>sec</i></span>
       </div>
-      <span class="hero-foot" id="visitDate"></span>
+      <span class="tile-foot" id="visitDate"></span>
     </section>
 
-    <div class="duo">
-      <!-- PHOTO -->
-      <button class="photo-band t-photo" data-sheet="photos" aria-label="Open all photos">
-        <img id="photoImg" alt="Will and Jolene" decoding="async">
-        <img id="photoImgB" alt="" aria-hidden="true" decoding="async">
-        <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
-      </button>
+    <!-- PHOTO -->
+    <button class="card photo-band t-photo" data-sheet="photos" aria-label="Open all photos">
+      <img id="photoImg" alt="Will and Jolene" decoding="async">
+      <img id="photoImgB" alt="" aria-hidden="true" decoding="async">
+      <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
+    </button>
 
-      <!-- LATEST NOTE. A quote against a rule rather than another card: the
-           page needs somewhere to rest between panels. -->
-      <button class="quote-block t-note" data-sheet="notes">
-        <span class="tile-label">Latest note from Will</span>
-        <p class="note-quote" id="noteQuote"></p>
-        <span class="tile-foot" id="noteDate"></span>
-      </button>
-    </div>
+    <!-- WILL RIGHT NOW -->
+    <section class="card t-now">
+      <span class="tile-label">Will right now</span>
+      <p class="now-text" id="nowText"></p>
+    </section>
 
-    <div class="pair">
-      <!-- WILL RIGHT NOW -->
-      <section class="block t-now">
-        <span class="tile-label">Will right now</span>
-        <p class="now-text" id="nowText"></p>
-      </section>
+    <!-- LATEST NOTE -->
+    <button class="card t-note" data-sheet="notes">
+      <span class="tile-label">Latest note from Will</span>
+      <p class="note-quote" id="noteQuote"></p>
+      <span class="tile-foot" id="noteDate"></span>
+    </button>
 
-      <!-- THE LIST -->
-      <button class="block t-list" data-sheet="bucket">
-        <span class="tile-label">The list</span>
-        <p class="list-next" id="listNext"></p>
-        <div class="tog-track" aria-hidden="true"><span class="list-fill" id="listFill"></span></div>
-        <span class="tile-foot" id="listFoot"></span>
-      </button>
-    </div>
+    <!-- THE LIST -->
+    <button class="card t-list" data-sheet="bucket">
+      <span class="tile-label">The list</span>
+      <p class="list-next" id="listNext"></p>
+      <div class="tog-track" aria-hidden="true"><span class="list-fill" id="listFill"></span></div>
+      <span class="tile-foot" id="listFoot"></span>
+    </button>
 
-    <!-- THE SMALL NUMBERS. A line each: they are context, not headlines, and
-         only the visit counts down by the second. -->
-    <section class="stats">
-      <section class="stat t-together">
-        <span class="stat-num" id="togDays">--</span>
-        <span class="stat-unit">days together</span>
-        <span class="stat-sub" id="togNext"></span>
+    <!-- THE SMALL NUMBERS. One card, two numbers, each with its own label. -->
+    <section class="card stats">
+      <div class="stat t-together">
+        <span class="tile-label">Together</span>
+        <span class="stat-line"><span class="stat-num" id="togDays">--</span><span class="stat-unit">days</span></span>
+        <span class="tile-foot" id="togNext"></span>
         <div class="tog-track" aria-hidden="true"><span class="tog-fill" id="togFill"></span></div>
-      </section>
+      </div>
       <button class="stat t-bday" id="bdayTile">
-        <span class="bday-body" id="bdayBody"></span>
-        <span class="stat-sub" id="bdayFoot"></span>
+        <span class="tile-label">Her birthday</span>
+        <span class="stat-line" id="bdayBody"></span>
+        <span class="tile-foot" id="bdayFoot"></span>
         <span class="sr-only">Turns on birthday mode</span>
       </button>
     </section>
 
-    <!-- THINGS TO READ. One list, rather than six cards competing with the
-         counters above them. -->
-    <section class="reads">
-      <h2 class="section-h">More about us</h2>
+    <!-- THINGS TO READ -->
+    <section class="card reads">
+      <span class="tile-label">More about us</span>
       <div class="read-list">
         <button class="read" data-sheet="her">
           <span class="read-title">About Jolene</span>
@@ -147,19 +141,6 @@
         </button>
       </div>
     </section>
-
-    <!-- THE WAY IN. It was a corner button with an 8.5px label. -->
-    <button class="play-band" id="playBtn" type="button">
-      <span class="play-sprites" aria-hidden="true">
-        <canvas class="crew-px" id="playWill" width="16" height="20"></canvas>
-        <canvas class="crew-px" id="playJolene" width="16" height="20"></canvas>
-      </span>
-      <span class="play-copy">
-        <span class="play-title">The pixel world</span>
-        <span class="play-desc">fourteen places you know, the two of you in pixels, and a dog that follows you around</span>
-      </span>
-      <span class="play-go">press start</span>
-    </button>
 
   </main>
 
@@ -2778,7 +2759,7 @@ function renderBdayTile() {
     // neither of them read as the one that mattered.
     body.innerHTML =
       '<span class="stat-num">' + b.d + '</span>' +
-      '<span class="stat-unit">day' + (b.d === 1 ? '' : 's') + ' to her birthday</span>';
+      '<span class="stat-unit">day' + (b.d === 1 ? '' : 's') + '</span>';
     foot.textContent = 'september 24 \u00b7 turning ' + b.age;
   }
   tick(); setInterval(tick, 60000);
@@ -2910,13 +2891,6 @@ document.addEventListener('DOMContentLoaded', function() {
   renderHerTile();
   renderListTile();
   renderCrew();
-  // the second way in, at the foot of the page
-  var play = document.getElementById('playBtn');
-  if (play) {
-    play.addEventListener('click', pxEnter);
-    pxPaintBadge(document.getElementById('playWill'), 'crop_down', 'will');
-    pxPaintBadge(document.getElementById('playJolene'), 'long_down', 'jolene');
-  }
   buildLeaves();
   playTileIntro();
 

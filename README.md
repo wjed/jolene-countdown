@@ -16,22 +16,19 @@ No build step, no framework, no dependencies. Open `index.html` and it works.
 
 ## The page
 
-One thing leads, and the rest support it, in the order she would want them:
+One card style, used for everything, read the same way down: label, value,
+detail. In order:
 
-1. **The countdown to the next visit** — the hero, and the only thing on the
-   page still counting off seconds.
-2. **A photograph**, wide, with his latest note beside it on a desktop and
-   under it on a phone.
-3. **What he is doing right now**, and one open thing off the list.
-4. **The small numbers** — days together, days to her birthday — a line each
-   in one quiet strip.
-5. **The things to read**, as a list rather than six cards.
-6. **The way into the pixel world**, at the size it deserves.
+1. **The countdown to the next visit** — the only thing counting seconds.
+2. **A photograph**, beside the countdown on a desktop.
+3. **What he is doing right now**, and **his latest note**.
+4. **The list** — one open thing off it — and **the two small numbers**, days
+   together and days to her birthday, in one card.
+5. **The things to read**, as a list.
 
-It replaced a bento grid of thirteen tiles of equal weight: same border, same
-radius, four counters competing, the photographs boxed into a tile the size of
-a counter, and the way into the world a 124x82 button in the corner. Nothing
-arrived first, so nothing led.
+On a phone that is one column. On a desktop the cards pair up five columns and
+seven on every row of a twelve-column grid, so the gutter runs straight down. The sprites in
+the masthead are the one way into the pixel world.
 
 ## Content lives in the markup
 
@@ -65,8 +62,7 @@ they don't turn pink along with everything else.
 
 ## The pixel world
 
-Pressing the two sprites in the masthead, or the band at the foot of the page,
-wipes the screen out and opens a
+Pressing the two sprites in the masthead wipes the screen out and opens a
 240x160 overworld — Game Boy Advance resolution, integer-scaled to fill the
 viewport. Thirteen areas: her apartment, campus, the drive south, Northern
 Virginia and seven shops you can walk into, plus his house and Scale AI.

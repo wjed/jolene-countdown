@@ -141,16 +141,15 @@
   }
 }
 /* Birthday tile goes full colour. */
-[data-party="on"] .t-bday { background: var(--tint-2); padding-top: 18px; }
+[data-party="on"] .t-bday { background: var(--tint-2); }
 [data-party="on"] .t-bday::before { top: 0; bottom: auto; height: 3px; }
 [data-party="on"] .t-bday .stat-num, [data-party="on"] .bday-today { color: var(--tone-1); }
-[data-party="on"] .hero { border-color: var(--tone-1); }
-[data-party="on"] .quote-block { border-left-color: var(--tone-5); }
-[data-party="on"] .t-now { border-color: var(--tone-3); }
+[data-party="on"] .hero  { border-color: var(--tone-1); }
+[data-party="on"] .t-note { border-color: var(--tone-5); }
+[data-party="on"] .t-now  { border-color: var(--tone-3); }
 [data-party="on"] .t-list { border-color: var(--tone-2); }
-[data-party="on"] .stats { border-color: var(--tone-4); }
-[data-party="on"] .read-list { border-color: var(--tone-2); }
-[data-party="on"] .play-band { border-color: var(--tone-3); }
+[data-party="on"] .stats  { border-color: var(--tone-4); }
+[data-party="on"] .reads  { border-color: var(--tone-2); }
 /* ── RESET ──────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; }
@@ -460,44 +459,32 @@ body.px-open { overflow: hidden; }
   color: var(--text-2); border-radius: 50%; cursor: pointer;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-/* ── THE PAGE ────────────────────────────────────────────
-   One thing leads - the countdown - then a photograph, his day, the small
-   numbers, the things to read, and the way into the world. It replaced a grid
-   of thirteen cards of equal weight, where nothing arrived first. */
-.page-main { display: flex; flex-direction: column; gap: 18px; }
-/* Sections stack until there is room to pair them. Without a display of their
-   own these wrappers are plain blocks, and a button inside a block shrinks to
-   fit its content - the photograph, whose content is all absolutely
-   positioned, collapsed to the width of its own borders. */
-.duo, .pair { display: flex; flex-direction: column; gap: 14px; }
+/* ── THE PAGE ───────────────────────────────────────────────────
+   One card, used for everything, read the same way down: label, value,
+   detail. The countdown leads, then the photograph, his note, his day, the
+   list, the two small numbers, and the things to read. On a phone that is one
+   column; on a desktop the cards pair up five columns and seven on every row,
+   so the gutter between them runs straight down the page. */
+.page-main { display: flex; flex-direction: column; gap: 14px; }
 
-/* One-time settle on load, section by section. Only runs while .page-main
-   carries .intro, which JS adds on load and removes on a timer: the animation
-   starts at opacity 0 with fill-mode both, so a stalled frame would otherwise
-   leave the page blank. */
+/* One-time settle on load, card by card. Only runs while .page-main carries
+   .intro, which JS adds on load and removes on a timer: the animation starts
+   at opacity 0 with fill-mode both, so a stalled frame would otherwise leave
+   the page blank. */
 .page-main.intro > * { animation: tileIn .5s cubic-bezier(.22,.7,.3,1) both; }
 .page-main.intro > *:nth-child(1) { animation-delay: .02s; }
-.page-main.intro > *:nth-child(2) { animation-delay: .09s; }
-.page-main.intro > *:nth-child(3) { animation-delay: .16s; }
-.page-main.intro > *:nth-child(4) { animation-delay: .23s; }
-.page-main.intro > *:nth-child(5) { animation-delay: .30s; }
-.page-main.intro > *:nth-child(6) { animation-delay: .37s; }
+.page-main.intro > *:nth-child(2) { animation-delay: .07s; }
+.page-main.intro > *:nth-child(3) { animation-delay: .12s; }
+.page-main.intro > *:nth-child(4) { animation-delay: .17s; }
+.page-main.intro > *:nth-child(5) { animation-delay: .22s; }
+.page-main.intro > *:nth-child(6) { animation-delay: .27s; }
+.page-main.intro > *:nth-child(7) { animation-delay: .32s; }
 @keyframes tileIn {
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-button.block, button.photo-band, button.quote-block, button.read, button.stat, .play-band {
-  cursor: pointer; touch-action: manipulation; font-family: var(--font);
-  transition: transform .14s ease, border-color .14s, background .14s;
-}
-button.block:active, .play-band:active, button.read:active { transform: translateY(0); }
-.tile-label {
-  font-size: 10.5px; font-weight: 600;
-  letter-spacing: .09em; text-transform: uppercase;
-}
-.tile-foot { font-size: 12px; color: var(--text-3); margin-top: auto; }
-/* the things that are still panels */
-.block {
+
+.card {
   position: relative;
   display: flex; flex-direction: column; gap: 9px;
   background: var(--sidebar-bg);
@@ -509,43 +496,44 @@ button.block:active, .play-band:active, button.read:active { transform: translat
   color: var(--text);
   box-shadow: var(--shadow-sm);
 }
-.t-now .tile-label, .t-list .tile-label { color: var(--tone-3); }
-.now-text { font-size: 15px; line-height: 1.55; color: var(--text-2); }
-/* ── the hero: when she sees him next ────────────────────── */
-.hero {
-  display: flex; flex-direction: column; gap: 12px;
-  padding: 24px 20px 20px;
-  border: 1px solid var(--border); border-radius: 18px;
-  background: linear-gradient(155deg, var(--accent-faint), var(--sidebar-bg) 62%);
-  box-shadow: var(--shadow-sm);
+button.card, button.stat, button.read {
+  cursor: pointer; touch-action: manipulation; font-family: var(--font);
+  transition: transform .14s ease, border-color .14s, background .14s;
 }
+button.card:active { transform: translateY(0); }
+.tile-label {
+  font-size: 10.5px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+}
+.tile-foot { font-size: 12px; color: var(--text-3); margin-top: auto; }
+
+/* ── the countdown ── */
+.hero { justify-content: center; gap: 12px; }
 .hero .tile-label { color: var(--tone-1); }
-.hero-foot { font-size: 13.5px; color: var(--text-2); }
-.cdrow { display: flex; gap: clamp(16px, 5vw, 30px); align-items: baseline; }
+.hero .tile-foot { margin-top: 0; font-size: 13px; color: var(--text-2); }
+.cdrow { display: flex; gap: clamp(14px, 4.5vw, 26px); align-items: baseline; }
 .cdcell { display: flex; flex-direction: column; gap: 3px; }
 .cdcell b {
   font-family: 'Lora', Georgia, serif;
-  font-size: clamp(26px, 8vw, 38px); font-weight: 600; line-height: 1;
+  font-size: clamp(26px, 8vw, 36px); font-weight: 600; line-height: 1;
   font-variant-numeric: tabular-nums; color: var(--text);
 }
-/* the days are the number she came for; the rest are the detail under it */
-.cdcell:first-child b { font-size: clamp(46px, 15vw, 76px); color: var(--tone-1); }
+/* the days are the number she came for; the rest are the detail beside it */
+.cdcell:first-child b { font-size: clamp(46px, 14vw, 68px); color: var(--tone-1); }
 .cdcell i {
   font-style: normal; font-size: 10px;
   letter-spacing: .09em; text-transform: uppercase; color: var(--text-3);
 }
-.cd-passed { font-family: 'Lora', Georgia, serif; font-size: clamp(26px, 8vw, 40px); color: var(--tone-1); }
-/* ── the photograph ────────────────────────────────────
+.cd-passed { font-family: 'Lora', Georgia, serif; font-size: clamp(26px, 8vw, 38px); color: var(--tone-1); }
+
+/* ── the photograph ──
    Two stacked layers that crossfade: a single fading image leaves the frame
-   blank for the length of the fade, which reads as a flicker every rotation.
-   Biased upward because faces sit high in most of these. */
+   blank for the length of the fade. Biased upward because faces sit high in
+   most of these. The height is capped against the viewport too, or a phone
+   held sideways gives it the whole screen. */
 .photo-band {
-  position: relative; display: block; width: 100%; padding: 0; overflow: hidden;
-  /* capped against the height too, or a phone held sideways gives it the whole
-     screen and she scrolls through a photograph to reach the page */
+  display: block; width: 100%; padding: 0; overflow: hidden;
   height: clamp(230px, min(58vw, 62vh), 380px);
-  border: 1px solid var(--border); border-radius: 18px;
-  background: var(--sidebar-bg); box-shadow: var(--shadow-sm);
 }
 .photo-band img {
   position: absolute; inset: 0;
@@ -560,24 +548,19 @@ button.block:active, .play-band:active, button.read:active { transform: translat
   border: 1px solid var(--border); border-radius: 20px;
   padding: 5px 12px; font-size: 12px;
 }
-/* ── his latest note ─────────────────────────────────── */
-.quote-block {
-  display: flex; flex-direction: column; gap: 7px;
-  padding: 2px 0 2px 16px;
-  border: none; border-left: 3px solid var(--tone-5);
-  background: none; text-align: left; color: var(--text);
-}
-.quote-block .tile-label { color: var(--tone-5); }
-.quote-block .tile-foot { margin-top: 2px; }
+
+/* ── his note, his day, the list ── */
+.t-note .tile-label { color: var(--tone-5); }
 .note-quote {
   font-family: 'Lora', Georgia, serif;
-  font-size: clamp(17px, 4.6vw, 20px); line-height: 1.5; font-style: italic; color: var(--text);
+  font-size: 18px; line-height: 1.5; font-style: italic; color: var(--text);
 }
-/* ── the list ──────────────────────────────────────────
-   One open item at random, so it reads as a prompt rather than a score. The
+.t-now .tile-label, .t-list .tile-label { color: var(--tone-3); }
+.now-text { font-size: 15px; line-height: 1.55; color: var(--text-2); }
+/* One open item at random, so it reads as a prompt rather than a score. The
    number underneath is the score. */
 .list-next {
-  font-family: 'Lora', Georgia, serif; font-size: clamp(18px, 5vw, 21px); font-weight: 600;
+  font-family: 'Lora', Georgia, serif; font-size: 20px; font-weight: 600;
   color: var(--text); line-height: 1.25;
 }
 .tog-track {
@@ -590,74 +573,41 @@ button.block:active, .play-band:active, button.read:active { transform: translat
 }
 .tog-fill { background: linear-gradient(90deg, var(--tone-1), var(--tone-4)); }
 .list-fill { background: linear-gradient(90deg, var(--tone-3), var(--tone-2)); }
-/* ── the small numbers, in one strip ─────────────────────── */
-.stats {
-  display: flex; flex-direction: column;
-  border: 1px solid var(--border); border-radius: 16px;
-  background: var(--sidebar-bg); box-shadow: var(--shadow-sm); overflow: hidden;
-}
+
+/* ── the two small numbers, one card ── */
+.stats { padding: 0; gap: 0; overflow: hidden; }
 .stat {
   position: relative; overflow: hidden;
-  display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
-  padding: 15px 18px; text-align: left;
-  border: none; border-bottom: 1px solid var(--border);
-  background: none; color: var(--text); font-family: var(--font);
+  display: flex; flex-direction: column; gap: 7px;
+  padding: 18px; text-align: left;
+  background: none; border: none; color: var(--text); font-family: var(--font);
 }
-.stat:last-child { border-bottom: none; }
+.stat + .stat { border-top: 1px solid var(--border); }
+.stat .tile-foot { margin-top: 0; }
+.t-together .tile-label { color: var(--tone-4); }
+.t-bday .tile-label { color: var(--tone-2); }
+.stat-line { display: flex; align-items: baseline; gap: 8px; }
 .stat-num {
-  font-family: 'Lora', Georgia, serif; font-size: 30px; font-weight: 600;
+  font-family: 'Lora', Georgia, serif; font-size: 32px; font-weight: 600;
   line-height: 1; font-variant-numeric: tabular-nums; color: var(--tone-4);
 }
 .t-bday .stat-num { color: var(--tone-2); }
 .stat-unit { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
-.stat-sub { margin-left: auto; font-size: 12.5px; color: var(--text-3); }
-.stat .tog-track { flex-basis: 100%; margin-top: 9px; }
-.bday-body { display: flex; align-items: baseline; gap: 10px; }
 .bday-today { font-family: 'Lora', Georgia, serif; font-size: 21px; font-weight: 600; color: var(--tone-2); }
-/* ── things to read ──────────────────────────────────── */
-.reads { display: flex; flex-direction: column; gap: 9px; }
-.section-h {
-  font-family: 'Lora', Georgia, serif; font-size: 15px; font-weight: 600;
-  color: var(--text-2); padding-left: 2px;
-}
-.read-list {
-  display: grid; grid-template-columns: 1fr;
-  border: 1px solid var(--border); border-radius: 16px;
-  background: var(--sidebar-bg); box-shadow: var(--shadow-sm); overflow: hidden;
-}
+
+/* ── things to read ── */
+.reads { padding-bottom: 4px; gap: 8px; }
+.reads .tile-label { color: var(--text-2); }
+.read-list { display: grid; grid-template-columns: 1fr; margin: 0 -18px; }
 .read {
-  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 12px;
-  padding: 14px 18px; text-align: left;
-  border: none; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 2px 12px;
+  padding: 13px 18px; text-align: left;
+  border: none; border-top: 1px solid var(--border);
   background: none; color: var(--text);
 }
-.read:last-child { border-bottom: none; }
-.read-title { font-family: 'Lora', Georgia, serif; font-size: 17.5px; font-weight: 600; line-height: 1.2; }
+.read-title { font-family: 'Lora', Georgia, serif; font-size: 17px; font-weight: 600; line-height: 1.2; }
 .read-desc { grid-column: 1; font-size: 12.5px; line-height: 1.4; color: var(--text-3); }
-.read-go { grid-row: 1 / 3; grid-column: 2; color: var(--text-3); font-size: 16px; }
-/* ── the way in ──────────────────────────────────────── */
-.play-band {
-  display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
-  padding: 16px 18px; text-align: left; color: var(--text);
-  border: 1px solid var(--border); border-radius: 18px;
-  background: linear-gradient(115deg, var(--sidebar-bg) 40%, var(--accent-faint));
-  box-shadow: var(--shadow-sm);
-}
-.play-sprites { display: flex; align-items: flex-end; gap: 2px; flex: none; }
-.play-sprites canvas {
-  display: block; width: 40px; height: 55px;
-  image-rendering: pixelated; image-rendering: crisp-edges;
-}
-.play-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 190px; }
-.play-title { font-family: 'Lora', Georgia, serif; font-size: 18.5px; font-weight: 600; }
-.play-desc { font-size: 12.5px; line-height: 1.4; color: var(--text-3); }
-.play-go {
-  flex: none; margin-left: auto;
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
-  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
-  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
-  color: var(--on-accent); background: var(--tone-1); border-radius: 22px;
-}
+.read-go { grid-row: 1 / 3; grid-column: 2; color: var(--text-3); font-size: 15px; }
 .bk-head { margin-bottom: 10px; }
 .bk-count {
   font-family: 'Lora', Georgia, serif; font-size: 34px; font-weight: 600;
@@ -1166,30 +1116,31 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
    board of tiles, which just left big empty gutters. Going to 12 columns lets
    the tiles rearrange three-across instead of only getting wider. */
 @media (min-width: 900px) {
-  .page-main { gap: 22px; }
-  /* the photograph beside his note, his day beside the list, the reads in two
-     columns: the page keeps its order, it just stops being one column */
-  .duo { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; align-items: stretch; }
-  .photo-band { height: auto; min-height: 330px; }
-  /* the date sits at the end of the line rather than under it: the hero is wide
-     here, and the numbers on their own left it heavy on one side */
-  .hero { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: 34px; }
-  .hero .tile-label { flex-basis: 100%; }
-  .hero-foot { margin-left: auto; }
-  .quote-block { justify-content: center; }
-  .pair { display: grid; grid-template-columns: 1fr 1fr; }
-  .stats { flex-direction: row; }
-  .stat { flex: 1; border-bottom: none; border-right: 1px solid var(--border); }
-  .stat:last-child { border-right: none; }
+  /* Five columns and seven on every row, so the gutter runs straight down: the
+     countdown beside the photograph, his day beside his note, the list beside
+     the numbers. Alternating the split made the gutter zig-zag. Cards in a row
+     share a height. */
+  .page-main { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .hero    { grid-column: span 5; }
+  /* it stands beside a photograph here, so it carries more of its own weight */
+  .hero .cdrow { gap: clamp(18px, 2vw, 26px); }
+  .hero .cdcell b { font-size: clamp(32px, 3.3vw, 42px); }
+  .hero .cdcell:first-child b { font-size: clamp(56px, 6.5vw, 84px); }
+  .t-photo { grid-column: span 7; height: auto; min-height: 300px; }
+  .t-note  { grid-column: span 7; }
+  .t-now   { grid-column: span 5; }
+  .t-list  { grid-column: span 5; }
+  .stats   { grid-column: span 7; flex-direction: row; }
+  .reads   { grid-column: 1 / -1; }
+  .stat { flex: 1; justify-content: center; }
+  .stat + .stat { border-top: none; border-left: 1px solid var(--border); }
   .read-list { grid-template-columns: 1fr 1fr; }
-  .read:nth-child(odd) { border-right: 1px solid var(--border); }
-  .read:nth-last-child(-n+2) { border-bottom: none; }
+  .read:nth-child(even) { border-left: 1px solid var(--border); }
 }
 @media (min-width: 1200px) {
-  /* a reading width, not a wall: these sections are meant to be read down */
   .page { max-width: 1180px; }
   .mark-title { font-size: 34px; }
-  .note-quote { font-size: 20px; }
+  .note-quote { font-size: 19px; }
 }
 @media (max-width: 900px) {
   .mark-title { font-size: 26px; }
@@ -1197,11 +1148,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 @media (max-width: 560px) {
   .page { padding: 0 14px calc(24px + env(safe-area-inset-bottom)); }
   .mantel-hdr { padding: 24px 0 16px; }
-  .page-main { gap: 14px; }
-  .duo, .pair { gap: 14px; }
-  /* the trailing line takes its own line under the number, left-aligned,
-     rather than wrapping to a lone right-aligned one */
-  .stat-sub { flex-basis: 100%; margin-left: 0; }
+  .page-main { gap: 12px; }
   .sheet { top: 6vh; left: 0; right: 0; width: 100%;
            border-left: none; border-top: 1px solid var(--border);
            border-radius: 18px 18px 0 0; }
@@ -1217,9 +1164,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .crew:hover { border-color: var(--tone-1); background: var(--sidebar-bg); }
   .crew:hover .crew-hint { color: var(--tone-1); }
   .icon-btn:hover { background: var(--card-hover); color: var(--text); border-color: var(--tone-4); }
-  button.block:hover, .play-band:hover { transform: translateY(-2px); background: var(--card-hover); border-color: var(--tone-4); }
-  .photo-band:hover { border-color: var(--tone-4); }
-  .quote-block:hover { border-left-color: var(--accent-hover); }
+  button.card:hover { transform: translateY(-2px); background: var(--card-hover); border-color: var(--tone-4); }
   button.read:hover, button.stat:hover { background: var(--card-hover); }
   .party-bar-off:hover { background: var(--accent-hover); }
   .bridge-again:hover  { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,122,42,.42); }
@@ -1238,8 +1183,8 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   [data-party="on"] .party-bar::after,
   [data-party="on"] .t-bday::before,
   [data-party="on"] .party-bar-dots span { animation: none !important; }
-  button.block, button.read, .play-band { transition: none; }
-  button.block:hover, .play-band:hover { transform: none; }
+  button.card, button.read, button.stat { transition: none; }
+  button.card:hover { transform: none; }
   .photo-band img { transition: none; }
 }
 
