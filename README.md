@@ -14,16 +14,35 @@ No build step, no framework, no dependencies. Open `index.html` and it works.
 | `images/` | The photos, 80 of them |
 | `school_logos/`, `gyms/`, `fonts/` | Left over from an older version, unused |
 
+## The page
+
+One thing leads, and the rest support it, in the order she would want them:
+
+1. **The countdown to the next visit** — the hero, and the only thing on the
+   page still counting off seconds.
+2. **A photograph**, wide, with his latest note beside it on a desktop and
+   under it on a phone.
+3. **What he is doing right now**, and one open thing off the list.
+4. **The small numbers** — days together, days to her birthday — a line each
+   in one quiet strip.
+5. **The things to read**, as a list rather than six cards.
+6. **The way into the pixel world**, at the size it deserves.
+
+It replaced a bento grid of thirteen tiles of equal weight: same border, same
+radius, four counters competing, the photographs boxed into a tile the size of
+a counter, and the way into the world a 124x82 button in the corner. Nothing
+arrived first, so nothing led.
+
 ## Content lives in the markup
 
 There is no CMS and no data file. Everything editable is a plain array or
 object near the top of the `<script>` in `index.html`:
 
 - `QA` — the prose the sheets render, including the photo list
-- `JOLENE` / `JOLENE_LINES` — the facts, and the rotating one on her tile
+- `JOLENE` / `JOLENE_LINES` — the facts, and the rotating one under About Jolene
 - `BUCKET` — the bucket list. Add `done: 'where it happened'` to an entry and
-  it moves to the Done section; the count, the bar and the tile all follow
-- `NEXT_VISIT`, `NEXT_VISIT_DAYS` (how long the tile says it's here), `ANNIV_*`, `BDAY_*` — the dates every counter derives from
+  it moves to the Done section; the count, the bar and the block all follow
+- `NEXT_VISIT`, `NEXT_VISIT_DAYS` (how long the countdown says it's here), `ANNIV_*`, `BDAY_*` — the dates every counter derives from
 
 ## Photos
 
@@ -39,7 +58,7 @@ files that no longer exist.
 
 ## Birthday mode
 
-Tapping the birthday tile sets `data-party="on"` on `<html>`. That swaps the
+Tapping the birthday line sets `data-party="on"` on `<html>`. That swaps the
 palette tokens only — every component follows automatically. The fire in the
 bridge animation and the two portraits deliberately keep literal colours, so
 they don't turn pink along with everything else.

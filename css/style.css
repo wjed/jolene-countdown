@@ -141,21 +141,16 @@
   }
 }
 /* Birthday tile goes full colour. */
-[data-party="on"] .t-bday {
-  position: relative; overflow: hidden;
-  border-color: var(--tone-2); border-width: 1.5px;
-  background: var(--tint-2);
-  padding-top: 21px;
-}
-[data-party="on"] .t-bday::before { top: 0; bottom: auto; height: 4px; }
-[data-party="on"] .bday-big, [data-party="on"] .bday-today { color: var(--tone-1); }
-[data-party="on"] .t-visit  { border-color: var(--tone-1); }
-[data-party="on"] .t-note   { border-color: var(--tone-5); }
-[data-party="on"] .t-now    { border-color: var(--tone-3); }
-[data-party="on"] .t-link:nth-of-type(4n+1) { border-color: var(--tone-1); }
-[data-party="on"] .t-link:nth-of-type(4n+2) { border-color: var(--tone-2); }
-[data-party="on"] .t-link:nth-of-type(4n+3) { border-color: var(--tone-3); }
-[data-party="on"] .t-link:nth-of-type(4n)   { border-color: var(--tone-4); }
+[data-party="on"] .t-bday { background: var(--tint-2); padding-top: 18px; }
+[data-party="on"] .t-bday::before { top: 0; bottom: auto; height: 3px; }
+[data-party="on"] .t-bday .stat-num, [data-party="on"] .bday-today { color: var(--tone-1); }
+[data-party="on"] .hero { border-color: var(--tone-1); }
+[data-party="on"] .quote-block { border-left-color: var(--tone-5); }
+[data-party="on"] .t-now { border-color: var(--tone-3); }
+[data-party="on"] .t-list { border-color: var(--tone-2); }
+[data-party="on"] .stats { border-color: var(--tone-4); }
+[data-party="on"] .read-list { border-color: var(--tone-2); }
+[data-party="on"] .play-band { border-color: var(--tone-3); }
 /* ── RESET ──────────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; }
@@ -465,11 +460,44 @@ body.px-open { overflow: hidden; }
   color: var(--text-2); border-radius: 50%; cursor: pointer;
   transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
-/* ── BENTO GRID ─────────────────────────────────────────────────── */
-/* Explicit row height. Without it the photo's natural portrait aspect ratio
-   sets the row size and every neighbouring tile stretches to match it. */
-.bento { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(148px, auto); gap: 14px; }
-.tile {
+/* ── THE PAGE ────────────────────────────────────────────
+   One thing leads - the countdown - then a photograph, his day, the small
+   numbers, the things to read, and the way into the world. It replaced a grid
+   of thirteen cards of equal weight, where nothing arrived first. */
+.page-main { display: flex; flex-direction: column; gap: 18px; }
+/* Sections stack until there is room to pair them. Without a display of their
+   own these wrappers are plain blocks, and a button inside a block shrinks to
+   fit its content - the photograph, whose content is all absolutely
+   positioned, collapsed to the width of its own borders. */
+.duo, .pair { display: flex; flex-direction: column; gap: 14px; }
+
+/* One-time settle on load, section by section. Only runs while .page-main
+   carries .intro, which JS adds on load and removes on a timer: the animation
+   starts at opacity 0 with fill-mode both, so a stalled frame would otherwise
+   leave the page blank. */
+.page-main.intro > * { animation: tileIn .5s cubic-bezier(.22,.7,.3,1) both; }
+.page-main.intro > *:nth-child(1) { animation-delay: .02s; }
+.page-main.intro > *:nth-child(2) { animation-delay: .09s; }
+.page-main.intro > *:nth-child(3) { animation-delay: .16s; }
+.page-main.intro > *:nth-child(4) { animation-delay: .23s; }
+.page-main.intro > *:nth-child(5) { animation-delay: .30s; }
+.page-main.intro > *:nth-child(6) { animation-delay: .37s; }
+@keyframes tileIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+button.block, button.photo-band, button.quote-block, button.read, button.stat, .play-band {
+  cursor: pointer; touch-action: manipulation; font-family: var(--font);
+  transition: transform .14s ease, border-color .14s, background .14s;
+}
+button.block:active, .play-band:active, button.read:active { transform: translateY(0); }
+.tile-label {
+  font-size: 10.5px; font-weight: 600;
+  letter-spacing: .09em; text-transform: uppercase;
+}
+.tile-foot { font-size: 12px; color: var(--text-3); margin-top: auto; }
+/* the things that are still panels */
+.block {
   position: relative;
   display: flex; flex-direction: column; gap: 9px;
   background: var(--sidebar-bg);
@@ -481,134 +509,152 @@ body.px-open { overflow: hidden; }
   color: var(--text);
   box-shadow: var(--shadow-sm);
 }
-/* One-time settle on load. Staggered by nth-child so the board assembles
-   rather than snapping in all at once. */
-/* Only runs while .bento carries .intro, which JS adds on load and removes on
-   a timer. The animation starts at opacity 0 with fill-mode both, so if it
-   ever stalled - a backgrounded tab stops compositing, and the frame freezes -
-   it would hold that start frame and the whole page would render blank. Tiles
-   are therefore visible by default and the animation is the exception. */
-.bento.intro .tile { animation: tileIn .5s cubic-bezier(.22,.7,.3,1) both; }
-.bento.intro > .tile:nth-child(1) { animation-delay: .02s; }
-.bento.intro > .tile:nth-child(2) { animation-delay: .07s; }
-.bento.intro > .tile:nth-child(3) { animation-delay: .12s; }
-.bento.intro > .tile:nth-child(4) { animation-delay: .17s; }
-.bento.intro > .tile:nth-child(5) { animation-delay: .22s; }
-.bento.intro > .tile:nth-child(6) { animation-delay: .27s; }
-.bento.intro > .tile:nth-child(7) { animation-delay: .32s; }
-.bento.intro .tile-links .tile:nth-child(1) { animation-delay: .36s; }
-.bento.intro .tile-links .tile:nth-child(2) { animation-delay: .40s; }
-.bento.intro .tile-links .tile:nth-child(3) { animation-delay: .44s; }
-.bento.intro .tile-links .tile:nth-child(4) { animation-delay: .48s; }
-.bento.intro .tile-links .tile:nth-child(5) { animation-delay: .52s; }
-.bento.intro .tile-links .tile:nth-child(6) { animation-delay: .56s; }
-@keyframes tileIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+.t-now .tile-label, .t-list .tile-label { color: var(--tone-3); }
+.now-text { font-size: 15px; line-height: 1.55; color: var(--text-2); }
+/* ── the hero: when she sees him next ────────────────────── */
+.hero {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 24px 20px 20px;
+  border: 1px solid var(--border); border-radius: 18px;
+  background: linear-gradient(155deg, var(--accent-faint), var(--sidebar-bg) 62%);
+  box-shadow: var(--shadow-sm);
 }
-button.tile {
-  cursor: pointer; touch-action: manipulation;
-  transition: transform .14s ease, border-color .14s, background .14s;
-}
-button.tile:active { transform: translateY(0); }
-.tile-label {
-  font-size: 10.5px; font-weight: 600;
-  letter-spacing: .09em; text-transform: uppercase;
-}
-.t-visit .tile-label { color: var(--tone-1); }
-.t-note  .tile-label { color: var(--tone-5); }
-.t-now   .tile-label { color: var(--tone-3); }
-.t-bday  .tile-label { color: var(--tone-2); }
-.tile-foot { font-size: 12px; color: var(--text-3); margin-top: auto; }
-.t-visit { grid-column: span 2; }
-.t-photo { grid-column: span 2; grid-row: span 2; padding: 0; overflow: hidden; min-height: 300px; }
-.t-note  { grid-column: span 2; }
-.t-now   { grid-column: span 2; }
-.t-bday  { grid-column: span 2; }
-/* Own row, own even split - so adding a link tile never has to divide into the
-   parent column count. */
-/* Six link tiles: three-across splits them evenly as 3+3, and six-across on a
-   wide screen. Fixed counts rather than auto-fit, which stranded one alone. */
-.tile-links {
-  grid-column: 1 / -1;
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-.t-link  { min-height: 122px; justify-content: flex-end; gap: 4px; }
-/* countdown row */
-.cdrow { display: flex; gap: 20px; align-items: flex-start; }
+.hero .tile-label { color: var(--tone-1); }
+.hero-foot { font-size: 13.5px; color: var(--text-2); }
+.cdrow { display: flex; gap: clamp(16px, 5vw, 30px); align-items: baseline; }
 .cdcell { display: flex; flex-direction: column; gap: 3px; }
 .cdcell b {
   font-family: 'Lora', Georgia, serif;
-  font-size: 34px; font-weight: 600; line-height: 1;
+  font-size: clamp(26px, 8vw, 38px); font-weight: 600; line-height: 1;
   font-variant-numeric: tabular-nums; color: var(--text);
 }
+/* the days are the number she came for; the rest are the detail under it */
+.cdcell:first-child b { font-size: clamp(46px, 15vw, 76px); color: var(--tone-1); }
 .cdcell i {
   font-style: normal; font-size: 10px;
   letter-spacing: .09em; text-transform: uppercase; color: var(--text-3);
 }
-.cd-passed { font-family: 'Lora', Georgia, serif; font-size: 22px; color: var(--tone-1); }
-/* photo tile */
-/* Taken out of flow so the image fills the tile the grid gives it rather than
-   dictating its own height. Biased upward because faces sit high in most
-   of these, and the collection is a mix of portrait and landscape. */
-/* Two stacked layers that crossfade. A single fading image leaves the tile
-   blank for the length of the fade, which reads as a flicker every rotation. */
-.t-photo img {
+.cd-passed { font-family: 'Lora', Georgia, serif; font-size: clamp(26px, 8vw, 40px); color: var(--tone-1); }
+/* ── the photograph ────────────────────────────────────
+   Two stacked layers that crossfade: a single fading image leaves the frame
+   blank for the length of the fade, which reads as a flicker every rotation.
+   Biased upward because faces sit high in most of these. */
+.photo-band {
+  position: relative; display: block; width: 100%; padding: 0; overflow: hidden;
+  height: clamp(230px, 58vw, 380px);
+  border: 1px solid var(--border); border-radius: 18px;
+  background: var(--sidebar-bg); box-shadow: var(--shadow-sm);
+}
+.photo-band img {
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover; object-position: center 32%;
   display: block;
   opacity: 0; transition: opacity .6s ease;
 }
-.t-photo img.shown { opacity: 1; }
+.photo-band img.shown { opacity: 1; }
 .photo-cap {
   position: absolute; left: 14px; bottom: 14px;
   background: var(--bg); color: var(--text-2);
   border: 1px solid var(--border); border-radius: 20px;
   padding: 5px 12px; font-size: 12px;
 }
-/* note tile */
+/* ── his latest note ─────────────────────────────────── */
+.quote-block {
+  display: flex; flex-direction: column; gap: 7px;
+  padding: 2px 0 2px 16px;
+  border: none; border-left: 3px solid var(--tone-5);
+  background: none; text-align: left; color: var(--text);
+}
+.quote-block .tile-label { color: var(--tone-5); }
+.quote-block .tile-foot { margin-top: 2px; }
 .note-quote {
   font-family: 'Lora', Georgia, serif;
-  font-size: 18px; line-height: 1.5; font-style: italic; color: var(--text);
+  font-size: clamp(17px, 4.6vw, 20px); line-height: 1.5; font-style: italic; color: var(--text);
 }
-/* right-now tile */
-.now-text { font-size: 14.5px; line-height: 1.55; color: var(--text-2); }
-/* together tile - full width, its own row */
-/* Full width and short on content, so centre it rather than letting it sit at
-   the top of a row sized for the taller tiles. */
-.t-together { grid-column: span 2; justify-content: center; gap: 11px; }
-.tog-body { display: flex; align-items: baseline; gap: 9px; flex-wrap: wrap; }
-.tog-big {
-  font-family: 'Lora', Georgia, serif;
-  font-size: 34px; font-weight: 600; line-height: 1;
-  font-variant-numeric: tabular-nums; color: var(--tone-4);
+/* ── the list ──────────────────────────────────────────
+   One open item at random, so it reads as a prompt rather than a score. The
+   number underneath is the score. */
+.list-next {
+  font-family: 'Lora', Georgia, serif; font-size: clamp(18px, 5vw, 21px); font-weight: 600;
+  color: var(--text); line-height: 1.25;
 }
-.tog-unit { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
-.tog-next { margin-left: auto; font-size: 13px; color: var(--text-3); }
 .tog-track {
   height: 4px; border-radius: 4px; margin-top: 4px;
   background: var(--border); overflow: hidden;
 }
-.tog-fill {
+.tog-fill, .list-fill {
   display: block; height: 100%; width: 0; border-radius: 4px;
-  background: linear-gradient(90deg, var(--tone-1), var(--tone-4));
   transition: width .8s cubic-bezier(.22,.7,.3,1);
 }
-.t-together .tile-label { color: var(--tone-4); }
-/* ── THE LIST ───────────────────────────────────────────────────
-   Tile shows one open item at random, so it reads as a prompt rather than a
-   score. The number underneath is the score. */
-.t-list { grid-column: span 2; justify-content: center; gap: 9px; }
-.t-list .tile-label { color: var(--tone-3); }
-.list-next {
-  font-family: 'Lora', Georgia, serif; font-size: 21px; font-weight: 600;
-  color: var(--text); line-height: 1.25;
+.tog-fill { background: linear-gradient(90deg, var(--tone-1), var(--tone-4)); }
+.list-fill { background: linear-gradient(90deg, var(--tone-3), var(--tone-2)); }
+/* ── the small numbers, in one strip ─────────────────────── */
+.stats {
+  display: flex; flex-direction: column;
+  border: 1px solid var(--border); border-radius: 16px;
+  background: var(--sidebar-bg); box-shadow: var(--shadow-sm); overflow: hidden;
 }
-.list-fill {
-  display: block; height: 100%; width: 0; border-radius: 4px;
-  background: linear-gradient(90deg, var(--tone-3), var(--tone-2));
-  transition: width .8s cubic-bezier(.22,.7,.3,1);
+.stat {
+  position: relative; overflow: hidden;
+  display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px;
+  padding: 15px 18px; text-align: left;
+  border: none; border-bottom: 1px solid var(--border);
+  background: none; color: var(--text); font-family: var(--font);
+}
+.stat:last-child { border-bottom: none; }
+.stat-num {
+  font-family: 'Lora', Georgia, serif; font-size: 30px; font-weight: 600;
+  line-height: 1; font-variant-numeric: tabular-nums; color: var(--tone-4);
+}
+.t-bday .stat-num { color: var(--tone-2); }
+.stat-unit { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
+.stat-sub { margin-left: auto; font-size: 12.5px; color: var(--text-3); }
+.stat .tog-track { flex-basis: 100%; margin-top: 9px; }
+.bday-body { display: flex; align-items: baseline; gap: 10px; }
+.bday-today { font-family: 'Lora', Georgia, serif; font-size: 21px; font-weight: 600; color: var(--tone-2); }
+/* ── things to read ──────────────────────────────────── */
+.reads { display: flex; flex-direction: column; gap: 9px; }
+.section-h {
+  font-family: 'Lora', Georgia, serif; font-size: 15px; font-weight: 600;
+  color: var(--text-2); padding-left: 2px;
+}
+.read-list {
+  display: grid; grid-template-columns: 1fr;
+  border: 1px solid var(--border); border-radius: 16px;
+  background: var(--sidebar-bg); box-shadow: var(--shadow-sm); overflow: hidden;
+}
+.read {
+  display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 3px 12px;
+  padding: 14px 18px; text-align: left;
+  border: none; border-bottom: 1px solid var(--border);
+  background: none; color: var(--text);
+}
+.read:last-child { border-bottom: none; }
+.read-title { font-family: 'Lora', Georgia, serif; font-size: 17.5px; font-weight: 600; line-height: 1.2; }
+.read-desc { grid-column: 1; font-size: 12.5px; line-height: 1.4; color: var(--text-3); }
+.read-go { grid-row: 1 / 3; grid-column: 2; color: var(--text-3); font-size: 16px; }
+/* ── the way in ──────────────────────────────────────── */
+.play-band {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
+  padding: 16px 18px; text-align: left; color: var(--text);
+  border: 1px solid var(--border); border-radius: 18px;
+  background: linear-gradient(115deg, var(--sidebar-bg) 40%, var(--accent-faint));
+  box-shadow: var(--shadow-sm);
+}
+.play-sprites { display: flex; align-items: flex-end; gap: 2px; flex: none; }
+.play-sprites canvas {
+  display: block; width: 40px; height: 55px;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+}
+.play-copy { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1 1 190px; }
+.play-title { font-family: 'Lora', Georgia, serif; font-size: 18.5px; font-weight: 600; }
+.play-desc { font-size: 12.5px; line-height: 1.4; color: var(--text-3); }
+.play-go {
+  flex: none; margin-left: auto;
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--on-accent); background: var(--tone-1); border-radius: 22px;
 }
 .bk-head { margin-bottom: 10px; }
 .bk-count {
@@ -652,24 +698,6 @@ button.tile:active { transform: translateY(0); }
   font-family: var(--font); font-size: 11.5px; letter-spacing: .03em;
   color: var(--text-3); text-decoration: none;
 }
-/* birthday tile */
-.bday-body { display: flex; align-items: baseline; gap: 9px; }
-.bday-big {
-  font-family: 'Lora', Georgia, serif;
-  font-size: 34px; font-weight: 600; line-height: 1;
-  font-variant-numeric: tabular-nums; color: var(--tone-2);
-}
-.bday-unit { font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: var(--text-3); }
-.bday-small { margin-left: auto; font-size: 13px; color: var(--text-3); font-variant-numeric: tabular-nums; }
-.bday-today { font-family: 'Lora', Georgia, serif; font-size: 21px; font-weight: 600; color: var(--tone-2); }
-/* link tiles */
-.link-kicker { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
-.t-link:nth-of-type(4n+1) .link-kicker { color: var(--tone-1); }
-.t-link:nth-of-type(4n+2) .link-kicker { color: var(--tone-2); }
-.t-link:nth-of-type(4n+3) .link-kicker { color: var(--tone-3); }
-.t-link:nth-of-type(4n)   .link-kicker { color: var(--tone-4); }
-.link-title { font-family: 'Lora', Georgia, serif; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.2; }
-.link-desc { font-size: 12.5px; line-height: 1.4; color: var(--text-3); }
 /* ── SHEET ──────────────────────────────────────────────────────── */
 /* The [hidden] attribute only sets display:none at user-agent weight, so the
    display rules below would override it and leave the panel permanently open.
@@ -1135,39 +1163,43 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
 /* Wide desktop. A 1060px cap is a reading width - right for prose, wrong for a
    board of tiles, which just left big empty gutters. Going to 12 columns lets
    the tiles rearrange three-across instead of only getting wider. */
+@media (min-width: 900px) {
+  .page-main { gap: 22px; }
+  /* the photograph beside his note, his day beside the list, the reads in two
+     columns: the page keeps its order, it just stops being one column */
+  .duo { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; align-items: stretch; }
+  .photo-band { height: auto; min-height: 330px; }
+  /* the date sits at the end of the line rather than under it: the hero is wide
+     here, and the numbers on their own left it heavy on one side */
+  .hero { flex-direction: row; flex-wrap: wrap; align-items: baseline; column-gap: 34px; }
+  .hero .tile-label { flex-basis: 100%; }
+  .hero-foot { margin-left: auto; }
+  .quote-block { justify-content: center; }
+  .pair { display: grid; grid-template-columns: 1fr 1fr; }
+  .stats { flex-direction: row; }
+  .stat { flex: 1; border-bottom: none; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+  .read-list { grid-template-columns: 1fr 1fr; }
+  .read:nth-child(odd) { border-right: 1px solid var(--border); }
+  .read:nth-last-child(-n+2) { border-bottom: none; }
+}
 @media (min-width: 1200px) {
-  .page { max-width: 1600px; }
-  .bento { grid-template-columns: repeat(12, 1fr); grid-auto-rows: minmax(170px, auto); gap: 16px; }
-  .t-visit { grid-column: span 4; }
-  .t-photo { grid-column: span 4; grid-row: span 2; }
-  .t-note  { grid-column: span 4; }
-  .t-now   { grid-column: span 4; }
-  .t-bday  { grid-column: span 4; }
-  .t-together, .t-list { grid-column: span 6; }
-  .tile-links { grid-template-columns: repeat(6, 1fr); gap: 16px; }
+  /* a reading width, not a wall: these sections are meant to be read down */
+  .page { max-width: 1180px; }
   .mark-title { font-size: 34px; }
-  .cdcell b { font-size: 38px; }
-  .note-quote { font-size: 19px; }
+  .note-quote { font-size: 20px; }
 }
 @media (max-width: 900px) {
-  .bento { grid-template-columns: repeat(2, 1fr); }
-  .t-photo { grid-row: span 1; min-height: 220px; }
   .mark-title { font-size: 26px; }
 }
 @media (max-width: 560px) {
   .page { padding: 0 14px calc(24px + env(safe-area-inset-bottom)); }
   .mantel-hdr { padding: 24px 0 16px; }
-  .bento { grid-template-columns: 1fr; gap: 12px; }
-  .tile-links { grid-template-columns: 1fr; gap: 12px; }
-  .t-visit, .t-photo, .t-note, .t-now, .t-bday,
-  .t-together, .t-list, .t-link { grid-column: span 1; }
-  .t-photo { min-height: 260px; }
-  .t-link { min-height: 96px; }
-  .cdrow { gap: 14px; }
-  .cdcell b { font-size: 29px; }
-  /* the anniversary line takes its own line under the count, left-aligned,
-     rather than wrapping to a lone right-aligned line */
-  .tog-next { flex-basis: 100%; margin-left: 0; }
+  .page-main { gap: 14px; }
+  .duo, .pair { gap: 14px; }
+  /* the trailing line takes its own line under the number, left-aligned,
+     rather than wrapping to a lone right-aligned one */
+  .stat-sub { flex-basis: 100%; margin-left: 0; }
   .sheet { top: 6vh; left: 0; right: 0; width: 100%;
            border-left: none; border-top: 1px solid var(--border);
            border-radius: 18px 18px 0 0; }
@@ -1183,7 +1215,10 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .crew:hover { border-color: var(--tone-1); background: var(--sidebar-bg); }
   .crew:hover .crew-hint { color: var(--tone-1); }
   .icon-btn:hover { background: var(--card-hover); color: var(--text); border-color: var(--tone-4); }
-  button.tile:hover { transform: translateY(-2px); background: var(--card-hover); border-color: var(--tone-4); }
+  button.block:hover, .play-band:hover { transform: translateY(-2px); background: var(--card-hover); border-color: var(--tone-4); }
+  .photo-band:hover { border-color: var(--tone-4); }
+  .quote-block:hover { border-left-color: var(--accent-hover); }
+  button.read:hover, button.stat:hover { background: var(--card-hover); }
   .party-bar-off:hover { background: var(--accent-hover); }
   .bridge-again:hover  { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,122,42,.42); }
 }
@@ -1192,7 +1227,7 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   .leaf-layer, .confetti-layer, .balloon-layer { display: none !important; }
   /* these use fill-mode both, so they must be cancelled rather than left
      paused at their opacity:0 start frame */
-  .tile, .sheet, .sheet-scrim { animation: none !important; }
+  .page-main > *, .sheet, .sheet-scrim { animation: none !important; }
   /* startBridge already picks the static aftermath, this is the backstop.
      The scene has a lot of moving parts, so cancel the lot rather than
      naming them and leaving one behind. */
@@ -1201,9 +1236,9 @@ figure.chat-img img { width: 100%; height: auto; display: block; border-radius: 
   [data-party="on"] .party-bar::after,
   [data-party="on"] .t-bday::before,
   [data-party="on"] .party-bar-dots span { animation: none !important; }
-  button.tile { transition: none; }
-  button.tile:hover { transform: none; }
-  .t-photo img { transition: none; }
+  button.block, button.read, .play-band { transition: none; }
+  button.block:hover, .play-band:hover { transform: none; }
+  .photo-band img { transition: none; }
 }
 
 /* On a phone the sheet is anchored to the bottom of the screen, so it rises from

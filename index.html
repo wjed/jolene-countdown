@@ -47,101 +47,119 @@
     </button>
   </header>
 
-  <main class="bento">
+  <main class="page-main">
 
-    <!-- NEXT VISIT -->
-    <section class="tile t-visit">
-      <span class="tile-label">Next visit</span>
+    <!-- WHEN SHE SEES HIM NEXT. The one thing that leads the page. -->
+    <section class="hero t-visit" aria-labelledby="visitLabel">
+      <span class="tile-label" id="visitLabel">Next visit</span>
       <div class="cdrow" id="visitCd">
         <span class="cdcell"><b id="v-d">--</b><i>days</i></span>
         <span class="cdcell"><b id="v-h">--</b><i>hrs</i></span>
         <span class="cdcell"><b id="v-m">--</b><i>min</i></span>
         <span class="cdcell"><b id="v-s">--</b><i>sec</i></span>
       </div>
-      <span class="tile-foot" id="visitDate"></span>
+      <span class="hero-foot" id="visitDate"></span>
     </section>
 
-    <!-- PHOTO -->
-    <button class="tile t-photo" data-sheet="photos" aria-label="Open all photos">
-      <img id="photoImg" alt="Will and Jolene" decoding="async">
-      <img id="photoImgB" alt="" aria-hidden="true" decoding="async">
-      <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
-    </button>
+    <div class="duo">
+      <!-- PHOTO -->
+      <button class="photo-band t-photo" data-sheet="photos" aria-label="Open all photos">
+        <img id="photoImg" alt="Will and Jolene" decoding="async">
+        <img id="photoImgB" alt="" aria-hidden="true" decoding="async">
+        <span class="photo-cap"><span id="photoCount"></span> photos <span aria-hidden="true">&rarr;</span></span>
+      </button>
 
-    <!-- LATEST NOTE -->
-    <button class="tile t-note" data-sheet="notes">
-      <span class="tile-label">Latest note from Will</span>
-      <p class="note-quote" id="noteQuote"></p>
-      <span class="tile-foot" id="noteDate"></span>
-    </button>
-
-    <!-- WILL RIGHT NOW -->
-    <section class="tile t-now">
-      <span class="tile-label">Will right now</span>
-      <p class="now-text" id="nowText"></p>
-    </section>
-
-    <!-- BIRTHDAY -->
-    <button class="tile t-bday" id="bdayTile">
-      <span class="tile-label">Her birthday</span>
-      <div class="bday-body" id="bdayBody"></div>
-      <span class="tile-foot" id="bdayFoot"></span>
-      <span class="sr-only">Turns on birthday mode</span>
-    </button>
-
-    <!-- TOGETHER -->
-    <section class="tile t-together">
-      <span class="tile-label">Together</span>
-      <div class="tog-body">
-        <span class="tog-big" id="togDays">--</span>
-        <span class="tog-unit">days</span>
-        <span class="tog-next" id="togNext"></span>
-      </div>
-      <div class="tog-track" aria-hidden="true"><span class="tog-fill" id="togFill"></span></div>
-    </section>
-
-    <!-- THE LIST -->
-    <button class="tile t-list" data-sheet="bucket">
-      <span class="tile-label">The list</span>
-      <p class="list-next" id="listNext"></p>
-      <div class="tog-track" aria-hidden="true"><span class="list-fill" id="listFill"></span></div>
-      <span class="tile-foot" id="listFoot"></span>
-    </button>
-
-    <!-- LINK TILES. Wrapped so any number of them divides evenly across the
-         grid instead of having to match the column count. -->
-    <div class="tile-links">
-    <button class="tile t-link" data-sheet="her">
-      <span class="link-kicker">details</span>
-      <span class="link-title">About Jolene</span>
-      <span class="link-desc" id="herFact"></span>
-    </button>
-    <button class="tile t-link" data-sheet="story">
-      <span class="link-kicker">background</span>
-      <span class="link-title">Our story</span>
-      <span class="link-desc">how it started, and the distance</span>
-    </button>
-    <button class="tile t-link" data-sheet="timeline">
-      <span class="link-kicker">dates</span>
-      <span class="link-title">Timeline</span>
-      <span class="link-desc">2021 to 2028</span>
-    </button>
-    <button class="tile t-link" data-sheet="next">
-      <span class="link-kicker">ahead</span>
-      <span class="link-title">What's next</span>
-      <span class="link-desc">no rush</span>
-    </button>
-    <button class="tile t-link" data-sheet="sweet">
-      <span class="link-kicker">from will</span>
-      <span class="link-title">Why this exists</span>
-      <span class="link-desc">the short version</span>
-    </button>
-    <button class="tile t-link" data-sheet="bridge">
-      <span class="link-kicker">jolene</span>
-      <span class="link-title">That bridge</span>
-      <span class="link-desc">burn it</span>
-    </button>
+      <!-- LATEST NOTE. A quote against a rule rather than another card: the
+           page needs somewhere to rest between panels. -->
+      <button class="quote-block t-note" data-sheet="notes">
+        <span class="tile-label">Latest note from Will</span>
+        <p class="note-quote" id="noteQuote"></p>
+        <span class="tile-foot" id="noteDate"></span>
+      </button>
     </div>
+
+    <div class="pair">
+      <!-- WILL RIGHT NOW -->
+      <section class="block t-now">
+        <span class="tile-label">Will right now</span>
+        <p class="now-text" id="nowText"></p>
+      </section>
+
+      <!-- THE LIST -->
+      <button class="block t-list" data-sheet="bucket">
+        <span class="tile-label">The list</span>
+        <p class="list-next" id="listNext"></p>
+        <div class="tog-track" aria-hidden="true"><span class="list-fill" id="listFill"></span></div>
+        <span class="tile-foot" id="listFoot"></span>
+      </button>
+    </div>
+
+    <!-- THE SMALL NUMBERS. A line each: they are context, not headlines, and
+         only the visit counts down by the second. -->
+    <section class="stats">
+      <section class="stat t-together">
+        <span class="stat-num" id="togDays">--</span>
+        <span class="stat-unit">days together</span>
+        <span class="stat-sub" id="togNext"></span>
+        <div class="tog-track" aria-hidden="true"><span class="tog-fill" id="togFill"></span></div>
+      </section>
+      <button class="stat t-bday" id="bdayTile">
+        <span class="bday-body" id="bdayBody"></span>
+        <span class="stat-sub" id="bdayFoot"></span>
+        <span class="sr-only">Turns on birthday mode</span>
+      </button>
+    </section>
+
+    <!-- THINGS TO READ. One list, rather than six cards competing with the
+         counters above them. -->
+    <section class="reads">
+      <h2 class="section-h">More about us</h2>
+      <div class="read-list">
+        <button class="read" data-sheet="her">
+          <span class="read-title">About Jolene</span>
+          <span class="read-desc" id="herFact"></span>
+          <span class="read-go" aria-hidden="true">&rarr;</span>
+        </button>
+        <button class="read" data-sheet="story">
+          <span class="read-title">Our story</span>
+          <span class="read-desc">how it started, and the distance</span>
+          <span class="read-go" aria-hidden="true">&rarr;</span>
+        </button>
+        <button class="read" data-sheet="timeline">
+          <span class="read-title">Timeline</span>
+          <span class="read-desc">2021 to 2028</span>
+          <span class="read-go" aria-hidden="true">&rarr;</span>
+        </button>
+        <button class="read" data-sheet="next">
+          <span class="read-title">What's next</span>
+          <span class="read-desc">no rush</span>
+          <span class="read-go" aria-hidden="true">&rarr;</span>
+        </button>
+        <button class="read" data-sheet="sweet">
+          <span class="read-title">Why this exists</span>
+          <span class="read-desc">the short version</span>
+          <span class="read-go" aria-hidden="true">&rarr;</span>
+        </button>
+        <button class="read" data-sheet="bridge">
+          <span class="read-title">That bridge</span>
+          <span class="read-desc">burn it</span>
+          <span class="read-go" aria-hidden="true">&rarr;</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- THE WAY IN. It was a corner button with an 8.5px label. -->
+    <button class="play-band" id="playBtn" type="button">
+      <span class="play-sprites" aria-hidden="true">
+        <canvas class="crew-px" id="playWill" width="16" height="20"></canvas>
+        <canvas class="crew-px" id="playJolene" width="16" height="20"></canvas>
+      </span>
+      <span class="play-copy">
+        <span class="play-title">The pixel world</span>
+        <span class="play-desc">fourteen places you know, the two of you in pixels, and a dog that follows you around</span>
+      </span>
+      <span class="play-go">press start</span>
+    </button>
 
   </main>
 
@@ -2756,14 +2774,15 @@ function renderBdayTile() {
       foot.textContent = b.age + ' today';
       return;
     }
+    // Days, not seconds. Two counters ticking away beside each other meant
+    // neither of them read as the one that mattered.
     body.innerHTML =
-      '<span class="bday-big">'+b.d+'</span><span class="bday-unit">days</span>' +
-      '<span class="bday-small">'+pad(b.h)+':'+pad(b.m)+':'+pad(b.s)+'</span>';
-    foot.textContent = 'september 24 · turning ' + b.age;
+      '<span class="stat-num">' + b.d + '</span>' +
+      '<span class="stat-unit">day' + (b.d === 1 ? '' : 's') + ' to her birthday</span>';
+    foot.textContent = 'september 24 \u00b7 turning ' + b.age;
   }
-  tick(); setInterval(tick, 1000);
+  tick(); setInterval(tick, 60000);
 }
-
 function renderNoteTile() {
   var notes = noteList();
   if (!notes.length) return;
@@ -2850,7 +2869,7 @@ function renderHerTile() {
 // starts at opacity 0, so a stalled frame would otherwise leave the board
 // blank; clearing the class guarantees the tiles end up visible either way.
 function playTileIntro() {
-  var bento = document.querySelector('.bento');
+  var bento = document.querySelector('.page-main');
   if (!bento) return;
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced) return;
@@ -2891,6 +2910,13 @@ document.addEventListener('DOMContentLoaded', function() {
   renderHerTile();
   renderListTile();
   renderCrew();
+  // the second way in, at the foot of the page
+  var play = document.getElementById('playBtn');
+  if (play) {
+    play.addEventListener('click', pxEnter);
+    pxPaintBadge(document.getElementById('playWill'), 'crop_down', 'will');
+    pxPaintBadge(document.getElementById('playJolene'), 'long_down', 'jolene');
+  }
   buildLeaves();
   playTileIntro();
 
