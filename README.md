@@ -145,11 +145,25 @@ a long name fails the build rather than running off the edge of the panel.
 Small feedback, from the same reference: a puff of dust under a running foot, a
 green one out of tall grass, and walking on the spot, with a thud if sound is on, when you walk into a wall.
 
+### What gets said
+
+Every line in the world is about Jolene, Will, or the two of them, or it is not
+said at all. The lines come from what the rest of the site already knows: how
+they met, the timeline, his notes, her details, the list, and the photographs.
+No invented habits, orders or opinions.
+
+Only people who actually know them speak: Elsie and Sophie, her classmates, his
+mom, Will, a coworker, and the dogs. Shop staff and passers-by are there for
+the life of the place and have nothing to say (`None` for their lines in
+`genworld.py`), so they don't look up with a `!` or answer when spoken to. The
+only water with a line is the lake, and the line is night swimming, off the
+list.
+
 ### People, and the small stuff
 
-- **Bubbles over heads**, the way Stardew does it: people look up with a `!` the
-  first time she comes near on a visit, a dog gets a heart, and finding
-  something puts a note over her own head.
+- **Bubbles over heads**, the way Stardew does it: people with something to say
+  look up with a `!` the first time she comes near on a visit, a dog gets a
+  heart, and finding something puts a note over her own head.
 - **Everyone blinks**, each on their own rhythm, worked out from the clock and
   their name rather than a timer per person.
 - **A dog follows in her footsteps**, like a walking Pokemon in HeartGold: each
