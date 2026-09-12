@@ -37,7 +37,7 @@
 
   <header class="mantel-hdr">
     <div class="mark">
-      <span class="mark-title">will + jolene</span>
+      <h1 class="mark-title">will + jolene</h1>
       <span class="mark-sub">together since january 17, 2026</span>
     </div>
     <button class="crew" id="crewBtn" type="button" aria-label="Open the pixel world">
@@ -416,7 +416,13 @@ function md(text) {
   var out = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   out = out.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
   out = out.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  out = out.replace(/(?<!!)\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  // Not a lookbehind: Safari only learned those in 16.4, and a regex it cannot
+  // parse takes the whole script down with it. An image is ![alt](src), so skip
+  // a bracket with a ! in front of it.
+  out = out.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(m, text, url, at, whole) {
+    if (at > 0 && whole.charAt(at - 1) === '!') return m;
+    return '<a href="' + url + '" target="_blank" rel="noopener">' + text + '</a>';
+  });
   var lines = out.split('\n'), result = [], i = 0;
   while (i < lines.length) {
     var line = lines[i];
@@ -2177,6 +2183,16 @@ function pxKeyUp(e) {
   if (i > -1) pxState.held.splice(i, 1);
 }
 
+// A rotation reports its new size before the layout has settled, so fitting
+// once on the resize left the canvas at the size it had in the old orientation.
+// Fit now, and again once the browser has caught up.
+var pxFitLater = 0;
+var pxStageObs = null;
+function pxRefit() {
+  pxFit();
+  clearTimeout(pxFitLater);
+  pxFitLater = setTimeout(function() { pxFit(); setTimeout(pxFit, 280); }, 120);
+}
 function pxFit() {
   if (!pxState) return;
   var wrap = document.getElementById('pxStage');
@@ -2376,6 +2392,7 @@ function pxDrawMenu(ctx, s) {
 // straight sweep, the way the games this is copying did their transitions.
 var PX_WIPE = 420;
 var pxWiping = false;
+var pxEnterUntil = 0;
 
 function pxReduced() {
   return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -2486,7 +2503,19 @@ function pxLetGo() {
   s.held = []; s.run = false;
 }
 
-function pxEnter() { pxWakeAudio(); pxTransition(pxOpen); }
+function pxEnter() {
+  pxWakeAudio();
+  // Pressing start while the last wipe was still running did nothing at all.
+  // Wait for it to finish rather than swallowing the press - but not forever.
+  if (pxWiping) {
+    if (!pxEnterUntil) pxEnterUntil = performance.now() + 2500;
+    if (performance.now() < pxEnterUntil) { setTimeout(pxEnter, 120); return; }
+    pxEnterUntil = 0;
+    return;
+  }
+  pxEnterUntil = 0;
+  pxTransition(pxOpen);
+}
 function pxLeave() { if (pxState) pxTransition(pxClose); }
 
 function pxOpen() {
@@ -2512,9 +2541,18 @@ function pxOpen() {
   document.getElementById('pxPlace').textContent = PX_AREAS[pxState.area].name;
   pxState.tick = setInterval(pxTick, 40);
   pxFit();
+  // Fit whenever the stage itself changes size, whoever moved it: a rotation, a
+  // phone toolbar sliding away, a window drag. The resize event alone was not
+  // enough - on a rotation it arrives before the new layout, so the canvas kept
+  // the size it had in the old orientation.
+  if (window.ResizeObserver) {
+    pxStageObs = new ResizeObserver(function() { pxFit(); });
+    pxStageObs.observe(document.getElementById('pxStage'));
+  }
   document.addEventListener('keydown', pxKeyDown);
   document.addEventListener('keyup', pxKeyUp);
-  window.addEventListener('resize', pxFit);
+  window.addEventListener('resize', pxRefit);
+  window.addEventListener('orientationchange', pxRefit);
   window.addEventListener('blur', pxLetGo);
   if (typeof setPageInert === 'function') setPageInert(true);
   document.addEventListener('visibilitychange', pxLetGo);
@@ -2529,7 +2567,10 @@ function pxClose() {
   pxControlsLetGo();
   document.removeEventListener('keydown', pxKeyDown);
   document.removeEventListener('keyup', pxKeyUp);
-  window.removeEventListener('resize', pxFit);
+  window.removeEventListener('resize', pxRefit);
+  window.removeEventListener('orientationchange', pxRefit);
+  clearTimeout(pxFitLater);
+  if (pxStageObs) { pxStageObs.disconnect(); pxStageObs = null; }
   window.removeEventListener('blur', pxLetGo);
   document.removeEventListener('visibilitychange', pxLetGo);
   pxState = null;
