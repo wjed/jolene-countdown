@@ -541,7 +541,9 @@ button.block:active, .play-band:active, button.read:active { transform: translat
    Biased upward because faces sit high in most of these. */
 .photo-band {
   position: relative; display: block; width: 100%; padding: 0; overflow: hidden;
-  height: clamp(230px, 58vw, 380px);
+  /* capped against the height too, or a phone held sideways gives it the whole
+     screen and she scrolls through a photograph to reach the page */
+  height: clamp(230px, min(58vw, 62vh), 380px);
   border: 1px solid var(--border); border-radius: 18px;
   background: var(--sidebar-bg); box-shadow: var(--shadow-sm);
 }

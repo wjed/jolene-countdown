@@ -65,7 +65,8 @@ they don't turn pink along with everything else.
 
 ## The pixel world
 
-Pressing the two sprites in the masthead wipes the screen out and opens a
+Pressing the two sprites in the masthead, or the band at the foot of the page,
+wipes the screen out and opens a
 240x160 overworld — Game Boy Advance resolution, integer-scaled to fill the
 viewport. Thirteen areas: her apartment, campus, the drive south, Northern
 Virginia and seven shops you can walk into, plus his house and Scale AI.
