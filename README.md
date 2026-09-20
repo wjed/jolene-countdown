@@ -64,12 +64,16 @@ they don't turn pink along with everything else.
 
 Pressing the two sprites in the masthead wipes the screen out and opens a
 240x160 overworld — Game Boy Advance resolution, integer-scaled to fill the
-viewport. Thirteen areas: her apartment, campus, the drive south, Northern
-Virginia and seven shops you can walk into, plus his house and Scale AI.
+viewport. Fifteen areas: her apartment, campus, the drive south, Northern
+Virginia, Lake Anna, eight places you can walk into - the Kennedy Center among
+them - plus his house and Scale AI.
 
 The maps, tiles, sprites, font and cast are all generated rather than written
-by hand. The generators live outside this repo and emit one block of data that
-gets spliced into `index.html`:
+by hand. The generators lived outside this repo and emitted one block of data
+that was spliced into `index.html`. They are gone now, so that spliced data is
+the only copy: a new area is edited into `index.html` by hand, and everything it
+touches - the tile art, the maps, the roam masks - kept consistent by hand with
+it. What they did:
 
 - `sprites.py` — 16x22 characters as pixel rows. Six human silhouettes and a
   dog; everyone else is one of those with a different palette.
@@ -133,14 +137,17 @@ opens a menu drawn in the world:
 
 - **The list** — the bucket list the rest of the site is about, ticked off,
   read straight from the same `BUCKET` data the page uses.
-- **Places** — all fourteen areas, ticked as you reach them, the one you are
+- **Places** — all fifteen areas, ticked as you reach them, the one you are
   standing in picked out, and a line saying where that is. She said more than
   once that she never knew where she was.
 - **Moments** — one thing to find in every area, picked up by walking onto it.
 - **Leave.**
 
-`genworld.py` asserts every place name fits the menu column, so a new area with
-a long name fails the build rather than running off the edge of the panel.
+Places and Moments are two columns of eight. A fifteenth area was what turned
+them from seven, and the panel has no room for a seventeenth, so adding one
+means paging that list rather than squeezing another row in. Every name has to
+measure under the column width too - `genworld.py` used to fail the build over
+that, and now nothing does.
 
 Small feedback, from the same reference: a puff of dust under a running foot, a
 green one out of tall grass, and walking on the spot, with a thud if sound is on, when you walk into a wall.
