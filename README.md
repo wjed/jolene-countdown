@@ -11,7 +11,9 @@ No build step, no framework, no dependencies. Open `index.html` and it works.
 |------|------------|
 | `index.html` | The whole site — markup, content and one inline `<script>` |
 | `css/style.css` | Every style, including both palettes |
-| `images/` | The photos, 80 of them |
+| `images/` | The photographs, 82 of them, full size |
+| `images/thumbs/`, `images/web/` | What the page actually loads — made by `tools/photos.py` |
+| `tools/photos.py` | Rebuilds those two after photographs are added |
 | `school_logos/`, `gyms/`, `fonts/` | Left over from an older version, unused |
 
 ## The page
@@ -53,6 +55,30 @@ The gallery list in `QA.photos` is generated from what is actually on disk. If
 you add or rename photos, it has to be regenerated or the page will point at
 files that no longer exist.
 
+### Two smaller copies of each one
+
+The originals are keepsakes at up to a megabyte each, and the page never loads
+them. `tools/photos.py` makes `images/thumbs` (480px, for the gallery grid)
+and `images/web` (1000px, for the photograph on the front page and the full
+view). Run it after adding photographs:
+
+```
+python tools/photos.py
+```
+
+It matters more than it sounds. The photograph on the front changes every
+seven seconds; at full size that was half a megabyte each time, on her phone,
+on her data. Scrolling the whole gallery was forty megabytes. It is now about
+110KB a change and 27KB a thumbnail. Paths are derived by name, so a photograph
+whose copies were never built falls back to the original rather than leaving a
+hole in the grid.
+
+### Tapping one
+
+The gallery is thumbnails, and a tap opens the photograph over the top of it:
+arrows, the arrow keys or a swipe for the next one, escape or the space around
+it to come back. It shows the `web` copy, not the original.
+
 ## Birthday mode
 
 Tapping the birthday line sets `data-party="on"` on `<html>`. That swaps the
@@ -64,9 +90,13 @@ they don't turn pink along with everything else.
 
 Pressing the two sprites in the masthead wipes the screen out and opens a
 240x160 overworld — Game Boy Advance resolution, integer-scaled to fill the
-viewport. Fifteen areas: her apartment, campus, the drive south, Northern
-Virginia, Lake Anna, eight places you can walk into - the Kennedy Center among
-them - plus his house and Scale AI.
+viewport. Eighteen areas: her apartment, campus, the drive south, Northern
+Virginia, Lake Anna, the shops and the photobooth, his house and Scale AI —
+and the way they got to the concert in September: the station on the Virginia
+map, the platform under it, the train itself, and the street in DC with the
+Kennedy Center on it and the Potomac behind it. The hall used to stand next to
+the photobooth in Virginia, which is the wrong side of the river; it is where
+it belongs now, and getting to it is a ride.
 
 The maps, tiles, sprites, font and cast are all generated rather than written
 by hand. The generators lived outside this repo and emitted one block of data
@@ -137,17 +167,18 @@ opens a menu drawn in the world:
 
 - **The list** — the bucket list the rest of the site is about, ticked off,
   read straight from the same `BUCKET` data the page uses.
-- **Places** — all fifteen areas, ticked as you reach them, the one you are
-  standing in picked out, and a line saying where that is. She said more than
-  once that she never knew where she was.
+- **Places** — every area, ticked as you reach them, the one you are standing
+  in picked out, and a line saying where that is. She said more than once that
+  she never knew where she was.
 - **Moments** — one thing to find in every area, picked up by walking onto it.
 - **Leave.**
 
-Places and Moments are two columns of eight. A fifteenth area was what turned
-them from seven, and the panel has no room for a seventeenth, so adding one
-means paging that list rather than squeezing another row in. Every name has to
-measure under the column width too - `genworld.py` used to fail the build over
-that, and now nothing does.
+Places and Moments are two columns of eight, sixteen to a screen, and a page at
+a time past that — the eighteenth area is what made paging necessary, and it is
+the same up-and-down the list page already used, with the same little arrows.
+A name still has to measure under `PX_NAMEW` or it runs into the next column;
+`genworld.py` used to fail the build over that, and now nothing does, which is
+why Reston Town Center is listed as Reston.
 
 Small feedback, from the same reference: a puff of dust under a running foot, a
 green one out of tall grass, and walking on the spot, with a thud if sound is on, when you walk into a wall.
