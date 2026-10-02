@@ -272,8 +272,10 @@ try {
 // ── COUNTDOWN ─────────────────────────────────────────────────────
 
 var NEXT_VISIT = new Date('2026-10-16T22:00:00Z'); // Oct 16, 6pm EDT (UTC-4)
-// How long a visit lasts. For this many days after NEXT_VISIT the tile says
-// it's here; after that it stops saying so and waits for the next date.
+// How long a visit lasts, in calendar days counting the one it starts on: 3 is
+// Friday, Saturday and Sunday. Until NEXT_VISIT the tile counts down; from then
+// until midnight at the end of the last day it says it's here; after that it
+// stops saying so and waits for the next date.
 var NEXT_VISIT_DAYS = 3;
 var NEXT_VISIT_LABEL = 'October 16, 2026 · 6pm';
 function getCountdownParts() {
@@ -284,6 +286,17 @@ function getCountdownParts() {
   var h = Math.floor(s / 3600); s -= h * 3600;
   var m = Math.floor(s / 60); s -= m * 60;
   return { d: d, h: h, m: m, s: s };
+}
+// 'before', 'here' or 'over'. One answer, so the countdown, what he is doing
+// right now and Will in the pixel world can never disagree about whether she
+// is with him. They used to: the countdown said it's here while the card next
+// to it said he was commuting home.
+function visitState() {
+  var now = Date.now();
+  if (now < NEXT_VISIT) return 'before';
+  var end = new Date(NEXT_VISIT.getFullYear(), NEXT_VISIT.getMonth(),
+                     NEXT_VISIT.getDate() + NEXT_VISIT_DAYS);
+  return now < end ? 'here' : 'over';
 }
 function pad(n) { return n < 10 ? '0'+n : ''+n; }
 
@@ -470,6 +483,8 @@ function md(text) {
 // ── WILL'S SCHEDULE ───────────────────────────────────────────────
 
 function getWillNow() {
+  // the rest of this is his week without her
+  if (visitState() === 'here') return 'he\'s with you.';
   var now = new Date();
   var day = now.getDay(), h = now.getHours(), m = now.getMinutes();
   var t = h * 60 + m;
@@ -2070,7 +2085,9 @@ function pxGo(area, x, y, dir) {
 function pxLines(v) {
   if (v !== 'WILL_COUNTDOWN') return v;
   var p = typeof getCountdownParts === 'function' ? getCountdownParts() : null;
-  if (!p) return ['Will: You are here.', 'Will: That was the whole countdown.'];
+  if (!p) return visitState() === 'here'
+    ? ['Will: You are here.', 'Will: That was the whole countdown.']
+    : ['Will: That was the last visit.', 'Will: I miss you already.'];
   var mo = ['January','February','March','April','May','June','July',
             'August','September','October','November','December'][NEXT_VISIT.getMonth()];
   var when = mo + ' ' + NEXT_VISIT.getDate();
@@ -2799,7 +2816,7 @@ function renderVisitTile() {
     if (!p) {
       // "it's here" is right for the visit itself. A month later, next to a
       // date that has gone, it was simply wrong - and it never changed back.
-      var over = Date.now() - NEXT_VISIT > NEXT_VISIT_DAYS * 86400000;
+      var over = visitState() === 'over';
       row.innerHTML = over ? '<span class="cd-passed">see you soon</span>'
                            : '<span class="cd-passed">it&#39;s here</span>';
       document.getElementById('visitDate').textContent =

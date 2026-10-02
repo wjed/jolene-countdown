@@ -41,7 +41,7 @@ object near the top of the `<script>` in `index.html`:
 - `JOLENE` / `JOLENE_LINES` — the facts, and the rotating one under About Jolene
 - `BUCKET` — the bucket list. Add `done: 'where it happened'` to an entry and
   it moves to the Done section; the count, the bar and the block all follow
-- `NEXT_VISIT`, `NEXT_VISIT_DAYS` (how long the countdown says it's here), `ANNIV_*`, `BDAY_*` — the dates every counter derives from
+- `NEXT_VISIT`, `NEXT_VISIT_DAYS` (how many calendar days the visit spans, counting the day it starts; the countdown says it's here and the "right now" card says he's with her for exactly that long), `ANNIV_*`, `BDAY_*` — the dates every counter derives from
 
 ## Photos
 
