@@ -11,7 +11,7 @@ No build step, no framework, no dependencies. Open `index.html` and it works.
 |------|------------|
 | `index.html` | The whole site — markup, content and one inline `<script>` |
 | `css/style.css` | Every style, including both palettes |
-| `images/` | The photographs, 82 of them, full size |
+| `images/` | The photographs, 88 of them, full size |
 | `images/thumbs/`, `images/web/` | What the page actually loads — made by `tools/photos.py` |
 | `tools/photos.py` | Rebuilds those two after photographs are added |
 | `school_logos/`, `gyms/`, `fonts/` | Left over from an older version, unused |
