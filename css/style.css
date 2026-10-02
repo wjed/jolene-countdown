@@ -2,7 +2,8 @@
    WILL + JOLENE — THE MANTEL
    ============================================================ */
 /* ── VARIABLES ──────────────────────────────────────────────── */
-/* Embers and woodsmoke. One theme only - autumn reads best dark. */
+/* Embers and woodsmoke - autumn reads best dark. Through October the
+   Halloween season below takes over, and birthday mode sits on top of both. */
 :root {
   --bg: #17110c;
   --sidebar-bg: #1e160f;
@@ -45,6 +46,106 @@
   --sidebar-w:     240px;
   --font:          'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
+/* ── HALLOWEEN ──────────────────────────────────────────────────
+   data-season="halloween" on <html>, set by a script in <head> for the whole
+   of October. Tokens only, like birthday mode, so every component follows.
+   It comes before birthday mode on purpose: same specificity, so if she turns
+   birthday mode on in October, the later block wins. */
+[data-season="halloween"] {
+  --bg: #120d16;
+  --sidebar-bg: #1a1320;
+  --sidebar-hover: #251b2d;
+  --sidebar-active: #33253d;
+  --border: #382a44;
+  --text: #f3e9df;
+  --text-2: #c7b6c4;
+  --text-3: #a593a6;
+  --accent: #f28a33;
+  --accent-hover: #ffa458;
+  --accent-faint: #2b1708;
+  --user-bg: #231a2a;
+  --input-bg: #1a1320;
+  --input-border: #382a44;
+  --card-hover: #20172a;
+  --on-accent: #200d02;
+  --hw-pumpkin: #f28a33;
+  --hw-violet: #b38af2;
+  --hw-potion: #9fd65e;
+  --hw-candle: #f2c14e;
+  --hw-blood: #ea6f82;
+  --tone-1: var(--hw-pumpkin);
+  --tone-2: var(--hw-violet);
+  --tone-3: var(--hw-potion);
+  --tone-4: var(--hw-candle);
+  --tone-5: var(--hw-blood);
+  --selection: rgba(242,138,51,.3);
+  --shadow-focus: 0 0 0 2px rgba(242,138,51,.45);
+}
+/* moonlight from the top corner. A disc sat behind the "press start" sprites
+   on every screen size, so it is a glow instead. */
+[data-season="halloween"] body {
+  background:
+    radial-gradient(circle at 94% 0,
+      rgba(246,232,205,.11) 0, rgba(242,193,78,.055) 130px, rgba(242,193,78,0) 380px) no-repeat,
+    var(--bg);
+}
+/* the countdown glows like something lit from inside, with a web in its corner */
+[data-season="halloween"] .hero {
+  border-color: rgba(242,138,51,.42);
+  box-shadow: var(--shadow-sm), 0 14px 46px -20px rgba(242,138,51,.55);
+}
+[data-season="halloween"] .hero::after {
+  content: ''; position: absolute; top: 0; right: 0;
+  width: 78px; height: 78px; border-top-right-radius: 16px;
+  pointer-events: none; opacity: .17;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='none' stroke='%23f3e9df' stroke-width='.8' stroke-linecap='round'%3E%3Cpath d='M64 0L4 0M64 0L8.6 23M64 0L21.6 42.4M64 0L41 55.4M64 0L64 60'/%3E%3Cpath d='M50 0Q52.7 2.2 51.1 5.4Q54.4 6.4 54.1 9.9Q57.6 9.6 58.6 12.9Q61.8 11.3 64 14'/%3E%3Cpath d='M36 0Q41.4 4.5 38.1 10.7Q44.9 12.8 44.2 19.8Q51.2 19.1 53.3 25.9Q59.5 22.6 64 28'/%3E%3Cpath d='M20 0Q28.7 7 23.3 16.8Q34.1 20 32.9 31.1Q44 29.9 47.2 40.7Q57 35.3 64 44'/%3E%3Cpath d='M4 0Q15.9 9.6 8.6 23Q23.3 27.2 21.6 42.4Q36.8 40.7 41 55.4Q54.4 48.1 64 60'/%3E%3C/svg%3E") top right / 100% 100% no-repeat;
+}
+/* a pumpkin after the name */
+[data-season="halloween"] .mark-title::after {
+  content: ''; display: inline-block;
+  width: .8em; height: .72em; margin-left: .28em; vertical-align: -.02em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 36'%3E%3Cpath d='M18 10V5c0-2 2-4 6-4l-2 3v6z' fill='%236f9a3a'/%3E%3Cellipse cx='13' cy='23' rx='10' ry='12' fill='%23d9661c'/%3E%3Cellipse cx='27' cy='23' rx='10' ry='12' fill='%23d9661c'/%3E%3Cellipse cx='20' cy='23' rx='10' ry='13' fill='%23f28a33'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+/* below 360px the name fills the line and the pumpkin wrapped onto one of its
+   own, so the smallest phones go without */
+@media (max-width: 359px) {
+  [data-season="halloween"] .mark-title::after { display: none; }
+}
+/* bats instead of leaves */
+.bat-layer {
+  position: fixed; inset: 0; z-index: 0;
+  pointer-events: none; overflow: hidden; display: none;
+}
+[data-season="halloween"] .bat-layer { display: block; }
+[data-season="halloween"] .leaf-layer { display: none; }
+.bat-layer b {
+  position: absolute; left: 0; color: var(--tone-2); opacity: .42;
+  animation: batOver linear infinite;
+}
+.bat-layer b.bat-back { animation-name: batBack; }
+.bat-layer i {
+  display: block; width: 100%; height: 100%; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 26'%3E%3Cpath d='M32 8L35 4L36 9L42 8L50 4L58 2L64 10L58 12L54 10L50 16L45 13L41 19L37 16L32 24L27 16L23 19L19 13L14 16L10 10L6 12L0 10L6 2L14 4L22 8L28 9L29 4Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 26'%3E%3Cpath d='M32 8L35 4L36 9L42 8L50 4L58 2L64 10L58 12L54 10L50 16L45 13L41 19L37 16L32 24L27 16L23 19L19 13L14 16L10 10L6 12L0 10L6 2L14 4L22 8L28 9L29 4Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  transform-origin: 50% 40%;
+  animation: batFlap .26s ease-in-out infinite alternate;
+}
+@keyframes batOver {
+  0%   { transform: translate3d(-60px, 0, 0); }
+  25%  { transform: translate3d(25vw, -3vh, 0); }
+  50%  { transform: translate3d(50vw, 2vh, 0); }
+  75%  { transform: translate3d(75vw, -2vh, 0); }
+  100% { transform: translate3d(calc(100vw + 60px), 1vh, 0); }
+}
+@keyframes batBack {
+  0%   { transform: translate3d(calc(100vw + 60px), 0, 0); }
+  25%  { transform: translate3d(75vw, 3vh, 0); }
+  50%  { transform: translate3d(50vw, -2vh, 0); }
+  75%  { transform: translate3d(25vw, 2vh, 0); }
+  100% { transform: translate3d(-60px, -1vh, 0); }
+}
+@keyframes batFlap { from { transform: scaleY(1); } to { transform: scaleY(.62); } }
+
 /* ── BIRTHDAY (PARTY) MODE ──────────────────────────────────────
    Set data-party="on" on <html> and the whole site switches palette. Only
    tokens are overridden, so every component follows without its own rule.
@@ -1101,7 +1202,10 @@ body.lb-open { overflow: hidden; }
 .confetti-layer { z-index: 500; display: none; }
 [data-party="on"] .confetti-layer,
 [data-party="on"] .balloon-layer { display: block; }
-[data-party="on"] .leaf-layer { display: none; }
+[data-party="on"] .leaf-layer,
+[data-party="on"] .bat-layer,
+[data-party="on"] .mark-title::after,
+[data-party="on"] .hero::after { display: none; }
 .leaf-layer i {
   position: absolute; top: -24px;
   border-radius: 0 62% 0 62%;
@@ -1220,7 +1324,7 @@ body.lb-open { overflow: hidden; }
 }
 /* Motion is decoration only - drop it all when asked, keep every colour. */
 @media (prefers-reduced-motion: reduce) {
-  .leaf-layer, .confetti-layer, .balloon-layer { display: none !important; }
+  .leaf-layer, .bat-layer, .confetti-layer, .balloon-layer { display: none !important; }
   /* these use fill-mode both, so they must be cancelled rather than left
      paused at their opacity:0 start frame */
   .page-main > *, .sheet, .sheet-scrim, .lb { animation: none !important; }

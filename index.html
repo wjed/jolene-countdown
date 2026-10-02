@@ -13,6 +13,19 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2317110c'/%3E%3Cpath d='M32 52S10 39 10 24a11 11 0 0 1 22-4 11 11 0 0 1 22 4c0 15-22 28-22 28z' fill='%23e58150'/%3E%3C/svg%3E">
   <!-- for a phone that saves the page to its home screen -->
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <script>
+    // October is Halloween. Set here, before anything is drawn, so the page
+    // never shows the fall palette for a frame first. ?season=fall or
+    // ?season=halloween shows either one whatever the date.
+    (function() {
+      var q = /[?&]season=(fall|halloween)\b/.exec(location.search);
+      var season = q ? q[1] : (new Date().getMonth() === 9 ? 'halloween' : 'fall');
+      if (season !== 'halloween') return;
+      document.documentElement.setAttribute('data-season', 'halloween');
+      var icon = document.querySelector('link[rel="icon"]');
+      if (icon) icon.href = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23120d16'/%3E%3Cpath d='M29 20V13c0-3 3-5 7-5l-2 4v8z' fill='%236f9a3a'/%3E%3Cellipse cx='22' cy='38' rx='14' ry='17' fill='%23d9661c'/%3E%3Cellipse cx='42' cy='38' rx='14' ry='17' fill='%23d9661c'/%3E%3Cellipse cx='32' cy='38' rx='14' ry='19' fill='%23f28a33'/%3E%3Cpath d='M20 33l6-7 5 8zM44 33l-6-7-5 8z' fill='%232a1206'/%3E%3Cpath d='M19 43q13 10 26 0l-4 7-4-3-5 4-5-4-4 3z' fill='%232a1206'/%3E%3C/svg%3E";
+    })();
+  </script>
 </head>
 <body>
 
@@ -23,6 +36,7 @@
 
 <!-- Ambient layers. All decorative, all pointer-events:none. -->
 <div class="leaf-layer" id="leafLayer" aria-hidden="true"></div>
+<div class="bat-layer" id="batLayer" aria-hidden="true"></div>
 <div class="balloon-layer" id="balloonLayer" aria-hidden="true"></div>
 <div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
 
@@ -534,8 +548,8 @@ function getWillNow() {
 }
 
 // ── THEME ─────────────────────────────────────────────────────────
-// One theme, so nothing to toggle. This only keeps the mobile browser chrome
-// matching, which still changes when birthday mode swaps the palette.
+// Fall, Halloween through October, and birthday mode on top of either. This
+// only keeps the mobile browser chrome matching whichever palette is showing.
 function syncThemeColor() {
   var meta = document.getElementById('themeColor');
   if (!meta) return;
@@ -1573,6 +1587,66 @@ function pxVoicePitch(voice) {
 
 // The sky follows her clock. A world that is permanently noon reads as a
 // diorama; the same street at half nine at night reads as a place.
+// ── HALLOWEEN, IN THE WORLD ──────────────────────────────────────
+// In October a jack-o'-lantern sits beside every door on the outdoor maps, on
+// the wall to the left of it. Drawn over the ground and under everyone, so
+// nobody is ever behind one, and nothing about the map changes. After dark the
+// faces are lit through the night tint.
+var PX_PUMPKINS = {};
+function pxPumpkins() {
+  var s = pxState, a = pxArea();
+  if (a.kind !== 'out' || document.documentElement.getAttribute('data-season') !== 'halloween') return [];
+  if (PX_PUMPKINS[s.area]) return PX_PUMPKINS[s.area];
+  var out = [], m = a.map;
+  Object.keys(a.warps).forEach(function(key) {
+    var p = key.split(','), x = +p[0], y = +p[1];
+    if (!m[y] || m[y][x] !== 'D') return;
+    [-1, 1].some(function(dx) {
+      var c = m[y][x + dx];
+      if (!c || c === 'D' || !PX_SOLIDT[c]) return false;
+      out.push([(x + dx) * PXT + (dx < 0 ? 8 : 0), y * PXT + 8]);
+      return true;
+    });
+  });
+  return (PX_PUMPKINS[s.area] = out);
+}
+function pxPumpkinFace(ctx, x, y, col) {
+  ctx.fillStyle = col;
+  ctx.fillRect(x + 2, y + 3, 1, 1); ctx.fillRect(x + 5, y + 3, 1, 1);
+  ctx.fillRect(x + 2, y + 5, 4, 1);
+}
+function pxDrawPumpkins(ctx) {
+  var list = pxPumpkins();
+  for (var i = 0; i < list.length; i++) {
+    var x = list[i][0], y = list[i][1];
+    ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fillRect(x + 1, y + 7, 6, 1);
+    ctx.fillStyle = '#e07a1f'; ctx.fillRect(x + 1, y + 2, 6, 5); ctx.fillRect(x, y + 3, 8, 3);
+    ctx.fillStyle = '#b85a14'; ctx.fillRect(x + 1, y + 6, 6, 1);
+    ctx.fillStyle = '#f59a43'; ctx.fillRect(x + 1, y + 3, 1, 2);
+    ctx.fillStyle = '#55702c'; ctx.fillRect(x + 3, y, 2, 2);
+    pxPumpkinFace(ctx, x, y, '#ffd65a');
+  }
+}
+// after the night tint, in screen space: a glow, and the faces at full light
+function pxPumpkinGlow(ctx, camX, camY) {
+  var list = pxPumpkins();
+  if (!list.length) return;
+  ctx.globalCompositeOperation = 'lighter';
+  for (var i = 0; i < list.length; i++) {
+    var cx = list[i][0] - camX + 4, cy = list[i][1] - camY + 4;
+    if (cx < -14 || cy < -14 || cx > PXVW + 14 || cy > PXVH + 14) continue;
+    var g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 13);
+    g.addColorStop(0, 'rgba(255,150,50,.38)');
+    g.addColorStop(1, 'rgba(255,150,50,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(cx - 13, cy - 13, 26, 26);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  for (var j = 0; j < list.length; j++) {
+    pxPumpkinFace(ctx, list[j][0] - camX, list[j][1] - camY, '#ffe27a');
+  }
+}
+
 function pxTint() {
   if (pxArea().kind !== 'out') return null;
   var h = new Date().getHours();
@@ -1663,6 +1737,7 @@ function pxRender() {
     pxText(ctx, lb[2], lx, ly, lb[3], '#140e0a');
   }
 
+  pxDrawPumpkins(ctx);
   pxDrawPrints(ctx, s);
 
   // the door opens as she walks into it, before the screen goes dark
@@ -1737,6 +1812,7 @@ function pxRender() {
     ctx.fillStyle = tint[0];
     ctx.fillRect(0, 0, PXVW, PXVH);
     ctx.globalAlpha = 1;
+    if (tint[1] >= 0.24) pxPumpkinGlow(ctx, camX, camY);
   }
 
   // Where she just arrived, said plainly for a second and a half. Drawn
@@ -3024,6 +3100,34 @@ function buildLeaves() {
   layer.innerHTML = html;
 }
 
+// ── BATS ─────────────────────────────────────────────────────────
+// What crosses the page in October instead of the leaves. They keep to the
+// sky above the cards, through the moonlight: spread down the whole screen
+// like the leaves, they sat behind the cards and only showed as slivers in the
+// gaps between them. Every other one flies the other way, and each beats its
+// wings at its own speed.
+var BAT_COUNT = 5;
+function isHalloween() {
+  return document.documentElement.getAttribute('data-season') === 'halloween';
+}
+function buildBats() {
+  var layer = document.getElementById('batLayer');
+  if (!layer || layer.childElementCount) return;
+  var html = '';
+  for (var i = 0; i < BAT_COUNT; i++) {
+    var w = 28 + Math.round(Math.random() * 18);
+    var top = (1.5 + (i / BAT_COUNT) * 9 + Math.random() * 2).toFixed(1);
+    var dur = (22 + Math.random() * 14).toFixed(2);
+    var delay = (i * 7 + Math.random() * 5).toFixed(2);
+    var flap = (0.2 + Math.random() * 0.12).toFixed(2);
+    html += '<b' + (i % 2 ? ' class="bat-back"' : '') + ' style="top:' + top + '%;' +
+            'width:' + w + 'px;height:' + Math.round(w * 0.42) + 'px;' +
+            'animation-duration:' + dur + 's;animation-delay:-' + delay + 's">' +
+            '<i style="animation-duration:' + flap + 's"></i></b>';
+  }
+  layer.innerHTML = html;
+}
+
 // ── INIT ─────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
   renderVisitTile();
@@ -3035,7 +3139,7 @@ document.addEventListener('DOMContentLoaded', function() {
   renderHerTile();
   renderListTile();
   renderCrew();
-  buildLeaves();
+  if (isHalloween()) buildBats(); else buildLeaves();
   playTileIntro();
 
   document.querySelectorAll('[data-sheet]').forEach(function(el) {

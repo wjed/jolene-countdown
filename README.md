@@ -79,6 +79,29 @@ The gallery is thumbnails, and a tap opens the photograph over the top of it:
 arrows, the arrow keys or a swipe for the next one, escape or the space around
 it to come back. It shows the `web` copy, not the original.
 
+## Halloween
+
+Through October the page is Halloween, and on November 1 it goes back to the
+fall theme by itself. A script in `<head>` sets `data-season="halloween"` on
+`<html>` before anything is drawn, so the fall palette never shows for a frame
+first.
+
+- **The palette**: near-black with a violet cast, and pumpkin, witch purple,
+  potion green, candlelight and a blood-moon red in the same five tone slots
+  the fall palette uses. Tokens only, like birthday mode, so every component
+  follows. Every one of them clears 4.5:1 on a card.
+- **The page**: bats crossing the sky above the masthead instead of falling
+  leaves, moonlight from the top corner, a glow under the countdown and a
+  cobweb in its corner, a pumpkin after the name (not below 360px, where it
+  wrapped onto a line of its own), and a jack-o'-lantern for the tab icon.
+- **The pixel world**: a jack-o'-lantern beside every door on the outdoor
+  maps, drawn over the ground and under everyone, with the faces lit through
+  the night tint after dark.
+
+Birthday mode still wins if she turns it on in October, decoration and all.
+`?season=fall` or `?season=halloween` on the URL shows either one whatever the
+date.
+
 ## Birthday mode
 
 Tapping the birthday line sets `data-party="on"` on `<html>`. That swaps the
